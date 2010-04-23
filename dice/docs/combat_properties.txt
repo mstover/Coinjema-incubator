@@ -1,0 +1,9 @@
+Properties of this system:
+
+1. A fighter's choice of skills, armor, and weapon form determines their role in combat.  When fighting in groups, a group made up of fighters playing different roles beats groups of fighters all playing the same role
+2. Regardless of the "level" of the warriors on boths sides, length of combat remains about the same.  Ie, two first level fighters get to have as epic a battle as two 20th level fighters.
+3. It's impossible to be taken out by one hit.  Unlikely to be taken out by two.
+4. No hit points - a player leaves combat when "taken out", the meaning of which is flexible except that they are no longer involved in the immediate combat
+5. Shields matter.  sword and shield will defeat a two-handed weapon most of the time.
+6. Armor matters.  The difference between getting hit with a longsword while wearing armor and not wearing armor is immense.
+7. A group of fighters without teamwork will get destroyed by a group of fighters that are trained to fight together.
