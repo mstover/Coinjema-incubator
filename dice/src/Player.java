@@ -55,7 +55,7 @@ public class Player {
 				+ (attackSkill - player2.defenseSkill)
 				- player2.getDefensiveBonus();
 		// System.out.println("\t diff=" + diff);
-		int damTotal = rollTimes(weaponForm.getDamageDice(), diff);
+		int damTotal = Math.max(0, diff) * weaponForm.rollDamage();
 		// System.out.println("\tDamage = " + damTotal);
 		int factor = calcFactor(player2.bodyCapacity + player2.armorCapacity,
 				damTotal);
@@ -90,14 +90,6 @@ public class Player {
 			return 0;
 		} else {
 			return 1 + calcFactor(cap, damTotal - cap);
-		}
-	}
-
-	private int rollTimes(Rollable damageDice, int diff) {
-		if (diff <= 0) {
-			return 0;
-		} else {
-			return damageDice.roll() + rollTimes(damageDice, diff - 1);
 		}
 	}
 

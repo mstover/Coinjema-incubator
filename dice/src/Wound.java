@@ -3,8 +3,7 @@
  */
 
 public enum Wound {
-	NONE(0), TRIVIAL(1), MINOR(2), NORMAL(3), MAJOR(4), TAKEN_OUT(
-			Integer.MAX_VALUE);
+	NONE(0), TRIVIAL(1), MINOR(2), NORMAL(3), MAJOR(4), TAKEN_OUT(8);
 
 	private float multiplier;
 
