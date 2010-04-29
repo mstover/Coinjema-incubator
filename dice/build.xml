@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="dice" default="build.website" basedir=".">
+	<property name="web.src" location="doc-src" />
+	<property name="build.website" location="${coinjema-website.proj}/rpg" />
+	<property name="website.xsl" location="${coinjema-website.proj}/code/website.xsl" />
+
+	<target name="build.website">
+		<mkdir dir="${build.website}" />
+		<delete>
+			<fileset dir="${build.website}">
+				<include name="*.html" />
+			</fileset>
+		</delete>
+		<xslt style="${website.xsl}" basedir="${web.src}" includes="**/*.xml"
+			destdir="${build.website}">
+			<param name="title" expression="MegaWig RPG" />
+			<param name="menu" expression="${basedir}/menu.xml" />
+		</xslt>
+	</target>
+</project>

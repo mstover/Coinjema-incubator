@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<menu>
+	<item>
+		<name>Home</name>
+		<url>index.html</url>
+	</item>
+	<item>
+		<name>Project</name>
+		<url>http://github.com/mstover/Coinjema-incubator</url>
+	</item>
+	<item>
+		<name>Documentation</name>
+		<menu>
+			<item>
+				<name>Overview</name>
+				<url>rpg/overview.html</url>
+			</item>
+		</menu>
+	</item>
+	<item>
+		<name>Projects</name>
+		<menu>
+			<item>
+				<name>Commenting</name>
+				<url>commenting/index.html</url>
+			</item>
+			<item>
+				<name>Rotation Game</name>
+				<url>rotation/index.html</url>
+			</item>
+		</menu>
+	</item>
+</menu>
