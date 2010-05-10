@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+  <context-param>
+  	<param-name>coinjema_root</param-name>
+  	<param-value>WEB-INF/config</param-value>
+  </context-param>
+    
+      <listener>
+  <listener-class>strategiclibrary.servlet.Startup</listener-class>
+</listener>
+  
+    <!-- fetchpix servlet -->
+    <servlet>
+        <servlet-name>ActionController</servlet-name>
+        <servlet-class>strategiclibrary.servlet.ControllerServlet</servlet-class>
+        <init-param>
+          <param-name>contextDepth</param-name>
+          <param-value>2</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- mapping for fetchpix -->
+    <servlet-mapping>
+        <servlet-name>ActionController</servlet-name>
+        <url-pattern>/*.vm</url-pattern>
+    </servlet-mapping>
+
+   <taglib>
+		<taglib-uri>http://www.lazerinc-image.com/</taglib-uri>
+		<taglib-location>/WEB-INF/webacttags.tld</taglib-location>
+    </taglib>  
+    
+    <taglib>
+		<taglib-uri>http://jakarta.apache.org/velocity/</taglib-uri>
+		<taglib-location>/WEB-INF/veltag.tld</taglib-location>
+    </taglib> 
+
+</web-app>
+

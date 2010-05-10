@@ -1,0 +1,1 @@
+new strategiclibrary.service.Profiler(new org.coinjema.context.CoinjemaContext("ObjectMapper_Profiling"))

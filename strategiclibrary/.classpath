@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/veltag-0.01-dev.jar"/>
+	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry exported="true" kind="lib" path="dev_lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/velocity-1.4.jar" sourcepath="/home/mikes/programs/velocity-1.4/src/java"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="dev_lib/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="dev_lib/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="dev_lib/j2ee.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="dev_lib/jaybird-full-2.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/coinjema-core-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mikes/programs/eclipse-plugins/eclipse/plugins/org.aspectj.runtime_1.5.2.20060629124300/aspectjrt.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/usr/java/jdk1.6.0/lib/tools.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-all-1.0.jar"/>
+	<classpathentry kind="output" path="eclipse/classes"/>
+</classpath>

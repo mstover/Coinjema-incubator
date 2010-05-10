@@ -1,0 +1,9 @@
+build
+.settings
+dist
+eclipse
+.microlink
+.project
+velocity.*
+junit*.properties
+*.ajproperties

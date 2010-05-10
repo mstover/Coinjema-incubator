@@ -3,7 +3,7 @@ public class Player {
 
 	public static int numWounds;
 
-	Rollable checkRoll = new FullRoll("d10", "d6");
+	Rollable checkRoll = new FullRoll("2d10", "d6");
 
 	/*
 	 * (non-Javadoc)
@@ -51,9 +51,7 @@ public class Player {
 
 	public void attackPlayer(Player player2) {
 		// System.out.println("Attack:");
-		int diff = (checkRoll.roll() - checkRoll.roll())
-				+ (attackSkill - player2.defenseSkill)
-				- player2.getDefensiveBonus();
+		int diff = calcDiff(player2);
 		// System.out.println("\t diff=" + diff);
 		int damTotal = Math.max(0, diff) * weaponForm.rollDamage();
 		// System.out.println("\tDamage = " + damTotal);
@@ -61,6 +59,11 @@ public class Player {
 				damTotal);
 		// System.out.println("\tfactor = " + factor);
 		player2.wound(factor);
+	}
+
+	private int calcDiff(Player player2) {
+		return (checkRoll.roll() - 11) + (attackSkill - player2.defenseSkill)
+				- player2.getDefensiveBonus();
 	}
 
 	private int getDefensiveBonus() {

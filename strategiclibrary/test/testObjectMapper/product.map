@@ -1,0 +1,20 @@
+mapping {
+	class=Product
+	primary=prod_id
+	multiRow=true
+	compound-mappings {
+   		meth1=setValue {
+   			name
+   			val
+   		}
+   		meth2=setValue {
+   			num_field
+   			num_val
+   		}
+   	}
+   	pairs {
+   		setId=prod_id
+   		setDateCataloged=date_cataloged
+   		setPrimary=primary_name
+   	}
+}

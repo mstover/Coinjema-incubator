@@ -1,0 +1,17 @@
+mapping {
+   class=java.util.GregorianCalendar
+   pairs {
+	  setLenient=lenient
+	  setFirstDayOfWeek=startDay
+   }
+   submappings {
+      setTime {
+         class=java.util.Date
+         pairs {
+		    setYear=year
+		    setDate=date
+		    setMonth=MONTH
+		 }
+	  }
+   }
+}

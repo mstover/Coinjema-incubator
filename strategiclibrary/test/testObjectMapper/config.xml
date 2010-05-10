@@ -1,0 +1,30 @@
+taskmaster {
+	config.dir=Giblex/test/testObjectMapper
+	
+	services {
+		strategiclibrary.service.logging.LoggingManager {
+			class=strategiclibrary.service.logging.DefaultLoggingManager
+			logConfig=Giblex/test/log4j.properties
+		}
+		
+		strategiclibrary.service.classfinder.ClassFinderService {
+			class=strategiclibrary.service.classfinder.DefaultClassFinderService
+			paths {
+				build/classes
+				Giblex/test/testObjectMapper
+			}
+		}
+		
+		groovyService {
+			class=strategiclibrary.service.template.groovy.GroovyService
+			paths { Giblex/test/groovyScripts }
+			components { repo=strategiclibrary.service.sql.ObjectMappingService }
+		}
+		
+		strategiclibrary.service.sql.ObjectMappingService {
+			class=strategiclibrary.service.sql.DefaultMappingService
+			mappingDirectory=Giblex/test/testObjectMapper
+			packages { strategiclibrary.service.sql.orm }
+		}
+	}
+}

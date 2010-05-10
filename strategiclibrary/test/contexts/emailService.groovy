@@ -1,0 +1,1 @@
+new strategiclibrary.service.notification.DefaultNotificationService()

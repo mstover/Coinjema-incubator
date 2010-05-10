@@ -1,0 +1,1 @@
+new strategiclibrary.service.template.groovy.GroovyService()

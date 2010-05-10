@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<project name="TaskMaster" default="test" basedir=".">
+  <description>
+    To build and test the TaskMaster application
+  </description>  
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties"/>
+
+  <!-- Where the Sources live -->
+  <property name="src.java.dir" value="src"/>
+	<property name="test.java.src" location="test/src"/>
+  <property name="encoding" value="UTF-8"/>
+  <property name="optimize" value="yes"/>
+  <property name="target.java.version" value="1.5"/>
+	  <property name="source.java.version" value="1.5"/>
+  <property name="version" value="1.5"/>
+  <property name="deprecation" value="off"/>
+
+  <!-- Javadoc sources -->
+	<path id="sources">
+			<pathelement location="${src.java.dir}"/>
+		</path>
+		
+		<!-- test sources -->
+		<path id="test-source">
+			<pathelement location="${test.java.src}"/>
+		</path>
+
+  <!-- Temporary build directories: where the .class live -->
+  <property name="build.dir" value="build"/>
+  <property name="build.api.dir" location="${build.dir}/docs/api"/>
+  <property name="build.classes" location="${build.dir}/classes"/>
+	<property name="build.test.classes" location="${build.dir}/testclasses"/>
+  <property name="dist.dir" value="dist"/>
+
+  <!-- Directory where these 3rd party libraries will live -->
+  <property name="lib.dir" value="lib"/>
+  <property name="dev.lib.dir" value="dev_lib"/>
+  	<property name="coinjema-version" value="1.0"/>
+
+  <!-- Build classpath -->
+  <path id="classpath">
+    <fileset dir="${lib.dir}" includes="*.jar"/>
+    <fileset dir="${dev.lib.dir}" includes="*.jar"/>
+  	<pathelement location="${java.home}/lib/tools.jar"/>
+  </path>
+	
+	<path id="classpath-test">
+			<path refid="classpath"/>
+		    <pathelement location="${build.classes}"/>	
+		</path>
+	
+	<target name="cvs_update">
+		<cvs command="-q update -Pd"/>
+	</target>
+  
+  <target name="init">
+  	<mkdir dir="${build.dir}/classes"/>
+  	<mkdir dir="${dist.dir}"/>
+  </target>
+  
+  <target name="clean">
+  	<echo>${java.home}</echo>
+  	<delete dir="${build.dir}"/>
+  	<delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="compile" depends="init" description="Compile TaskMaster core classes.">
+  	<echo>${java.home}</echo>
+  	<iajc sourceRootsRef="sources" classpathRef="classpath" 
+  					      destdir="${build.classes}" source="1.5" target="1.5" 
+  			      aspectPath="lib/coinjema-core-${coinjema-version}.jar"/>
+  	<copy todir="${build.classes}">
+  		<fileset dir="${src.java.dir}">
+  			<include name="**/*.groovy"/>
+  		</fileset>
+  	</copy>
+  </target>
+  
+  <target name="compile_tests" depends="compile" description="Compile all the test code.">
+  	<iajc sourceRootsRef="test-source" classpathRef="classpath-test" 
+  				  aspectPath="lib/coinjema-core-${coinjema-version}.jar"
+  			      destdir="${build.test.classes}"  source="1.5" target="1.5"/>
+   </target>
+  
+  <target name="jar" depends="clean,compile,test" description="Make a war file for distribution">
+    <jar basedir="${build.classes}" destfile="${dist.dir}/strategiclibrary-${version}.jar"/>		
+  </target>
+  
+  <target name="test" depends="compile_tests" description="Run tests">
+  	<junit dir="${basedir}">
+  				  <classpath>
+  				    <path refid="classpath-test"/>
+  				    <pathelement path="${build.test.classes}"/>
+  				  </classpath>
+
+  				  <formatter type="plain" usefile="no" />
+
+  				  <batchtest fork="yes">
+  				    <fileset dir="${test.java.src}">
+  				      <include name="**/*.java"/>
+  				      <exclude name="**/nontest/**"/>
+  				    </fileset>
+  				  </batchtest>
+  				</junit>
+  </target>
+  
+  <target name="deploy_webfiles" description="Copy jsp's and template files to deployment dir">
+  	<copy todir="${webapp_path}">
+  		<fileset dir="taskmaster">
+  			<include name="**/*.jsp"/>
+  			<include name="**/*.sql"/>
+  			<include name="**/*.vm"/>
+  		</fileset>
+  	</copy>
+  </target>
+  
+  <!-- ================================================================================ -->
+  <!-- Generate Javadocs                                                                -->
+  <!-- ================================================================================ -->
+  <target name="api-docs" depends="compile">
+		<mkdir dir="${build.api.dir}"/>
+	  <javadoc sourcepath="${src.java.dir}"
+				  destdir="${build.api.dir}"
+				  Protected="yes" author="yes" version="yes"
+				  doctitle="TaskMaster APIs Specification"
+				  windowtitle="TaskMaster API Specification"
+				  header="&lt;b&gt;TaskMaster&lt;/b&gt;&lt;br&gt;&lt;font size='-1'&gt;1.7&lt;/font&gt;"
+				  bottom="Copyright &#169; 2003- Global Crossing All Rights Reserved."
+				  packagenames="strategiclibrary.*" Use="yes">
+		<classpath>
+        	<path refid="classpath"/>
+      	</classpath>
+		 <taglet name="strategiclibrary.service.webaction.taglet.ActionTaglet" path="${build.webinf.dir}/lib/giblex.jar"/>
+		 <taglet name="strategiclibrary.service.webaction.taglet.ParamTaglet" path="${build.webinf.dir}/lib/giblex.jar"/>
+		 <taglet name="strategiclibrary.service.webaction.taglet.BeanTaglet" path="${build.webinf.dir}/lib/giblex.jar"/>
+		 <taglet name="strategiclibrary.service.webaction.taglet.ExceptionTaglet" path="${build.webinf.dir}/lib/giblex.jar"/>
+		 <link href="http://java.sun.com/j2se/1.4.2/docs/api"/>
+		 <link href="http://avalon.apache.org/framework/api"/>
+	  </javadoc>
+	</target>  
+
+</project>

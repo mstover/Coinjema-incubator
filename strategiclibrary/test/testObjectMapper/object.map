@@ -1,0 +1,8 @@
+mapping {
+    class=strategiclibrary.service.sql.orm.XmlBasedObjectMapping
+    pairs {
+	   setName=NAME
+	   setObjectClass=class_name
+	   setMethodName=method
+	}
+}

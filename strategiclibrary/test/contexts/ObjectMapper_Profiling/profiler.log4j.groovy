@@ -1,0 +1,1 @@
+org.apache.log4j.Logger.getLogger("sql.performance");
