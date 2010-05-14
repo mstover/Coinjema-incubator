@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="dev_lib/jaybird-full-2.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/coinjema-core-1.0.jar"/>
-	<classpathentry kind="lib" path="/home/mikes/programs/eclipse-plugins/eclipse/plugins/org.aspectj.runtime_1.5.2.20060629124300/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse/plugins/org.aspectj.runtime_1.6.9.20100408142000/aspectjrt.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/usr/java/jdk1.6.0/lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-all-1.0.jar"/>

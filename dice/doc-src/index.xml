@@ -1,3 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<webContent><h1>MegaWig RPG - Meta Games Within Games Role Playing System</h1>
-</webContent>
+<xmlContent>
+	<title>MegaWig RPG - Meta Games Within Games Role Playing System</title>
+
+	<section>
+		<title>Overview</title>
+		<text>MetaWig is a generic role-playing system that relies heavily on
+			many of the concepts introduced in the Fudge/Fate game systems. In
+			particular, the skill pyramid and Aspects are used almost as-is from
+			those systems. MetaWig formalizes the concept of
+			games-within-the-game as a way of resolving situations.</text>
+		<text>MetaWig defines one primary game-within-the-game (we'll call
+			them WIGs from now on), and that is called the Skill Challenge. It is
+			an essential RPG game that virtually all RPGs define. In MetaWig,
+			this WIG is played as follows:</text>
+		<list>
+			<item>First, the challenge must be described and defined, usually by
+				the GM. Typical examples include breaking down a door, finding a
+				trap, hiding unseen in a shadow, climbing a wall, noticing that the
+				spider on the wall is of a deadly poisonous variety, etc</item>
+			<item>A Target Number is determined, usually by the GM, a challenge
+				that a 0-skilled character could accomplish a bit more than half of
+				the time would
+				have a target number of 11.</item>
+			<item>The character trying to achieve success at the challenge rolls
+				2d10 and totals them. If a Tool is used, it may provide bonuses
+				(most likely not) to add to this sum. If the sum is equal to or
+				greater than the Target Number, then success is achieved.</item>
+		</list>
+		<text>MetaWig defines several other WIGs that can be used at the
+			discretion of the GM and players on a situational basis.</text>
+		<text>There are three basic parts of a character in the MetaWig RPG:
+		</text>
+		<list>
+			<item>Skills</item>
+			<item>Aspects</item>
+			<item>Tools</item>
+		</list>
+		<section>
+			<title>Skills</title>
+			<text>Characters have skills. Every skill is a word or phrase that
+				represents said skill. It can be anything at all, provided GM and
+				players agree the level of specificity is appropriate. Clearly, the
+				skill "Doing Stuff" is too broad, but whatever the skill is, it is
+				up to players and GM to determine what situations it may apply to.
+				Skills also have a number value, indicating the degree of skill the
+				character has.
+			</text>
+			<text>Skills are developed by characters in a pyramid. In order to
+				have X skills at level Y, the character must have X+2 skills at
+				level Y-1. In other words, their skills must form a two-sided
+				pyramid beginning at 0. When a player "gains a level", they increase
+				one skill by one point, provided this constraint is satisfied.
+			</text>
+			<text>The value of the skill for the character is usually added to
+				the Challenge Roll.</text>
+		</section>
+		<section>
+			<title>Aspects</title>
+			<text>Aspects work almost exactly as they do in Fate. Characters will
+				have a number of Aspects, which are words or phrases (just like
+				Skills), but they have no value number. Instead, aspects can be
+				invoked by the player at the cost of a fate token, or compelled by
+				the DM, for a gain of a fate token. Uses of aspects include
+				asserting story facts, gaining +2 on a challenge roll, or re-rolling
+				a challenge roll.</text>
+			<text>For more information, see the rules of Fate.</text>
+		</section>
+		<section>
+			<title>Tools</title>
+			<text>Tools are usually objects used to improve one's chances of
+				succeeding at a challenge. A Tool is a word or phrase that indicates
+				something the group recognizes as a Tool (ie, a sword, a lockpicking
+				toolset, a rope, eyeglasses, etc). Tools have properties, which
+				provide some guidelines for how they can affect challenges. The
+				obvious property would be a challenge roll bonus. Other properties
+				can be defined for Tools with an eye toward WIGs that the tool will
+				be appropriate for. For instance, in a combat WIG, a sword is
+				probably appropriate, and depending on how the combat WIG is
+				defined, the sword may have additional properties defined relevant
+				to combat. These properties are defined when the sword is brought
+				into the game by the GM or player.</text>
+			<text>If a character attempts to use a Tool in a WIG for which the
+				tool's properties are not appropriate, new properties can be
+				assigned to the tool based on the group's feelings about how the
+				tool's current properties might tranlsate to a property for the
+				unexpected WIG. For instance, should someone decide to try to pry
+				open a chest with their sword, the sword becomes a tool in an
+				unexpected WIG, in which case a challenge roll bonus number must be
+				determined for the sword.</text>
+		</section>
+	</section>
+
+	<section>
+		<title>Additional WIGs</title>
+		<section>
+			<title>The Graded Challenge</title>
+			<text>Many challenges benefit from a sense of degree of success or
+				failure, rather than a simple binary yes/no value. One could argue
+				that any modestly significant challenge can benefit from knowing the
+				degree to which the attempt succeeded or failed. For instance, take
+				the challenge of climbing a wall: success can be achieved quickly,
+				or only after a long time of exhausting effort. Failure can result
+				in a stubbed toe or a fall from a great height.</text>
+			<text>Additionally, some challenges are simply impossible to do
+				without some sort of tool. No matter how good a thief is, how will
+				he/she pick a lock without lock-picking tools? Some walls are simply
+				not scalable without rope or claws of some sort. One could represent
+				this by setting the Challenge Number to a value outside the range of
+				2d10 and thus requiring some bonus from a tool to achieve the target
+				number. However some challenges are impossible without tools, and
+				extremely easy with them - this strategy is clumsy in trying to
+				model the relationship between challenge difficulty and the use of
+				tools. So, we define the Graded Challenge</text>
+			<list>
+				<item>Define the Challenge, as before</item>
+				<item>A Target Number is determined. In addition a Challenge Grade
+					is determined. This is also a number.</item>
+				<item>The character trying to achieve success at the challenge rolls
+					2d10 and totals them, applying applicable bonuses, and subtracts
+					the Target Number. The result is the initial success level.</item>
+				<item>The tool used in this challenge needs to define its multiplier
+					value, which will be multiplied by the success level. It is assumed
+					that the use of no tool has a multiplier of 1.</item>
+				<item>
+					Divide the multiplied result by the Challenge Grade and
+					eliminate
+					fractions. This is the success factor. They can be interpreted like
+					so:
+				</item>
+					<list>
+						<item>Barely successful</item>
+						<item>Fair success</item>
+						<item>Good Success</item>
+						<item>Great Success</item>
+					</list>
+
+					<text>Or however is desired for the particular challenge.</text>
+				<item>If desired, the degree of failure can be calculated in the
+					same fashion, but take the negative value and apply it as above,
+					but now greater negative factors mean worse levels of failure.
+					Whether or not greater factors of failure are relevant is up to the
+					GM or the challenge designer.
+				</item>
+			</list>
+		</section>
+		<section>
+			<title>A Somewhat Enhanced Graded Challenge</title>
+			<text>This WIG is exactly like the Graded Challenge, with the
+				exception that the tool can define a range of multiplier values. Ie,
+				3 values, a LOW value, a MEDIUM value, and a HIGH value. When
+				determining the tool's multiplier, roll 2d6. If two odd numbers are
+				rolled, use the LOW multiplier value. If one odd and one even number
+				are rolled, use the MEDIUM multiplier value, and if two even numbers
+				are rolled, use the HIGH multiplier value. This is just a simple way
+				of essentially rolling 2d2 and creating a mini-bell-curve value
+				distribution. It has great effect when used for a gun in a special
+				combat WIG, where a gun may graze and do very little damage, or it
+				may strike the brain or heart and essentially do infinite damage.
+			</text>
+		</section>
+	</section>
+</xmlContent>
