@@ -64,23 +64,48 @@ public class GridFrame extends JFrame {
 				System.exit(0);
 			}
 		});
-		mainWindow.setPreferredSize(new Dimension(1200, 1000));
-		mainWindow.grid = new Grid(mainWindow.getPreferredSize(), getCenters(
-				1200, 1000, 400));
+		mainWindow.setPreferredSize(new Dimension(1200, 800));
+		mainWindow.grid = new Grid(mainWindow.getPreferredSize(),
+				getRandomCenters(100, 10, 1200, 800));
 		mainWindow.pack();
 		mainWindow.setVisible(true);
 	}
 
-	private static Point2D[] getCenters(int width, int height, int numPoints) {
+	private static Point2D[] getHexCenters(int width, int height, int numPoints) {
+		Point2D[] centers = new Point2D[numPoints];
+		double xdiff = width / Math.sqrt(numPoints / Math.sin(Math.PI / 3));
+		double ydiff = xdiff / Math.sin(Math.PI / 3);
+		double x = -xdiff;
+		double y = 0;
+		boolean shift = false;
+		for (int i = 0; i < numPoints; i++) {
+			x += xdiff;
+			if (x >= width) {
+				x = 0;
+				y += ydiff;
+				shift = false;
+				centers[i] = new Point2D.Double(Math.round(x), Math.round(y));
+				shift = !shift;
+			} else {
+				centers[i] = new Point2D.Double(Math.round(x), Math.round(y
+						+ (shift ? ydiff / 2 : 0)));
+				shift = !shift;
+			}
+		}
+		return centers;
+	}
+
+	private static Point2D[] getSquareCenters(int width, int height,
+			int numPoints) {
 		Point2D[] centers = new Point2D[numPoints];
 		double xdiff = width / Math.sqrt(numPoints);
 		double ydiff = height / Math.sqrt(numPoints);
 		double x = 0;
-		double y = ydiff;
+		double y = ydiff / 2;
 		for (int i = 0; i < numPoints; i++) {
-			x += xdiff;
+			x += (x == 0 ? xdiff / 2 : xdiff);
 			if (x >= width) {
-				x = xdiff;
+				x = xdiff / 2;
 				y += ydiff;
 				centers[i] = new Point2D.Double(x, y);
 			} else {
