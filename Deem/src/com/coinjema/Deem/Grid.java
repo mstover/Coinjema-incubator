@@ -3,7 +3,9 @@ package com.coinjema.Deem;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,11 +57,18 @@ public class Grid {
 		if (corners == null) {
 			calcPoints();
 		}
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		for (Corner c : corners) {
 			for (Corner adj : c.getAdjacentCorners()) {
-				g.drawLine(c.x, c.y, adj.x, adj.y);
+				g2.drawLine(c.x, c.y, adj.x, adj.y);
 			}
 		}
+		// g.setColor(Color.red);
+		// for (Point2D p : locations) {
+		// g.fillRect((int) p.getX() - 1, (int) p.getY() - 1, 3, 3);
+		// }
 	}
 
 	/**
@@ -90,13 +99,13 @@ public class Grid {
 						if (Math.abs(x - center.getX()) <= threshhold
 								&& Math.abs(y - center.getY()) <= threshhold) {
 							final double dist = center.distance(x, y);
-							if (Math.abs(dist - lowest) < 1d) {
+							if (Math.abs(dist - lowest) < 1.1d) {
 								candidates.add(dist < lowest ? 0 : 1, new Tup(
 										center, dist));
-								threshhold = lowest + 1d;
+								threshhold = lowest + 1.1d;
 							} else if (dist < lowest) {
 								lowest = dist;
-								threshhold = lowest + 1d;
+								threshhold = lowest + 1.1d;
 								candidates.clear();
 								candidates.add(new Tup(center, dist));
 							}
@@ -125,6 +134,17 @@ public class Grid {
 	private Collection<Corner> fillOut(Collection<Corner> corners) {
 		System.out.println("Num corners coming in = " + corners.size());
 		Set<Corner> unique = removeDupCorners(corners);
+		System.out
+				.println("After removing dups num corners = " + unique.size());
+		for (Corner c : unique) {
+			for (Corner d : unique) {
+				if (c != d) {
+					if (c.shareCenter(d)) {
+						c.addAdjacent(d);
+					}
+				}
+			}
+		}
 		for (Corner c : unique) {
 			Set<Corner> line = new HashSet<Corner>();
 			checkXLine(c.x, c, line);
@@ -148,79 +168,40 @@ public class Grid {
 				t.y = (int) Math.round(sum);
 			}
 		}
-		// for (Corner c : unique) {
-		// for (Corner d : unique) {
-		// if (c != d) {
-		// c.stripExcessCenters(d);
-		// }
-		// }
-		// }
-		System.out
-				.println("After removing dups num corners = " + unique.size());
-		for (Corner c : unique) {
-			for (Corner d : unique) {
-				if (c != d) {
-					if (c.shareCenter(d)) {
-						c.addAdjacent(d);
-					}
-				}
-			}
-		}
 		System.out.println("Num corners going out = " + unique.size());
 		return unique;
 	}
 
 	private Set<Corner> removeDupCorners(Collection<Corner> corners) {
-		boolean rnd2 = false;
+		Set<Corner> unique = removeStrictDups(corners);
+		for (Corner c : unique) {
+			for (Corner d : unique) {
+				if (c != d && !c.colocated(d)) {
+					if (c.shareTooManyCenters(d)) {
+						c.linkWith(d);
+					}
+				}
+			}
+		}
+
+		return removeStrictDups(unique);
+	}
+
+	private Set<Corner> removeStrictDups(Collection<Corner> corners) {
 		Set<Corner> unique = new HashSet<Corner>(corners);
-		Set<Corner> discarded = null;
-		int removed = 0;
-		do {
-			discarded = new HashSet<Corner>(unique.size());
-			for (Corner c : unique) {
-				if (!discarded.contains(c)) {
-					inner: for (Corner d : unique) {
-						if (c != d && !discarded.contains(d)) {
-							if (c.shareAllCenter(d)) {
-								Corner worse = c.getWorse(d);
-								c.addCenters(d);
-								d.addCenters(c);
-								discarded.add(worse);
-								if (worse == c) {
-									break inner;
-								}
-							} else if (rnd2 && c.shareCenter(d)) {
-								for (Corner e : unique) {
-									if (c != e && d != e
-											&& !discarded.contains(e)
-											&& !c.shareAllCenter(e)
-											&& !d.shareAllCenter(e)
-											&& c.shareAllCenter(d, e)) {
-										c.addCenters(d);
-										e.addCenters(c);
-										d.addCenters(e);
-										Corner worse = c
-												.getWorse(d.getWorse(e));
-										discarded.add(worse);
-										if (worse == c) {
-											break inner;
-										} else if (worse == d) {
-											break;
-										}
-									}
-								}
-							}
+		for (Corner c : corners) {
+			if (unique.contains(c)) {
+				for (Corner d : corners) {
+					if (unique.contains(d) && c != d) {
+						if (c.shareAllCenters(d)) {
+							unique.remove(c.getWorse(d));
+							if (!unique.contains(c))
+								break;
 						}
 					}
 				}
 			}
-			unique.removeAll(discarded);
-			removed = discarded.size();
-			if (removed == 0 && !rnd2) {
-				removed = 1;
-				rnd2 = true;
-			}
-		} while (removed > 0 || !rnd2);
+		}
 		return unique;
 	}
 

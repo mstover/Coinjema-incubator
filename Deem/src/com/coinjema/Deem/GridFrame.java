@@ -66,7 +66,7 @@ public class GridFrame extends JFrame {
 		});
 		mainWindow.setPreferredSize(new Dimension(1200, 800));
 		mainWindow.grid = new Grid(mainWindow.getPreferredSize(),
-				getRandomCenters(100, 10, 1200, 800));
+				getHexCenters(1200, 800, 500));
 		mainWindow.pack();
 		mainWindow.setVisible(true);
 	}

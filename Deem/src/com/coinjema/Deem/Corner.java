@@ -12,6 +12,7 @@ public class Corner {
 
 	private final Set<Corner> adjacent = new HashSet<Corner>(11);
 	private final Set<Point> closestCenters;
+	private Set<Corner> linked;
 
 	public Corner(int x, int y, Point... closestCenters) {
 		this.x = x;
@@ -40,23 +41,22 @@ public class Corner {
 		return and.size() == 2;
 	}
 
-	public boolean shareAllCenter(Corner c) {
-		Set<Point> and = new HashSet<Point>(closestCenters);
-		and.retainAll(c.closestCenters);
-		return and.size() >= 3;
+	public boolean shareAllCenters(Corner c) {
+		return closestCenters.containsAll(c.closestCenters)
+				&& c.closestCenters.containsAll(closestCenters);
 	}
 
-	public boolean shareAllCenter(Corner c, Corner d) {
+	public boolean shareTooManyCenters(Corner c) {
+		Set<Point> and = new HashSet<Point>(closestCenters);
+		and.retainAll(c.closestCenters);
+		return and.size() > 2;
+	}
+
+	public boolean shareTooManyCenters(Corner c, Corner d) {
 		Set<Point> and = new HashSet<Point>(closestCenters);
 		and.retainAll(c.closestCenters);
 		and.retainAll(d.closestCenters);
-		if (and.size() >= 2) {
-			System.out.println("c = " + closestCenters);
-			System.out.println("d = " + c.closestCenters);
-			System.out.println("e = " + d.closestCenters);
-			return true;
-		}
-		return false;
+		return and.size() >= 2;
 
 	}
 
@@ -139,6 +139,54 @@ public class Corner {
 			}
 
 		}
+
+	}
+
+	public boolean colocated(Corner d) {
+		return x == d.x && y == d.y;
+	}
+
+	public void linkWith(Corner d) {
+		if (linked != null && linked.contains(d))
+			return;
+		if (this != d && !addLink(d)) {
+			double xsum = x;
+			double ysum = y;
+			int count = 1;
+			for (Corner c : linked) {
+				xsum += c.x;
+				ysum += c.y;
+				count++;
+			}
+			xsum /= count;
+			ysum /= count;
+			x = (int) Math.round(xsum);
+			y = (int) Math.round(ysum);
+			for (Corner c : linked) {
+				c.x = (int) Math.round(xsum);
+				c.y = (int) Math.round(ysum);
+			}
+		}
+
+	}
+
+	private boolean addLink(Corner d) {
+		if (linked == null)
+			linked = new HashSet<Corner>();
+		if (linked.contains(d))
+			return true;
+		if (d.linked != null) {
+			for (Corner c : d.linked) {
+				linked.add(c);
+			}
+		}
+		linked.add(d);
+		addCenters(d);
+		for (Corner c : new HashSet<Corner>(linked)) {
+			c.linkWith(d);
+		}
+		d.linkWith(this);
+		return false;
 
 	}
 
