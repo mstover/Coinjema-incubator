@@ -47,7 +47,8 @@ import java.util.concurrent.Executors;
  */
 public class Brain {
 	static Random rand = new Random();
-	private ExecutorService ego = Executors.newFixedThreadPool(Runtime
+	volatile long firings = 0;
+	private final ExecutorService ego = Executors.newFixedThreadPool(Runtime
 			.getRuntime().availableProcessors());
 
 	/**
@@ -56,6 +57,7 @@ public class Brain {
 	private static final int BYTES_PER_NEURON = 11000;
 	private final ByteBuffer neurons;
 	private final int numNeurons;
+	private long time;
 
 	public Brain(int numNeurons) {
 		this.numNeurons = numNeurons;
@@ -72,7 +74,7 @@ public class Brain {
 	 * @param neuronIndex
 	 */
 	void fireNeuron(int neuronIndex) {
-		System.out.println("Firing neuron " + neuronIndex);
+		firings++;
 		int pos = neuronIndex * BYTES_PER_NEURON + 5;
 		int relativeAddress = 0;
 		while ((relativeAddress = neurons.getInt(pos)) != 0) {
@@ -144,12 +146,13 @@ public class Brain {
 			neurons.putShort(pos, groupSize);
 			pos += 2;
 			for (int j = 0; j < groupSize; j++) {
-				neurons.put(pos++, (byte) (rand.nextInt(160) - 92));
+				neurons.put(pos++, (byte) (rand.nextInt(160) - 91));
 			}
 		}
 	}
 
 	public void think() {
+		time = System.currentTimeMillis();
 		for (int i = 0; i < numNeurons; i += 100) {
 			if (i + 100 > numNeurons) {
 				ego.submit(new NeuronRunner(this, i, numNeurons - i));
@@ -160,6 +163,9 @@ public class Brain {
 	}
 
 	void rethink(NeuronRunner runner) {
+		System.out
+				.println((firings * 1000d / (System.currentTimeMillis() - time))
+						+ " firings/second");
 		ego.submit(runner);
 	}
 

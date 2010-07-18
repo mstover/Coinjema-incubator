@@ -10,6 +10,8 @@
 package com.coinjema.acronjema.logic;
 
 import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author michaelstover
@@ -25,13 +27,15 @@ public class Piece implements Watcher {
 
 	protected static final int[] NO_STEPS = new int[0];
 
-	private int[] potentialSteps = new int[24];
+	private final int[] potentialSteps = new int[24];
+
+	private final Set<Square> watching = new HashSet<Square>();
 
 	public final int strength;
 	public final boolean gold;
 	private Square square;
 	private boolean recalcSteps = true;
-	private int[] steps;
+	private int validStepCount;
 
 	public Piece(int str, boolean g) {
 		this.strength = str;
@@ -53,19 +57,20 @@ public class Piece implements Watcher {
 		this.square = square;
 	}
 
-	public int[] getSteps() {
+	public void getSteps(StepBuffer stepBuffer) {
 		if (recalcSteps) {
 			if (!isFrozen()) {
-				int count = 0;
-				count += addSimpleSteps(count, potentialSteps);
-				count += addPushSteps(count, potentialSteps);
-				steps = new int[count];
-				System.arraycopy(potentialSteps, 0, steps, 0, count);
+				validStepCount = 0;
+				validStepCount += addSimpleSteps(validStepCount, potentialSteps);
+				validStepCount += addPushSteps(validStepCount, potentialSteps);
 			} else {
-				steps = NO_STEPS;
+				validStepCount = 0;
 			}
+			recalcSteps = false;
 		}
-		return steps;
+		for (int i = 0; i < validStepCount; i++) {
+			stepBuffer.put(potentialSteps[i]);
+		}
 	}
 
 	/**
@@ -76,13 +81,11 @@ public class Piece implements Watcher {
 	private int addPushSteps(int count, int[] temp) {
 		int subCount = 0;
 		for (Square s : square.adjacent) {
-			s.addWatcher(this);
 			if (!s.isEmpty()) {
 				if ((s.getOccupant().gold != gold)
 						&& (s.getOccupant().strength < strength)) {
 					for (Square pushTo : s.adjacent) {
 						if (pushTo != square) {
-							pushTo.addWatcher(this);
 							if (pushTo.isEmpty()) {
 								temp[count + subCount] = Move.getPushStep(
 										square, s, pushTo);
@@ -109,7 +112,6 @@ public class Piece implements Watcher {
 	private int addSimpleSteps(int count, int[] temp) {
 		int subCount = 0;
 		for (Square s : square.adjacent) {
-			s.addWatcher(this);
 			if (s.isEmpty()) {
 				temp[count + subCount] = Move.getStep(square, s);
 				subCount++;
@@ -121,7 +123,6 @@ public class Piece implements Watcher {
 	protected boolean isFrozen() {
 		boolean frozen = false;
 		for (Square s : square.adjacent) {
-			s.addWatcher(this);
 			if (!s.isEmpty()) {
 				if (s.getOccupant().gold == gold) {
 					return false;

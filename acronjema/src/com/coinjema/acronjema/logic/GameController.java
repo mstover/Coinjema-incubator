@@ -9,7 +9,6 @@
  */
 package com.coinjema.acronjema.logic;
 
-import java.nio.IntBuffer;
 import java.util.Random;
 
 /**
@@ -19,6 +18,7 @@ import java.util.Random;
 public class GameController {
 
 	public static Random rand = new Random();
+	static StepBuffer stepBuffer = new StepBuffer();
 
 	/**
 	 * @param args
@@ -71,10 +71,18 @@ public class GameController {
 		b.addPiece(Piece.DOG, false, new SquareDesignation("h7"));
 
 		b.print(System.out);
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 1000; i++) {
 			runMoves(b, true);
 			runMoves(b, false);
 		}
+		long time = System.currentTimeMillis();
+		for (int i = 0; i < 1000000; i++) {
+			runMoves(b, true);
+			runMoves(b, false);
+		}
+		System.out.println("Processed "
+				+ (2000000d / (System.currentTimeMillis() - time))
+				+ " moves/ms");
 	}
 
 	/**
@@ -82,24 +90,17 @@ public class GameController {
 	 */
 	private static void runMoves(Board b, boolean gold) {
 		int count = 0;
-		IntBuffer stepBuffer = IntBuffer.allocate(1000);
+		stepBuffer.setAcceptDoubleMove(true);
 		while (count < 4) {
-			for (Square s : b.squares) {
-				if (!s.isEmpty() && (s.getOccupant().gold == gold)) {
-					for (int step : s.getOccupant().getSteps()) {
-						if (count + Move.getStepCount(step) < 5) {
-							stepBuffer.put(step);
-						}
-					}
-				}
-			}
-			System.out.println("Number of steps = " + stepBuffer.position());
-			int choice = stepBuffer.get(rand.nextInt(stepBuffer.position()));
-			System.out.println("Choice = " + choice);
-			b.executeMove(choice);
-			b.print(System.out);
-			count += Move.getStepCount(choice);
 			stepBuffer.clear();
+			if (count == 3) {
+				stepBuffer.setAcceptDoubleMove(false);
+			}
+			b.findAllSteps(stepBuffer, gold);
+			int choice = stepBuffer.get(rand.nextInt(stepBuffer.position()));
+			b.executeMove(choice);
+			// b.print(System.out);
+			count += Move.getStepCount(choice);
 		}
 	}
 }

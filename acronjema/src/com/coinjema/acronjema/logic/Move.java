@@ -65,6 +65,9 @@ public class Move {
 		return move;
 	}
 
+	private static int[] singleSeq = new int[2];
+	private static int[] doubleSeq = new int[4];
+
 	/**
 	 * @param choice
 	 * @return
@@ -72,11 +75,11 @@ public class Move {
 	public static int[] getStepSequence(int choice) {
 		int[] seq;
 		if (choice >> 12 > 0) {
-			seq = new int[4];
+			seq = doubleSeq;
 			seq[2] = (choice & THIRD) >> 12;
 			seq[3] = (choice & FOURTH) >> 18;
 		} else {
-			seq = new int[2];
+			seq = singleSeq;
 		}
 		seq[0] = choice & FIRST;
 		seq[1] = (choice & SECOND) >> 6;

@@ -1,0 +1,565 @@
+JAVA PROFILE 1.0.1, created Sat Jul 17 12:17:11 2010
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+@(#)jvm.hprof.txt	1.5 06/01/28
+
+ Copyright (c) 2006 Sun Microsystems, Inc. All  Rights Reserved.
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=50000140, id = 200002, name="HPROF gc_finish watcher", group="system")
+THREAD START (obj=50000140, id = 200001, name="main", group="main")
+THREAD END (id = 200001)
+THREAD START (obj=50000140, id = 200003, name="DestroyJavaVM", group="main")
+THREAD END (id = 200003)
+THREAD END (id = 200002)
+TRACE 301959:
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301932:
+	java.nio.DirectIntBufferS.put(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301931:
+	java.nio.Bits.swap(Bits.java:Unknown line)
+	java.nio.DirectIntBufferS.put(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301933:
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301880:
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301879:
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301930:
+	java.nio.Bits.swap(Bits.java:Unknown line)
+	java.nio.Bits.swap(Bits.java:Unknown line)
+	java.nio.DirectIntBufferS.put(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+TRACE 301870:
+	com.coinjema.acronjema.logic.Square.isEmpty(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301950:
+	com.coinjema.acronjema.logic.Square.fireTertiaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireSecondaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+TRACE 301952:
+	com.coinjema.acronjema.logic.Square.fireSecondaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+TRACE 301871:
+	com.coinjema.acronjema.logic.Square.getOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301874:
+	com.coinjema.acronjema.logic.Piece.isFrozen(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301876:
+	com.coinjema.acronjema.logic.Piece.addSimpleSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301928:
+	java.nio.Buffer.nextPutIndex(Buffer.java:Unknown line)
+	java.nio.DirectIntBufferS.put(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301929:
+	java.nio.DirectIntBufferS.ix(DirectIntBufferS.java:Unknown line)
+	java.nio.DirectIntBufferS.put(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301877:
+	com.coinjema.acronjema.logic.Square.isEmpty(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301875:
+	com.coinjema.acronjema.logic.Square.isEmpty(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addSimpleSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301951:
+	com.coinjema.acronjema.logic.Piece.change(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireTertiaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireSecondaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+TRACE 301953:
+	com.coinjema.acronjema.logic.Square.fireOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301872:
+	com.coinjema.acronjema.logic.Square.isEmpty(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.isFrozen(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301961:
+	com.coinjema.acronjema.logic.Move.getPushStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301873:
+	com.coinjema.acronjema.logic.Square.getOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.isFrozen(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301878:
+	com.coinjema.acronjema.logic.Square.getOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301963:
+	com.coinjema.acronjema.logic.Move.getPullStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301927:
+	com.coinjema.acronjema.logic.Move.getStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addSimpleSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301954:
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301958:
+	com.coinjema.acronjema.logic.Move.getStepCount(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.put(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301960:
+	com.coinjema.acronjema.logic.Move.getStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Move.getPushStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301944:
+	java.nio.DirectIntBufferS.get(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.get(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301962:
+	com.coinjema.acronjema.logic.Move.getStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Move.getPullStep(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.addPushSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.getSteps(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301955:
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301956:
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301938:
+	java.util.Random.next(Random.java:Unknown line)
+	java.util.Random.nextInt(Random.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301949:
+	com.coinjema.acronjema.logic.Square.fireTertiaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+TRACE 301943:
+	java.nio.Bits.swap(Bits.java:Unknown line)
+	java.nio.DirectIntBufferS.get(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.get(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301939:
+	java.util.Random.nextInt(Random.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301869:
+	com.coinjema.acronjema.logic.StepBuffer.clear(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301945:
+	com.coinjema.acronjema.logic.StepBuffer.get(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301942:
+	java.nio.Bits.swap(Bits.java:Unknown line)
+	java.nio.Bits.swap(Bits.java:Unknown line)
+	java.nio.DirectIntBufferS.get(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.get(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301935:
+	com.coinjema.acronjema.logic.StepBuffer.position(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301937:
+	java.util.concurrent.atomic.AtomicLong.compareAndSet(AtomicLong.java:Unknown line)
+	java.util.Random.next(Random.java:Unknown line)
+	java.util.Random.nextInt(Random.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301948:
+	com.coinjema.acronjema.logic.Piece.change(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireTertiaryOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.fireOccupantChanged(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+TRACE 301936:
+	java.util.concurrent.atomic.AtomicLong.get(AtomicLong.java:Unknown line)
+	java.util.Random.next(Random.java:Unknown line)
+	java.util.Random.nextInt(Random.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301868:
+	java.nio.Buffer.clear(Buffer.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.clear(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301941:
+	java.nio.DirectIntBufferS.ix(DirectIntBufferS.java:Unknown line)
+	java.nio.DirectIntBufferS.get(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.get(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301946:
+	com.coinjema.acronjema.logic.Move.getStepSequence(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301940:
+	java.nio.Buffer.checkIndex(Buffer.java:Unknown line)
+	java.nio.DirectIntBufferS.get(DirectIntBufferS.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.get(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301934:
+	java.nio.Buffer.position(Buffer.java:Unknown line)
+	com.coinjema.acronjema.logic.StepBuffer.position(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301947:
+	com.coinjema.acronjema.logic.Piece.setSquare(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.setOccupant(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.moveOccupantTo(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.executeMove(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301957:
+	com.coinjema.acronjema.logic.Move.getStepCount(Move.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301847:
+	com.coinjema.acronjema.logic.StepBuffer.setAcceptDoubleMove(StepBuffer.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.runMoves(GameController.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 302062:
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 300551:
+	java.lang.Character.toUpperCase(Character.java:Unknown line)
+	java.lang.String.regionMatches(String.java:Unknown line)
+	java.net.URL.<init>(URL.java:Unknown line)
+	java.net.URL.<init>(URL.java:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
+TRACE 300515:
+	java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:Unknown line)
+	java.lang.StringBuilder.append(StringBuilder.java:Unknown line)
+	java.net.URLStreamHandler.parseURL(URLStreamHandler.java:Unknown line)
+	sun.net.www.protocol.file.Handler.parseURL(Handler.java:Unknown line)
+	java.net.URL.<init>(URL.java:Unknown line)
+	java.net.URL.<init>(URL.java:Unknown line)
+TRACE 300274:
+	sun.net.www.ParseUtil.decode(ParseUtil.java:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath$3.run(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getLoader(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getLoader(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
+TRACE 300276:
+	java.lang.String.charAt(String.java:Unknown line)
+	java.io.UnixFileSystem.normalize(UnixFileSystem.java:Unknown line)
+	java.io.File.<init>(File.java:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath$3.run(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getLoader(URLClassPath.java:Unknown line)
+TRACE 300277:
+	java.io.UnixFileSystem.normalize(UnixFileSystem.java:Unknown line)
+	java.io.File.<init>(File.java:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath$3.run(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getLoader(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getLoader(URLClassPath.java:Unknown line)
+TRACE 300341:
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:Unknown line)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:Unknown line)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:Unknown line)
+	java.lang.StringCoding$StringEncoder.encode(StringCoding.java:Unknown line)
+	java.lang.StringCoding.encode(StringCoding.java:Unknown line)
+	java.lang.String.getBytes(String.java:Unknown line)
+TRACE 300383:
+	sun.misc.URLClassPath.getLoader(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
+	java.net.URLClassLoader$1.run(URLClassLoader.java:Unknown line)
+	java.net.URLClassLoader.findClass(URLClassLoader.java:Unknown line)
+	sun.misc.Launcher$ExtClassLoader.findClass(Launcher.java:Unknown line)
+	java.lang.ClassLoader.loadClass(ClassLoader.java:Unknown line)
+TRACE 300534:
+	java.net.URLStreamHandler.parseURL(URLStreamHandler.java:Unknown line)
+	sun.net.www.protocol.file.Handler.parseURL(Handler.java:Unknown line)
+	java.net.URL.<init>(URL.java:Unknown line)
+	java.net.URL.<init>(URL.java:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
+TRACE 300566:
+	java.io.UnixFileSystem.normalize(UnixFileSystem.java:Unknown line)
+	java.io.File.<init>(File.java:Unknown line)
+	sun.misc.URLClassPath$FileLoader.getResource(URLClassPath.java:Unknown line)
+	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
+	java.net.URLClassLoader$1.run(URLClassLoader.java:Unknown line)
+	java.net.URLClassLoader.findClass(URLClassLoader.java:Unknown line)
+TRACE 300754:
+	java.lang.StringCoding$StringEncoder.encode(StringCoding.java:Unknown line)
+	java.lang.StringCoding.encode(StringCoding.java:Unknown line)
+	java.lang.String.getBytes(String.java:Unknown line)
+	java.io.File.length(File.java:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getContentLength(URLClassPath.java:Unknown line)
+	sun.misc.Resource.getBytes(Resource.java:Unknown line)
+TRACE 300874:
+	sun.net.www.protocol.file.Handler.createFileURLConnection(Handler.java:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(Handler.java:Unknown line)
+	sun.net.www.protocol.file.Handler.openConnection(Handler.java:Unknown line)
+	java.net.URL.openConnection(URL.java:Unknown line)
+	java.net.URLClassLoader.getPermissions(URLClassLoader.java:Unknown line)
+	sun.misc.Launcher$AppClassLoader.getPermissions(Launcher.java:Unknown line)
+TRACE 300952:
+	java.io.FilePermission$1.run(FilePermission.java:Unknown line)
+	java.io.FilePermission$1.run(FilePermission.java:Unknown line)
+	java.io.FilePermission.init(FilePermission.java:Unknown line)
+	java.io.FilePermission.<init>(FilePermission.java:Unknown line)
+	sun.net.www.protocol.file.FileURLConnection.getPermission(FileURLConnection.java:Unknown line)
+	java.net.URLClassLoader.getPermissions(URLClassLoader.java:Unknown line)
+TRACE 301622:
+	java.util.HashMap.<init>(HashMap.java:Unknown line)
+	java.util.HashSet.<init>(HashSet.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.<init>(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.addPiece(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301691:
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:Unknown line)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:Unknown line)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:Unknown line)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:Unknown line)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:Unknown line)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:Unknown line)
+TRACE 301735:
+	java.nio.CharBuffer.wrap(CharBuffer.java:Unknown line)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:Unknown line)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:Unknown line)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:Unknown line)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:Unknown line)
+	java.io.PrintStream.write(PrintStream.java:Unknown line)
+TRACE 301752:
+	java.nio.Buffer.clear(Buffer.java:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:Unknown line)
+	java.io.PrintStream.write(PrintStream.java:Unknown line)
+TRACE 301803:
+	java.io.PrintStream.write(PrintStream.java:Unknown line)
+	java.io.PrintStream.print(PrintStream.java:Unknown line)
+	com.coinjema.acronjema.logic.Piece.print(Piece.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.print(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.print(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301823:
+	java.lang.String.indexOf(String.java:Unknown line)
+	java.io.PrintStream.write(PrintStream.java:Unknown line)
+	java.io.PrintStream.print(PrintStream.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.print(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.print(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+TRACE 301824:
+	java.io.PrintStream.write(PrintStream.java:Unknown line)
+	java.io.PrintStream.print(PrintStream.java:Unknown line)
+	com.coinjema.acronjema.logic.Square.print(Square.java:Unknown line)
+	com.coinjema.acronjema.logic.Board.print(Board.java:Unknown line)
+	com.coinjema.acronjema.logic.GameController.main(GameController.java:Unknown line)
+CPU TIME (ms) BEGIN (total = 18689) Sat Jul 17 12:17:30 2010
+rank   self  accum   count trace method
+   1 12.40% 12.40%    2200 301959 com.coinjema.acronjema.logic.GameController.runMoves
+   2 11.90% 24.30%  233835 301932 java.nio.DirectIntBufferS.put
+   3  9.03% 33.32%  233835 301931 java.nio.Bits.swap
+   4  6.46% 39.78%  255139 301933 com.coinjema.acronjema.logic.StepBuffer.put
+   5  6.12% 45.90%  110256 301880 com.coinjema.acronjema.logic.Piece.getSteps
+   6  5.27% 51.16%   36290 301879 com.coinjema.acronjema.logic.Piece.addPushSteps
+   7  4.72% 55.88%  467670 301930 java.nio.Bits.swap
+   8  4.49% 60.38%  441024 301870 com.coinjema.acronjema.logic.Square.isEmpty
+   9  3.98% 64.35%  235840 301950 com.coinjema.acronjema.logic.Square.fireTertiaryOccupantChanged
+  10  3.88% 68.23%   64155 301952 com.coinjema.acronjema.logic.Square.fireSecondaryOccupantChanged
+  11  3.25% 71.48%  330768 301871 com.coinjema.acronjema.logic.Square.getOccupant
+  12  3.22% 74.70%   43298 301874 com.coinjema.acronjema.logic.Piece.isFrozen
+  13  3.12% 77.83%   36290 301876 com.coinjema.acronjema.logic.Piece.addSimpleSteps
+  14  2.41% 80.23%  233835 301928 java.nio.Buffer.nextPutIndex
+  15  2.26% 82.50%  233835 301929 java.nio.DirectIntBufferS.ix
+  16  2.09% 84.59%  213778 301877 com.coinjema.acronjema.logic.Square.isEmpty
+  17  1.37% 85.96%  132000 301875 com.coinjema.acronjema.logic.Square.isEmpty
+  18  1.35% 87.31%  131481 301951 com.coinjema.acronjema.logic.Piece.change
+  19  1.30% 88.61%   17600 301953 com.coinjema.acronjema.logic.Square.fireOccupantChanged
+  20  1.16% 89.77%  115796 301872 com.coinjema.acronjema.logic.Square.isEmpty
+  21  0.93% 90.70%   21893 301961 com.coinjema.acronjema.logic.Move.getPushStep
+  22  0.88% 91.58%   88696 301873 com.coinjema.acronjema.logic.Square.getOccupant
+  23  0.83% 92.41%   95703 301878 com.coinjema.acronjema.logic.Square.getOccupant
+  24  0.78% 93.18%   21230 301963 com.coinjema.acronjema.logic.Move.getPullStep
+  25  0.66% 93.84%   66430 301927 com.coinjema.acronjema.logic.Move.getStep
+  26  0.65% 94.49%   17600 301954 com.coinjema.acronjema.logic.Square.setOccupant
+  27  0.51% 95.00%   57074 301958 com.coinjema.acronjema.logic.Move.getStepCount
+  28  0.48% 95.47%   43786 301960 com.coinjema.acronjema.logic.Move.getStep
+  29  0.42% 95.90%    6891 301944 java.nio.DirectIntBufferS.get
+  30  0.41% 96.30%   42460 301962 com.coinjema.acronjema.logic.Move.getStep
+  31  0.37% 96.68%    8800 301955 com.coinjema.acronjema.logic.Square.moveOccupantTo
+  32  0.29% 96.97%    6891 301956 com.coinjema.acronjema.logic.Board.executeMove
+  33  0.28% 97.25%    6891 301938 java.util.Random.next
+  34  0.26% 97.51%   17600 301949 com.coinjema.acronjema.logic.Square.fireTertiaryOccupantChanged
+  35  0.24% 97.75%    6891 301943 java.nio.Bits.swap
+  36  0.20% 97.95%    6891 301939 java.util.Random.nextInt
+  37  0.16% 98.11%    6891 301869 com.coinjema.acronjema.logic.StepBuffer.clear
+  38  0.16% 98.27%    6891 301945 com.coinjema.acronjema.logic.StepBuffer.get
+  39  0.14% 98.41%   13782 301942 java.nio.Bits.swap
+  40  0.13% 98.54%    6891 301935 com.coinjema.acronjema.logic.StepBuffer.position
+  41  0.09% 98.64%    6891 301937 java.util.concurrent.atomic.AtomicLong.compareAndSet
+  42  0.08% 98.72%    8800 301948 com.coinjema.acronjema.logic.Piece.change
+  43  0.07% 98.79%    6891 301936 java.util.concurrent.atomic.AtomicLong.get
+  44  0.07% 98.86%    6891 301868 java.nio.Buffer.clear
+  45  0.07% 98.93%    6891 301941 java.nio.DirectIntBufferS.ix
+  46  0.07% 99.00%    6891 301946 com.coinjema.acronjema.logic.Move.getStepSequence
+  47  0.06% 99.06%    6891 301940 java.nio.Buffer.checkIndex
+  48  0.06% 99.12%    6891 301934 java.nio.Buffer.position
+  49  0.05% 99.18%    8800 301947 com.coinjema.acronjema.logic.Piece.setSquare
+  50  0.05% 99.23%    6891 301957 com.coinjema.acronjema.logic.Move.getStepCount
+  51  0.05% 99.28%    3767 301847 com.coinjema.acronjema.logic.StepBuffer.setAcceptDoubleMove
+  52  0.03% 99.31%       1 302062 com.coinjema.acronjema.logic.GameController.main
+  53  0.02% 99.33%      20 300551 java.lang.Character.toUpperCase
+  54  0.02% 99.35%      60 300515 java.lang.AbstractStringBuilder.append
+  55  0.01% 99.36%       4 300274 sun.net.www.ParseUtil.decode
+  56  0.01% 99.37%     195 300276 java.lang.String.charAt
+  57  0.01% 99.38%       4 300277 java.io.UnixFileSystem.normalize
+  58  0.01% 99.39%      35 300341 sun.nio.cs.UTF_8$Encoder.encodeArrayLoop
+  59  0.01% 99.40%      50 300383 sun.misc.URLClassPath.getLoader
+  60  0.01% 99.41%      20 300534 java.net.URLStreamHandler.parseURL
+  61  0.01% 99.42%      10 300566 java.io.UnixFileSystem.normalize
+  62  0.01% 99.43%      10 300754 java.lang.StringCoding$StringEncoder.encode
+  63  0.01% 99.44%       1 300874 sun.net.www.protocol.file.Handler.createFileURLConnection
+  64  0.01% 99.45%       1 300952 java.io.FilePermission$1.run
+  65  0.01% 99.46%      32 301622 java.util.HashMap.<init>
+  66  0.01% 99.48%      80 301691 sun.nio.cs.UTF_8$Encoder.encodeArrayLoop
+  67  0.01% 99.49%      67 301735 java.nio.CharBuffer.wrap
+  68  0.01% 99.50%      67 301752 java.nio.Buffer.clear
+  69  0.01% 99.51%      32 301803 java.io.PrintStream.write
+  70  0.01% 99.52%      28 301823 java.lang.String.indexOf
+  71  0.01% 99.53%      28 301824 java.io.PrintStream.write
+CPU TIME (ms) END

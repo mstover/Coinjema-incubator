@@ -20,7 +20,7 @@ import java.util.Set;
 public class Square {
 
 	public final Square[] adjacent;
-	private Set<Watcher> watchers = new HashSet<Watcher>();
+	private final Set<Watcher> watchers = new HashSet<Watcher>();
 	protected Piece occupant;
 	final BoardChangeEvent event;
 
@@ -39,16 +39,32 @@ public class Square {
 	}
 
 	public void addWatcher(Watcher w) {
-		watchers.add(w);
+		// watchers.add(w);
 	}
 
 	public void removeWatcher(Watcher w) {
-		watchers.remove(w);
+		// watchers.remove(w);
 	}
 
 	protected void fireOccupantChanged() {
-		for (Watcher w : watchers) {
-			w.change(event);
+		fireTertiaryOccupantChanged();
+		for (Square s : adjacent) {
+			s.fireSecondaryOccupantChanged(this);
+		}
+	}
+
+	protected void fireSecondaryOccupantChanged(Square notS) {
+		fireTertiaryOccupantChanged();
+		for (Square s : adjacent) {
+			if (s != notS) {
+				s.fireTertiaryOccupantChanged();
+			}
+		}
+	}
+
+	protected void fireTertiaryOccupantChanged() {
+		if (occupant != null) {
+			occupant.change(null);
 		}
 	}
 
