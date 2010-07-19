@@ -10,10 +10,6 @@
 package com.coinjema.acronjema.logic;
 
 import java.io.PrintStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author michaelstover
@@ -21,52 +17,10 @@ import java.util.concurrent.Executors;
  */
 public class Board {
 
-	private ExecutorService executor;
-
-	private class BoardExecutor implements Runnable {
-		private final List<Square> squares = new LinkedList<Square>();
-		private final int mark;
-
-		public BoardExecutor(int workerNo) {
-			this.mark = workerNo * 1000;
-
-		}
-
-		public void addSquare(Square s) {
-			squares.add(s);
-		}
-
-		public void findMoves(StepBuffer buf) {
-
-		}
-
-		@Override
-		public void run() throws Exception {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	}
-
 	Square[] squares = new Square[64];
-	private BoardExecutor[] executors;
 
 	public Board() {
 		createSquares();
-		createExecutor();
-	}
-
-	private void createExecutor() {
-		int numProcessors = Runtime.getRuntime().availableProcessors();
-		executor = Executors.newFixedThreadPool(numProcessors);
-		executors = new BoardExecutor[numProcessors];
-		int count = 0;
-		for (int i = 0; i < numProcessors; i++) {
-			executors[i] = new BoardExecutor(i);
-		}
-		for (int i = 0; i < squares.length; i++) {
-			executors[i % numProcessors].addSquare(squares[i]);
-		}
-
 	}
 
 	/**
