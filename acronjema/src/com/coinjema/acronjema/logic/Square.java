@@ -54,17 +54,21 @@ public class Square {
 	}
 
 	protected void fireSecondaryOccupantChanged(Square notS) {
-		fireTertiaryOccupantChanged();
-		for (Square s : adjacent) {
-			if (s != notS) {
-				s.fireTertiaryOccupantChanged();
+		if (fireTertiaryOccupantChanged()) {
+			for (Square s : adjacent) {
+				if (s != notS) {
+					s.fireTertiaryOccupantChanged();
+				}
 			}
 		}
 	}
 
-	protected void fireTertiaryOccupantChanged() {
+	protected boolean fireTertiaryOccupantChanged() {
 		if (occupant != null) {
 			occupant.change(null);
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -106,8 +110,9 @@ public class Square {
 	 * @param square
 	 */
 	public void moveOccupantTo(Square square) {
-		square.setOccupant(occupant);
+		Piece thisOccupant = occupant;
 		setOccupant(null);
+		square.setOccupant(thisOccupant);
 	}
 
 }

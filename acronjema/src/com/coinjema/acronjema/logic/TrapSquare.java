@@ -17,6 +17,9 @@ import java.io.PrintStream;
  */
 public class TrapSquare extends Square {
 
+	private final Piece[] killedPieces = new Piece[32];
+	private int stackPointer = 0;
+
 	/**
 	 * @param adj
 	 */
@@ -36,6 +39,61 @@ public class TrapSquare extends Square {
 		} else {
 			occupant.print(out);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.coinjema.acronjema.logic.Square#moveOccupantTo(com.coinjema.acronjema
+	 * .logic.Square)
+	 */
+	@Override
+	public void moveOccupantTo(Square square) {
+		if (this.occupant != null) {
+			super.moveOccupantTo(square);
+		} else {
+			square.setOccupant(killedPieces[--stackPointer]);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.coinjema.acronjema.logic.Square#setOccupant(com.coinjema.acronjema
+	 * .logic.Piece)
+	 */
+	@Override
+	public void setOccupant(Piece occupant) {
+		if (occupant == null) {
+			if (this.occupant != null) {
+				this.occupant = null;
+				fireOccupantChanged();
+			}
+			return;
+		}
+		boolean kill = true;
+		for (Square s : adjacent) {
+			if (!s.isEmpty() && (s.getOccupant().gold == occupant.gold)) {
+				kill = false;
+				break;
+			}
+		}
+		if (kill) {
+			killPiece(occupant);
+		} else {
+			this.occupant = occupant;
+			this.occupant.setSquare(this);
+			fireOccupantChanged();
+		}
+	}
+
+	/**
+	 * @param occupant
+	 */
+	private void killPiece(Piece occupant) {
+		killedPieces[stackPointer++] = occupant;
 	}
 
 }

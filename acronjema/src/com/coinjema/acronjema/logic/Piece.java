@@ -18,6 +18,19 @@ import java.util.Set;
  * 
  */
 public class Piece implements Watcher {
+	public final static int GOLD_RABBIT = 1;
+	public final static int GOLD_CAT = 2;
+	public final static int GOLD_DOG = 3;
+	public final static int GOLD_HORSE = 4;
+	public final static int GOLD_CAMEL = 5;
+	public final static int GOLD_ELEPHANT = 6;
+	public final static int SILVER_RABBIT = 7;
+	public final static int SILVER_CAT = 8;
+	public final static int SILVER_DOG = 9;
+	public final static int SILVER_HORSE = 10;
+	public final static int SILVER_CAMEL = 11;
+	public final static int SILVER_ELEPHANT = 12;
+
 	public final static int RABBIT = 1;
 	public final static int CAT = 2;
 	public final static int DOG = 3;
@@ -36,10 +49,58 @@ public class Piece implements Watcher {
 	private Square square;
 	private boolean recalcSteps = true;
 	private int validStepCount;
+	public final int bit;
 
 	public Piece(int str, boolean g) {
 		this.strength = str;
 		this.gold = g;
+		if (gold) {
+			switch (strength) {
+			case CAMEL:
+				bit = GOLD_CAMEL;
+				break;
+			case CAT:
+				bit = GOLD_CAT;
+				break;
+			case DOG:
+				bit = GOLD_DOG;
+				break;
+			case ELEPHANT:
+				bit = GOLD_ELEPHANT;
+				break;
+			case HORSE:
+				bit = GOLD_HORSE;
+				break;
+			case RABBIT:
+				bit = GOLD_RABBIT;
+				break;
+			default:
+				bit = 0;
+			}
+		} else {
+			switch (strength) {
+			case CAMEL:
+				bit = SILVER_CAMEL;
+				break;
+			case CAT:
+				bit = SILVER_CAT;
+				break;
+			case DOG:
+				bit = SILVER_DOG;
+				break;
+			case ELEPHANT:
+				bit = SILVER_ELEPHANT;
+				break;
+			case HORSE:
+				bit = SILVER_HORSE;
+				break;
+			case RABBIT:
+				bit = SILVER_RABBIT;
+				break;
+			default:
+				bit = 0;
+			}
+		}
 	}
 
 	/**
@@ -113,8 +174,13 @@ public class Piece implements Watcher {
 		int subCount = 0;
 		for (Square s : square.adjacent) {
 			if (s.isEmpty()) {
-				temp[count + subCount] = Move.getStep(square, s);
-				subCount++;
+				Piece occ = square.getOccupant();
+				if ((occ.strength != Piece.RABBIT)
+						|| (occ.gold && (s.index > square.index - 8))
+						|| (!occ.gold && (s.index < square.index + 8))) {
+					temp[count + subCount] = Move.getStep(square, s);
+					subCount++;
+				}
 			}
 		}
 		return subCount;

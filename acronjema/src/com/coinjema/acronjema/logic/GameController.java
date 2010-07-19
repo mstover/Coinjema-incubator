@@ -71,18 +71,49 @@ public class GameController {
 		b.addPiece(Piece.DOG, false, new SquareDesignation("h7"));
 
 		b.print(System.out);
-		for (int i = 0; i < 1000; i++) {
-			runMoves(b, true);
-			runMoves(b, false);
+
+		try {
+			findMoves(b, true);
+			findMoves(b, false);
+			b.print(System.out);
+			findMoves(b, true);
+			findMoves(b, false);
+		} catch (GameEndException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		b.print(System.out);
+		// for (int i = 0; i < 100; i++) {
+		// runMoves(b, true);
+		// b.print(System.out);
+		// runMoves(b, false);
+		// b.print(System.out);
+		// }
 		long time = System.currentTimeMillis();
-		for (int i = 0; i < 1000000; i++) {
-			runMoves(b, true);
-			runMoves(b, false);
+		try {
+			for (int i = 0; i < 10000; i++) {
+				findMoves(b, true);
+				findMoves(b, false);
+				// b.print(System.out);
+			}
+		} catch (GameEndException e) {
+			System.out.println("Somebody ran out of moves");
 		}
 		System.out.println("Processed "
-				+ (2000000d / (System.currentTimeMillis() - time))
-				+ " moves/ms");
+				+ (20000d / (System.currentTimeMillis() - time))
+				+ " movesets/ms");
+	}
+
+	private static void findMoves(Board b, boolean gold)
+			throws GameEndException {
+		stepBuffer.clear();
+		stepBuffer.searchForSteps(b, gold, 4);
+		int[] move = stepBuffer.getRandomMove(rand);
+
+		for (int m : move) {
+			b.executeMove(m);
+		}
+
 	}
 
 	/**
@@ -97,7 +128,13 @@ public class GameController {
 				stepBuffer.setAcceptDoubleMove(false);
 			}
 			b.findAllSteps(stepBuffer, gold);
-			int choice = stepBuffer.get(rand.nextInt(stepBuffer.position()));
+			if (stepBuffer.getNumberChoices() == 0) {
+				System.out.println("No possible moves");
+				b.print(System.out);
+				System.exit(0);
+			}
+			int choice = stepBuffer.get(rand.nextInt(stepBuffer
+					.getNumberChoices()));
 			b.executeMove(choice);
 			// b.print(System.out);
 			count += Move.getStepCount(choice);

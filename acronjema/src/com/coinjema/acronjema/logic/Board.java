@@ -128,4 +128,15 @@ public class Board {
 		}
 	}
 
+	/**
+	 * @param move
+	 */
+	public void rewindMove(int move) {
+		int[] seq = Move.getStepSequence(move);
+		if (seq.length == 4) {
+			squares[seq[3]].moveOccupantTo(squares[seq[2]]);
+		}
+		squares[seq[1]].moveOccupantTo(squares[seq[0]]);
+	}
+
 }
