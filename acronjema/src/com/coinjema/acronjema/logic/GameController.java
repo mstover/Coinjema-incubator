@@ -18,13 +18,14 @@ import java.util.Random;
 public class GameController {
 
 	public static Random rand = new Random();
-	static StepBuffer stepBuffer = new StepBuffer();
+	static StepBuffer stepBuffer;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		Board b = new Board();
+		stepBuffer = new StepBuffer(b);
 
 		// Gold pieces
 
@@ -71,12 +72,21 @@ public class GameController {
 		b.addPiece(Piece.DOG, false, new SquareDesignation("h7"));
 
 		b.print(System.out);
-
 		try {
 			findMoves(b, true);
+			b.print(System.out);
 			findMoves(b, false);
 			b.print(System.out);
 			findMoves(b, true);
+			b.print(System.out);
+			findMoves(b, false);
+			b.print(System.out);
+			findMoves(b, true);
+			b.print(System.out);
+			findMoves(b, false);
+			b.print(System.out);
+			findMoves(b, true);
+			b.print(System.out);
 			findMoves(b, false);
 		} catch (GameEndException e1) {
 			// TODO Auto-generated catch block
@@ -91,7 +101,7 @@ public class GameController {
 		// }
 		long time = System.currentTimeMillis();
 		try {
-			for (int i = 0; i < 10000; i++) {
+			for (int i = 0; i < 100000; i++) {
 				findMoves(b, true);
 				findMoves(b, false);
 				// b.print(System.out);
@@ -100,14 +110,14 @@ public class GameController {
 			System.out.println("Somebody ran out of moves");
 		}
 		System.out.println("Processed "
-				+ (20000d / (System.currentTimeMillis() - time))
+				+ (200000d / (System.currentTimeMillis() - time))
 				+ " movesets/ms");
 	}
 
 	private static void findMoves(Board b, boolean gold)
 			throws GameEndException {
 		stepBuffer.clear();
-		stepBuffer.searchForSteps(b, gold, 4);
+		stepBuffer.searchForSteps(gold, 4);
 		int[] move = stepBuffer.getRandomMove(rand);
 
 		for (int m : move) {

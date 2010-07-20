@@ -96,15 +96,15 @@ public class Board {
 	 */
 	private Square createSquare(int i) {
 		if ((i == 0) || (i == 7) || (i == 56) || (i == 63)) {
-			return new Square(i, 2);
+			return new Square(this, i, 2);
 		}
 		if ((i % 8 == 0) || (i < 8) || ((i + 1) % 8 == 0) || (i > 56)) {
-			return new Square(i, 3);
+			return new Square(this, i, 3);
 		}
 		if ((i == 18) || (i == 21) || (i == 42) || (i == 45)) {
-			return new TrapSquare(i);
+			return new TrapSquare(this, i);
 		}
-		return new Square(i, 4);
+		return new Square(this, i, 4);
 
 	}
 
@@ -117,6 +117,18 @@ public class Board {
 		if (seq.length == 4) {
 			squares[seq[2]].moveOccupantTo(squares[seq[3]]);
 		}
+	}
+
+	public long getBoardHashAfterMove(int move) {
+		long hash = getBoardHash();
+		int[] seq = Move.getStepSequence(move);
+		if (seq.length == 4) {
+			hash = hash ^ (1l << seq[2]);
+		} else {
+			hash = hash ^ (1l << seq[0]);
+		}
+		hash = hash ^ (1l << seq[1]);
+		return hash;
 	}
 
 	void findAllSteps(StepBuffer stepBuffer, boolean gold) {
@@ -137,6 +149,19 @@ public class Board {
 			squares[seq[3]].moveOccupantTo(squares[seq[2]]);
 		}
 		squares[seq[1]].moveOccupantTo(squares[seq[0]]);
+	}
+
+	/**
+	 * @return
+	 */
+	public long getBoardHash() {
+		long hash = 0;
+		for (Square s : squares) {
+			if (!s.isEmpty()) {
+				hash = hash | (1l << (s.index));
+			}
+		}
+		return hash;
 	}
 
 }

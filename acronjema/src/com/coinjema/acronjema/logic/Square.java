@@ -10,8 +10,6 @@
 package com.coinjema.acronjema.logic;
 
 import java.io.PrintStream;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author michaelstover
@@ -20,30 +18,21 @@ import java.util.Set;
 public class Square {
 
 	public final Square[] adjacent;
-	private final Set<Watcher> watchers = new HashSet<Watcher>();
 	protected Piece occupant;
-	final BoardChangeEvent event;
 
 	public final int index;
+	public final Board board;
 
-	public Square(int index, int numAdj) {
+	public Square(Board b, int index, int numAdj) {
 		adjacent = new Square[numAdj];
-		event = new BoardChangeEvent(this);
 		this.index = index;
+		this.board = b;
 	}
 
 	public void setAdjacent(Square... squares) {
 		for (int i = 0; i < adjacent.length; i++) {
 			adjacent[i] = squares[i];
 		}
-	}
-
-	public void addWatcher(Watcher w) {
-		// watchers.add(w);
-	}
-
-	public void removeWatcher(Watcher w) {
-		// watchers.remove(w);
 	}
 
 	protected void fireOccupantChanged() {
@@ -65,7 +54,7 @@ public class Square {
 
 	protected boolean fireTertiaryOccupantChanged() {
 		if (occupant != null) {
-			occupant.change(null);
+			occupant.change();
 			return true;
 		} else {
 			return false;

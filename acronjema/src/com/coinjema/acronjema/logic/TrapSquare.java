@@ -23,8 +23,8 @@ public class TrapSquare extends Square {
 	/**
 	 * @param adj
 	 */
-	public TrapSquare(int index) {
-		super(index, 4);
+	public TrapSquare(Board b, int index) {
+		super(b, index, 4);
 	}
 
 	/*

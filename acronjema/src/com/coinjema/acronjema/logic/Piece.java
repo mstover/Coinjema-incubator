@@ -17,7 +17,7 @@ import java.util.Set;
  * @author michaelstover
  * 
  */
-public class Piece implements Watcher {
+public class Piece {
 	public final static int GOLD_RABBIT = 1;
 	public final static int GOLD_CAT = 2;
 	public final static int GOLD_DOG = 3;
@@ -130,7 +130,7 @@ public class Piece implements Watcher {
 			recalcSteps = false;
 		}
 		for (int i = 0; i < validStepCount; i++) {
-			stepBuffer.put(potentialSteps[i]);
+			stepBuffer.putStep(potentialSteps[i]);
 		}
 	}
 
@@ -200,15 +200,7 @@ public class Piece implements Watcher {
 		return frozen;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.coinjema.acronjema.logic.Watcher#change(com.coinjema.acronjema.logic
-	 * .BoardChangeEvent)
-	 */
-	@Override
-	public void change(BoardChangeEvent e) {
+	public void change() {
 		recalcSteps = true;
 	}
 
