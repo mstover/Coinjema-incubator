@@ -124,6 +124,15 @@ public class Board {
 		if (seq.length == 4) {
 			squares[seq[2]].moveOccupantTo(squares[seq[3]]);
 		}
+		makeNewHash = true;
+		hashStack++;
+		if (hashStack == 20) {
+			hashStack = 4;
+			boardHashes[3] = boardHashes[19];
+			boardHashes[2] = boardHashes[18];
+			boardHashes[1] = boardHashes[17];
+			boardHashes[0] = boardHashes[16];
+		}
 	}
 
 	public long getBoardHashAfterMove(int move) {
@@ -156,19 +165,29 @@ public class Board {
 			squares[seq[3]].moveOccupantTo(squares[seq[2]]);
 		}
 		squares[seq[1]].moveOccupantTo(squares[seq[0]]);
+		hashStack--;
 	}
+
+	long[] boardHashes = new long[20];
+	int hashStack = 0;
+	boolean makeNewHash = true;
 
 	/**
 	 * @return
 	 */
 	public long getBoardHash() {
-		long hash = 0;
-		for (Square s : squares) {
-			if (!s.isEmpty()) {
-				hash = hash | (1l << (s.index));
+		if (makeNewHash) {
+			long hash = 0;
+			for (Square s : squares) {
+				if (!s.isEmpty()) {
+					hash = hash | (1l << (s.index));
+				}
 			}
+			boardHashes[hashStack] = hash;
+			makeNewHash = false;
+			return hash;
+		} else {
+			return boardHashes[hashStack];
 		}
-		return hash;
 	}
-
 }

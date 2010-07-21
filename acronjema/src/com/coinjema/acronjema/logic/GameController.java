@@ -64,7 +64,7 @@ public class GameController {
 		// }
 		long time = System.currentTimeMillis();
 		try {
-			for (int i = 0; i < 2500; i++) {
+			for (int i = 0; i < 5; i++) {
 				initBoard(b);
 				for (int j = 0; j < 10; j++) {
 					findMoves(b, true);
@@ -76,7 +76,7 @@ public class GameController {
 			System.out.println("Somebody ran out of moves");
 		}
 		System.out.println("Processed "
-				+ (200000d / (System.currentTimeMillis() - time))
+				+ (5000d / (System.currentTimeMillis() - time))
 				+ " movesets/ms");
 	}
 

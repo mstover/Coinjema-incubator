@@ -3,9 +3,7 @@ package com.coinjema.acronjema.logic;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * The tree structure is defined by:
@@ -39,7 +37,7 @@ public class StepTree {
 
 	boolean acceptDoubleMove = true;
 
-	private Set<Long> duplicates = new HashSet<Long>();
+	private LongSet duplicates = new LongSet();
 
 	protected boolean isAcceptDoubleMove() {
 		return acceptDoubleMove;
@@ -79,7 +77,7 @@ public class StepTree {
 		if (remainingStepCount == 0) {
 			return;
 		} else if (remainingStepCount == 4) {
-			duplicates = new HashSet<Long>(1009);
+			duplicates.clear();
 			duplicates.add(board.getBoardHash());
 		} else {
 			if (remainingStepCount == 1) {
@@ -120,7 +118,7 @@ public class StepTree {
 			while (steps.position() < numSteps) {
 				int m = steps.get();
 				move = move ^ (m << (8 * (4 - stepsRemaining)));
-				assert (stepsRemaining != 1 || Move.getStepCount(m) == 1);
+				assert ((stepsRemaining != 1) || (Move.getStepCount(m) == 1));
 				int nextPos = steps.get();
 				if (nextPos != 0) {
 					int thisSpot = steps.position();

@@ -42,8 +42,8 @@ public class Move {
 	 * @return
 	 */
 	public static int getStep(Square from, Square to) {
-		int move = from.index << 2;
-		move = EMPTY_SECOND_MOVE | move | getDirection(from.index, to.index);
+		int move = (from.index << 2) | EMPTY_SECOND_MOVE
+				| getDirection(from.index, to.index);
 
 		return move;
 

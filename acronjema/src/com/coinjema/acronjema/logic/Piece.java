@@ -129,6 +129,10 @@ public class Piece {
 			}
 			recalcSteps = false;
 		}
+		copyToBuffer(stepBuffer);
+	}
+
+	private void copyToBuffer(StepTree stepBuffer) {
 		for (int i = 0; i < validStepCount; i++) {
 			stepBuffer.putStep(potentialSteps[i]);
 		}
@@ -199,8 +203,10 @@ public class Piece {
 		return frozen;
 	}
 
-	public void change() {
+	public boolean change() {
+		final boolean cur = recalcSteps;
 		recalcSteps = true;
+		return !cur;
 	}
 
 	public void print(PrintStream out) {
