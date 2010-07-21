@@ -23,6 +23,10 @@ public class Board {
 		createSquares();
 	}
 
+	public void reinit() {
+		createSquares();
+	}
+
 	/**
 	 * 
 	 */
@@ -112,6 +116,9 @@ public class Board {
 	 * @param choice
 	 */
 	public void executeMove(int choice) {
+		if (choice == 2) {
+			return;
+		}
 		int[] seq = Move.getStepSequence(choice);
 		squares[seq[0]].moveOccupantTo(squares[seq[1]]);
 		if (seq.length == 4) {
@@ -131,7 +138,7 @@ public class Board {
 		return hash;
 	}
 
-	void findAllSteps(StepBuffer stepBuffer, boolean gold) {
+	void findAllSteps(StepTree stepBuffer, boolean gold) {
 
 		for (Square s : squares) {
 			if (!s.isEmpty() && (s.getOccupant().gold == gold)) {

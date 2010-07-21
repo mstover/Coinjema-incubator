@@ -118,7 +118,7 @@ public class Piece {
 		this.square = square;
 	}
 
-	public void getSteps(StepBuffer stepBuffer) {
+	public void getSteps(StepTree stepBuffer) {
 		if (recalcSteps) {
 			if (!isFrozen()) {
 				validStepCount = 0;
@@ -174,10 +174,9 @@ public class Piece {
 		int subCount = 0;
 		for (Square s : square.adjacent) {
 			if (s.isEmpty()) {
-				Piece occ = square.getOccupant();
-				if ((occ.strength != Piece.RABBIT)
-						|| (occ.gold && (s.index > square.index - 8))
-						|| (!occ.gold && (s.index < square.index + 8))) {
+				if ((strength != Piece.RABBIT)
+						|| (gold && (s.index > square.index - 8))
+						|| (!gold && (s.index < square.index + 8))) {
 					temp[count + subCount] = Move.getStep(square, s);
 					subCount++;
 				}
