@@ -15,9 +15,9 @@ package com.coinjema.acronjema.logic;
  */
 public class LongSet {
 	private static final int NO_NEGATIVE = Integer.MAX_VALUE;
-	private static final int SET_SIZE = 4289;
+	private static final int SET_SIZE = 6037;
 
-	private long[][] set = new long[SET_SIZE][20];
+	private long[][] set = new long[SET_SIZE][10];
 
 	public LongSet() {
 		clear();
@@ -46,8 +46,8 @@ public class LongSet {
 				return false;
 			}
 		}
-		System.out.println("Have to increase inner array size to "
-				+ (innerLength * 2));
+		// System.out.println("Have to increase inner array size to "
+		// + (innerLength * 2));
 		// have to increase array and try again.
 		final long[] newInner = new long[innerLength * 2];
 		System.arraycopy(innerArr, 0, newInner, 0, innerLength);

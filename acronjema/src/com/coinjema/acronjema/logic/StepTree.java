@@ -20,9 +20,11 @@ public class StepTree {
 	int curSize = 0;
 
 	private final Board board;
+	private final MoveTree moveTree;
 
-	public StepTree(Board b) {
+	public StepTree(Board b, MoveTree moveTree) {
 		this.board = b;
+		this.moveTree = moveTree;
 	}
 
 	public int get(int index) {
@@ -67,13 +69,16 @@ public class StepTree {
 		return steps.clear();
 	}
 
+	boolean traceon = false;
+
 	/**
 	 * Searches for all unique step sequences that make up a full Move.
 	 * 
 	 * @param b
 	 * @param gold
 	 */
-	public void searchForSteps(boolean gold, int remainingStepCount) {
+	public void searchForSteps(boolean gold, int remainingStepCount,
+			int wholeMove) {
 		if (remainingStepCount == 0) {
 			return;
 		} else if (remainingStepCount == 4) {
@@ -95,41 +100,14 @@ public class StepTree {
 		int thisEnd = steps.position();
 		for (int i = thisStart; i < thisEnd; i += 2) {
 			int move = steps.get(i);
-			board.executeMove(move);
+			int stepCount = Move.getStepCount(move);
+			int tempWholeMove = Move.appendSteps(wholeMove, move,
+					remainingStepCount, stepCount);
+			board.executeStep(move);
+			moveTree.addMove(tempWholeMove);
 			steps.put(i + 1, curSize);
-			searchForSteps(gold, remainingStepCount - Move.getStepCount(move));
-			board.rewindMove(move);
-		}
-
-	}
-
-	public void fillMoveTree(MoveTree tree) {
-		steps.rewind();
-		fillTree(tree, 0l, 4);
-	}
-
-	private void fillTree(MoveTree tree, long move, int stepsRemaining) {
-		if (stepsRemaining == 0) {
-			tree.addMove(move);
-			return;
-		} else {
-			int numSteps = (steps.get() * 2);
-			numSteps += steps.position();
-			while (steps.position() < numSteps) {
-				int m = steps.get();
-				move = move ^ (m << (8 * (4 - stepsRemaining)));
-				assert ((stepsRemaining != 1) || (Move.getStepCount(m) == 1));
-				int nextPos = steps.get();
-				if (nextPos != 0) {
-					int thisSpot = steps.position();
-					steps.position(nextPos);
-					fillTree(tree, move, stepsRemaining - Move.getStepCount(m));
-					steps.position(thisSpot);
-				} else {
-					tree.addMove(move);
-				}
-			}
-
+			searchForSteps(gold, remainingStepCount - stepCount, tempWholeMove);
+			board.rewindSteps(move);
 		}
 
 	}

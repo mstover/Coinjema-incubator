@@ -16,8 +16,12 @@ import java.io.PrintStream;
  * 
  */
 public class Board {
+	private final static int FIRST_STEPS = Integer.MAX_VALUE >>> 16;
+	private final static long SECOND_STEPS = FIRST_STEPS << 16;
 
 	Square[] squares = new Square[64];
+
+	int stepCount = 0;
 
 	public Board() {
 		createSquares();
@@ -25,6 +29,7 @@ public class Board {
 
 	public void reinit() {
 		createSquares();
+		stepCount = 0;
 	}
 
 	/**
@@ -113,16 +118,18 @@ public class Board {
 	}
 
 	/**
-	 * @param choice
+	 * @param step
 	 */
-	public void executeMove(int choice) {
-		if (choice == 2) {
+	public void executeStep(int step) {
+		if (Move.isNullMove(step)) {
 			return;
 		}
-		int[] seq = Move.getStepSequence(choice);
+		int[] seq = Move.getStepSequence(step);
 		squares[seq[0]].moveOccupantTo(squares[seq[1]]);
+		killTraps();
 		if (seq.length == 4) {
 			squares[seq[2]].moveOccupantTo(squares[seq[3]]);
+			killTraps();
 		}
 		makeNewHash = true;
 		hashStack++;
@@ -133,6 +140,25 @@ public class Board {
 			boardHashes[1] = boardHashes[17];
 			boardHashes[0] = boardHashes[16];
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private void killTraps() {
+		if (((TrapSquare) squares[18]).checkKill()) {
+			((TrapSquare) squares[18]).killPiece(stepCount);
+		}
+		if (((TrapSquare) squares[21]).checkKill()) {
+			((TrapSquare) squares[21]).killPiece(stepCount);
+		}
+		if (((TrapSquare) squares[42]).checkKill()) {
+			((TrapSquare) squares[42]).killPiece(stepCount);
+		}
+		if (((TrapSquare) squares[45]).checkKill()) {
+			((TrapSquare) squares[45]).killPiece(stepCount);
+		}
+		stepCount++;
 	}
 
 	public long getBoardHashAfterMove(int move) {
@@ -159,13 +185,29 @@ public class Board {
 	/**
 	 * @param move
 	 */
-	public void rewindMove(int move) {
+	public void rewindSteps(int move) {
+		if (Move.isNullMove(move)) {
+			return;
+		}
 		int[] seq = Move.getStepSequence(move);
 		if (seq.length == 4) {
+			reviveTraps();
 			squares[seq[3]].moveOccupantTo(squares[seq[2]]);
 		}
+		reviveTraps();
 		squares[seq[1]].moveOccupantTo(squares[seq[0]]);
 		hashStack--;
+	}
+
+	/**
+	 * 
+	 */
+	private void reviveTraps() {
+		stepCount--;
+		((TrapSquare) squares[18]).unkillPiece(stepCount);
+		((TrapSquare) squares[21]).unkillPiece(stepCount);
+		((TrapSquare) squares[42]).unkillPiece(stepCount);
+		((TrapSquare) squares[45]).unkillPiece(stepCount);
 	}
 
 	long[] boardHashes = new long[20];
@@ -188,6 +230,27 @@ public class Board {
 			return hash;
 		} else {
 			return boardHashes[hashStack];
+		}
+	}
+
+	/**
+	 * @param move
+	 */
+	public void executeMove(int move) {
+		executeStep(Move.getFirstHalf(move));
+		executeStep(Move.getSecondHalf(move));
+	}
+
+	public void rewindMove(int move) {
+		try {
+			rewindSteps(Move.getSecondHalf(move));
+			rewindSteps(Move.getFirstHalf(move));
+		} catch (Exception e) {
+
+			Move.printStepsForMove(move);
+			print(System.out);
+			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 }

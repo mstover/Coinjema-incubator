@@ -28,6 +28,29 @@ public class Move {
 
 	private final static int EMPTY_SECOND_MOVE = 2 << 8;
 
+	private final static int[] CLEAR_MOVE = new int[4];
+
+	static {
+		CLEAR_MOVE[0] = 1 | 1 << 1 | 1 << 2 | 1 << 3 | 1 << 4 | 1 << 5 | 1 << 6
+				| 1 << 7 | 1 << 8 | 1 << 9 | 1 << 10 | 1 << 11 | 1 << 12
+				| 1 << 13 | 1 << 14 | 1 << 15 | 1 << 16 | 1 << 17 | 1 << 18
+				| 1 << 19 | 1 << 20 | 1 << 21 | 1 << 22 | 1 << 23;
+		CLEAR_MOVE[1] = 1 | 1 << 1 | 1 << 2 | 1 << 3 | 1 << 4 | 1 << 5 | 1 << 6
+				| 1 << 7 | 1 << 8 | 1 << 9 | 1 << 10 | 1 << 11 | 1 << 12
+				| 1 << 13 | 1 << 14 | 1 << 15 | 1 << 24 | 1 << 25 | 1 << 26
+				| 1 << 27 | 1 << 28 | 1 << 29 | 1 << 30 | 1 << 31;
+		CLEAR_MOVE[2] = 1 | 1 << 1 | 1 << 2 | 1 << 3 | 1 << 4 | 1 << 5 | 1 << 6
+				| 1 << 7 | 1 << 16 | 1 << 17 | 1 << 18 | 1 << 19 | 1 << 20
+				| 1 << 21 | 1 << 22 | 1 << 23 | 1 << 24 | 1 << 25 | 1 << 26
+				| 1 << 27 | 1 << 28 | 1 << 29 | 1 << 30 | 1 << 31;
+		CLEAR_MOVE[3] = 1 << 8 | 1 << 9 | 1 << 10 | 1 << 11 | 1 << 12 | 1 << 13
+				| 1 << 14 | 1 << 15 | 1 << 16 | 1 << 17 | 1 << 18 | 1 << 19
+				| 1 << 20 | 1 << 21 | 1 << 22 | 1 << 23 | 1 << 24 | 1 << 25
+				| 1 << 26 | 1 << 27 | 1 << 28 | 1 << 29 | 1 << 30 | 1 << 31;
+	}
+
+	public final static int EMPTY_MOVE = 2 | 2 << 8 | 2 << 16 | 2 << 24;
+
 	private final static int[] singleSeq = new int[2];
 	private final static int[] doubleSeq = new int[4];
 
@@ -44,6 +67,13 @@ public class Move {
 	public static int getStep(Square from, Square to) {
 		int move = (from.index << 2) | EMPTY_SECOND_MOVE
 				| getDirection(from.index, to.index);
+
+		return move;
+
+	}
+
+	public static int getStep(int from, int to) {
+		int move = (from << 2) | EMPTY_SECOND_MOVE | getDirection(from, to);
 
 		return move;
 
@@ -138,15 +168,74 @@ public class Move {
 	}
 
 	public static void main(String[] args) {
-		Square one = new Square(null, 33, 4);
-		Square two = new Square(null, 34, 4);
-		Square three = new Square(null, 25, 4);
-		int move = getPushStep(three, one, two);
-		System.out.println("int move from 33 to 34 = " + move);
-		System.out.println("step count = " + getStepCount(move));
-		int[] seq = getStepSequence(move);
-		for (int i : seq) {
-			System.out.println("Moving square " + i);
+
+		int[] steps = new int[] { getStep(63, 62), getStep(63, 62),
+				getStep(63, 62), getStep(63, 62) };
+		int move = appendSteps(EMPTY_MOVE, steps[0], 4, 1);
+		move = appendSteps(move, steps[1], 3, 1);
+		move = appendSteps(move, steps[2], 2, 1);
+		move = appendSteps(move, steps[3], 1, 1);
+		System.out.println("move = " + move);
+		for (int i : steps) {
+			System.out.println("Steps = " + i);
+		}
+		for (int i : getStepSequence(getFirstHalf(move))) {
+			System.out.println("move = " + i);
+		}
+		for (int i : getStepSequence(getSecondHalf(move))) {
+			System.out.println("move = " + i);
+		}
+	}
+
+	/**
+	 * @param wholeMove
+	 * @param move
+	 * @param remainingStepCount
+	 * @return
+	 */
+	public static int appendSteps(int wholeMove, int move,
+			int remainingStepCount, int numSteps) {
+		int tmp = wholeMove & CLEAR_MOVE[remainingStepCount - 1];
+		if (numSteps == 2) {
+			tmp = tmp & CLEAR_MOVE[remainingStepCount - 2];
+		}
+		return tmp | (move << (8 * (4 - remainingStepCount)));
+	}
+
+	/**
+	 * @param move
+	 * @return
+	 */
+	public static int getFirstHalf(int move) {
+		return move & CLEAR_MOVE[0] & CLEAR_MOVE[1];
+	}
+
+	/**
+	 * @param move
+	 * @return
+	 */
+	public static int getSecondHalf(int move) {
+		return move >>> 16;
+	}
+
+	/**
+	 * @param step
+	 * @return
+	 */
+	public static boolean isNullMove(int step) {
+		return (step & CLEAR_MOVE[2]) == 2;
+	}
+
+	/**
+	 * @param move
+	 */
+	public static void printStepsForMove(int move) {
+		System.out.println("Move = " + move);
+		for (int i : getStepSequence(getFirstHalf(move))) {
+			System.out.println(i);
+		}
+		for (int i : getStepSequence(getSecondHalf(move))) {
+			System.out.println(i);
 		}
 	}
 

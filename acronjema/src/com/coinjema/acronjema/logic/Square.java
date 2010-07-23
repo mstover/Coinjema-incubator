@@ -73,6 +73,9 @@ public class Square {
 	 *            the occupant to set
 	 */
 	public void setOccupant(Piece occupant) {
+		if ((occupant == null) && (this.occupant == null)) {
+			return;
+		}
 		this.occupant = occupant;
 		if (occupant != null) {
 			occupant.setSquare(this);

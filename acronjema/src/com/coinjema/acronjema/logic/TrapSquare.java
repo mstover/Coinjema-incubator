@@ -17,7 +17,7 @@ import java.io.PrintStream;
  */
 public class TrapSquare extends Square {
 
-	private final Piece[] killedPieces = new Piece[32];
+	private Piece[] killedPieces = new Piece[100];
 	private int stackPointer = 0;
 
 	/**
@@ -41,37 +41,9 @@ public class TrapSquare extends Square {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.coinjema.acronjema.logic.Square#moveOccupantTo(com.coinjema.acronjema
-	 * .logic.Square)
-	 */
-	@Override
-	public void moveOccupantTo(Square square) {
-		if (this.occupant != null) {
-			super.moveOccupantTo(square);
-		} else {
-			square.setOccupant(killedPieces[--stackPointer]);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.coinjema.acronjema.logic.Square#setOccupant(com.coinjema.acronjema
-	 * .logic.Piece)
-	 */
-	@Override
-	public void setOccupant(Piece occupant) {
+	boolean checkKill() {
 		if (occupant == null) {
-			if (this.occupant != null) {
-				this.occupant = null;
-				fireOccupantChanged();
-			}
-			return;
+			return false;
 		}
 		boolean kill = true;
 		for (Square s : adjacent) {
@@ -80,20 +52,35 @@ public class TrapSquare extends Square {
 				break;
 			}
 		}
-		if (kill) {
-			killPiece(occupant);
-		} else {
-			this.occupant = occupant;
-			this.occupant.setSquare(this);
-			fireOccupantChanged();
+		return kill;
+	}
+
+	void unkillPiece(int stepCount) {
+		while (stepCount >= killedPieces.length) {
+			expandKilledPieces();
 		}
+		setOccupant(killedPieces[stepCount]);
+		killedPieces[stepCount] = null;
 	}
 
 	/**
 	 * @param occupant
 	 */
-	private void killPiece(Piece occupant) {
-		killedPieces[stackPointer++] = occupant;
+	void killPiece(int stepCount) {
+		while (stepCount >= killedPieces.length) {
+			expandKilledPieces();
+		}
+		killedPieces[stepCount] = occupant;
+		setOccupant(null);
+	}
+
+	/**
+	 * 
+	 */
+	private void expandKilledPieces() {
+		Piece[] tmp = new Piece[killedPieces.length * 2];
+		System.arraycopy(killedPieces, 0, tmp, 0, killedPieces.length);
+		killedPieces = tmp;
 	}
 
 }

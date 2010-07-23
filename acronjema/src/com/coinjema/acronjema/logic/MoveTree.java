@@ -1,8 +1,6 @@
 package com.coinjema.acronjema.logic;
 
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.LongBuffer;
 
 /**
  * The tree structure is defined by:
@@ -19,7 +17,7 @@ import java.nio.LongBuffer;
  */
 public class MoveTree {
 
-	LongBuffer moves = ByteBuffer.allocateDirect(200000000).asLongBuffer();
+	IntBuffer moves = IntBuffer.allocate(25000000);
 	IntBuffer moveCountNextPly;
 	IntBuffer addressNextPly;
 	IntBuffer evaluations;
@@ -30,7 +28,7 @@ public class MoveTree {
 		this.board = b;
 	}
 
-	public void addMove(long move) {
+	public void addMove(int move) {
 		moves.put(move);
 
 	}

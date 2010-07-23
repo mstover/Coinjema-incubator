@@ -20,14 +20,17 @@ public class GameController {
 	public static Random rand = new Random();
 	static StepTree stepBuffer;
 	private static MoveTree tree;
+	private static int numMovesGenerated = 0;
+	private static MoveSorter sorter;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		Board b = new Board();
-		stepBuffer = new StepTree(b);
+		sorter = new BasicMoveSorter(b);
 		tree = new MoveTree(b);
+		stepBuffer = new StepTree(b, tree);
 
 		// Gold pieces
 
@@ -37,25 +40,19 @@ public class GameController {
 		b.print(System.out);
 		try {
 			findMoves(b, true);
-			b.print(System.out);
 			findMoves(b, false);
-			b.print(System.out);
 			findMoves(b, true);
-			b.print(System.out);
 			findMoves(b, false);
-			b.print(System.out);
 			findMoves(b, true);
-			b.print(System.out);
 			findMoves(b, false);
-			b.print(System.out);
 			findMoves(b, true);
-			b.print(System.out);
 			findMoves(b, false);
 		} catch (GameEndException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		b.print(System.out);
+		System.exit(0);
 		// for (int i = 0; i < 100; i++) {
 		// runMoves(b, true);
 		// b.print(System.out);
@@ -64,9 +61,9 @@ public class GameController {
 		// }
 		long time = System.currentTimeMillis();
 		try {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 1; i++) {
 				initBoard(b);
-				for (int j = 0; j < 10; j++) {
+				for (int j = 0; j < 1; j++) {
 					findMoves(b, true);
 					findMoves(b, false);
 				}
@@ -76,8 +73,13 @@ public class GameController {
 			System.out.println("Somebody ran out of moves");
 		}
 		System.out.println("Processed "
-				+ (5000d / (System.currentTimeMillis() - time))
+				+ (2500d / (System.currentTimeMillis() - time))
 				+ " movesets/ms");
+
+		System.out
+				.println("Generated "
+						+ ((double) numMovesGenerated / (System
+								.currentTimeMillis() - time)) + " moves/ms");
 	}
 
 	private static void initBoard(Board b) {
@@ -127,39 +129,22 @@ public class GameController {
 	private static void findMoves(Board b, boolean gold)
 			throws GameEndException {
 		stepBuffer.clear();
-		long time = System.currentTimeMillis();
-		stepBuffer.searchForSteps(gold, 4);
-		int[] move = stepBuffer.getRandomMove(rand);
 		tree.rewind();
-		stepBuffer.fillMoveTree(tree);
-		for (int m : move) {
-			b.executeMove(m);
+		stepBuffer.searchForSteps(gold, 4, Move.EMPTY_MOVE);
+		numMovesGenerated += tree.getFirstNumber();
+		sorter.sort(tree.moves, tree.moves.position(), b, gold);
+		if (tree.moves.position() == 0) {
+			throw new GameEndException();
 		}
+		int move = tree.moves.get(0);
+		System.out.println("Stepcount = " + b.stepCount);
+		b.executeStep(Move.getFirstHalf(move));
+		System.out.println("move = " + move);
+		b.print(System.out);
+		b.executeStep(Move.getSecondHalf(move));
+		b.print(System.out);
+		System.out.println("Stepcount = " + b.stepCount);
+		// b.executeMove(move);
 
-	}
-
-	/**
-	 * 
-	 */
-	private static void runMoves(Board b, boolean gold) {
-		int count = 0;
-		stepBuffer.setAcceptDoubleMove(true);
-		while (count < 4) {
-			stepBuffer.clear();
-			if (count == 3) {
-				stepBuffer.setAcceptDoubleMove(false);
-			}
-			b.findAllSteps(stepBuffer, gold);
-			if (stepBuffer.getNumberChoices() == 0) {
-				System.out.println("No possible moves");
-				b.print(System.out);
-				System.exit(0);
-			}
-			int choice = stepBuffer.get(rand.nextInt(stepBuffer
-					.getNumberChoices()));
-			b.executeMove(choice);
-			// b.print(System.out);
-			count += Move.getStepCount(choice);
-		}
 	}
 }
