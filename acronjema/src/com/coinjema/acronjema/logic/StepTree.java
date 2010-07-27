@@ -39,7 +39,7 @@ public class StepTree {
 
 	boolean acceptDoubleMove = true;
 
-	private LongSet duplicates = new LongSet();
+	private final LongSet duplicates = new LongSet();
 
 	protected boolean isAcceptDoubleMove() {
 		return acceptDoubleMove;

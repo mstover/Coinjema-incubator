@@ -48,8 +48,8 @@ public class BasicMoveSorter implements MoveSorter {
 		}
 		sumL += 50 * (strengthTotal(movingSide) - strengthTotal(!movingSide));
 		board.rewindMove(l);
-		// sumK += movingPieceTotal(k);
-		// sumL += movingPieceTotal(l);
+		sumK += movingPieceTotal(k);
+		sumL += movingPieceTotal(l);
 		return sumL - sumK;
 	}
 

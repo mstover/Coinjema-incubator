@@ -199,6 +199,16 @@ public class Board {
 		hashStack--;
 	}
 
+	public int pieceCount() {
+		int sum = 0;
+		for (Square s : squares) {
+			if (!s.isEmpty()) {
+				sum++;
+			}
+		}
+		return sum;
+	}
+
 	/**
 	 * 
 	 */

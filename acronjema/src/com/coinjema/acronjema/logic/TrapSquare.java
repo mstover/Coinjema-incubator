@@ -18,7 +18,7 @@ import java.io.PrintStream;
 public class TrapSquare extends Square {
 
 	private Piece[] killedPieces = new Piece[100];
-	private int stackPointer = 0;
+	private final int stackPointer = 0;
 
 	/**
 	 * @param adj
@@ -55,18 +55,30 @@ public class TrapSquare extends Square {
 		return kill;
 	}
 
+	boolean futureIsEmpty(int stepCount) {
+		for (int i = stepCount; i < killedPieces.length; i++) {
+			if (killedPieces[i] != null) {
+				throw new RuntimeException();
+			}
+		}
+		return true;
+	}
+
 	void unkillPiece(int stepCount) {
 		while (stepCount >= killedPieces.length) {
 			expandKilledPieces();
 		}
-		setOccupant(killedPieces[stepCount]);
-		killedPieces[stepCount] = null;
+		if (killedPieces[stepCount] != null) {
+			setOccupant(killedPieces[stepCount]);
+			killedPieces[stepCount] = null;
+		}
 	}
 
 	/**
 	 * @param occupant
 	 */
 	void killPiece(int stepCount) {
+		futureIsEmpty(stepCount);
 		while (stepCount >= killedPieces.length) {
 			expandKilledPieces();
 		}
