@@ -9,13 +9,41 @@
  */
 package com.coinjema.acronjema.logic;
 
-import java.util.Arrays;
+import java.nio.IntBuffer;
 
 /**
  * @author michaelstover
  * 
  */
 public class IntTimSort {
+
+	private static class NullMoveSorter implements MoveSorter {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.coinjema.acronjema.logic.MoveSorter#compare(int, int)
+		 */
+		@Override
+		public int compare(int key, int l) {
+			return key > l ? 1 : (key == l ? 0 : -1);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.coinjema.acronjema.logic.MoveSorter#sort(java.nio.IntBuffer,
+		 * int, com.coinjema.acronjema.logic.Board, boolean)
+		 */
+		@Override
+		public void sort(IntBuffer moves, int length, Board board,
+				boolean movingSide) {
+			IntTimSort.sort(moves.array(), moves.position() - length,
+					moves.position(), this);
+		}
+	}
+
+	public static final MoveSorter SORTER = new NullMoveSorter();
+
 	/**
 	 * This is the minimum sized sequence that will be merged. Shorter sequences
 	 * will be lengthened by calling binarySort. If the entire array is less
@@ -83,6 +111,9 @@ public class IntTimSort {
 
 	MoveSorter c;
 
+	private int[][] shadows;
+	private int[][] shadowTmp;
+
 	/**
 	 * Creates a TimSort instance to maintain the state of an ongoing sort.
 	 * 
@@ -91,15 +122,24 @@ public class IntTimSort {
 	 * @param c
 	 *            the comparator to determine the order of the sort
 	 */
-	private IntTimSort(int[] a, MoveSorter c) {
+	private IntTimSort(int[] a, MoveSorter c, int[]... shadows) {
 		this.a = a;
 		this.c = c;
+		this.shadows = shadows;
 
 		// Allocate temp storage (which may be increased later if necessary)
 		int len = a.length;
 		int[] newArray = new int[len < 2 * INITIAL_TMP_STORAGE_LENGTH ? len >>> 1
 				: INITIAL_TMP_STORAGE_LENGTH];
 		tmp = newArray;
+		if (shadows != null) {
+			shadowTmp = new int[shadows.length][];
+		}
+		for (int i = 0; i < shadows.length; i++) {
+			newArray = new int[len < 2 * INITIAL_TMP_STORAGE_LENGTH ? len >>> 1
+					: INITIAL_TMP_STORAGE_LENGTH];
+			shadowTmp[i] = newArray;
+		}
 
 		/*
 		 * Allocate runs-to-be-merged stack (which cannot be expanded). The
@@ -123,44 +163,32 @@ public class IntTimSort {
 	 * the public method with the same signature in java.util.Arrays.
 	 */
 
-	static void sort(int[] a, MoveSorter c) {
-		sort(a, 0, a.length, c);
+	static void sort(int[] a, MoveSorter c, int[]... shadowArrs) {
+		sort(a, 0, a.length, c, shadowArrs);
 	}
 
-	static void sort(int[] a, int lo, int hi, MoveSorter c) {
+	static void sort(int[] a, int lo, int hi, MoveSorter c, int[]... shadowArrs) {
 		if (c == null) {
-			Arrays.sort(a, lo, hi);
-			return;
+			c = SORTER;
 		}
 
-		rangeCheck(a.length, lo, hi);
 		int nRemaining = hi - lo;
-		if (nRemaining < 2) {
-			return; // Arrays of size 0 and 1 are always sorted
-		}
-
-		// If array is small, do a "mini-TimSort" with no merges
-		if (nRemaining < MIN_MERGE) {
-			int initRunLen = countRunAndMakeAscending(a, lo, hi, c);
-			binarySort(a, lo, hi, lo + initRunLen, c);
-			return;
-		}
 
 		/**
 		 * March over the array once, left to right, finding natural runs,
 		 * extending short natural runs to minRun elements, and merging runs to
 		 * maintain stack invariant.
 		 */
-		IntTimSort ts = new IntTimSort(a, c);
+		IntTimSort ts = new IntTimSort(a, c, shadowArrs);
 		int minRun = minRunLength(nRemaining);
 		do {
 			// Identify next run
-			int runLen = countRunAndMakeAscending(a, lo, hi, c);
+			int runLen = countRunAndMakeAscending(a, lo, hi, c, shadowArrs);
 
 			// If run is short, extend to min(minRun, nRemaining)
 			if (runLen < minRun) {
 				int force = nRemaining <= minRun ? nRemaining : minRun;
-				binarySort(a, lo, lo + force, lo + runLen, c);
+				binarySort(a, lo, lo + force, lo + runLen, c, shadowArrs);
 				runLen = force;
 			}
 
@@ -203,13 +231,18 @@ public class IntTimSort {
 	 */
 	@SuppressWarnings("fallthrough")
 	private static void binarySort(int[] a, int lo, int hi, int start,
-			MoveSorter c) {
+			MoveSorter c, int[]... shadows) {
 		assert (lo <= start) && (start <= hi);
 		if (start == lo) {
 			start++;
 		}
 		for (; start < hi; start++) {
 			int pivot = a[start];
+			int[] shadowPivots = shadows != null ? new int[shadows.length]
+					: new int[0];
+			for (int i = 0; i < shadowPivots.length; i++) {
+				shadowPivots[i] = shadows[i][start];
+			}
 
 			// Set left (and right) to the index where a[start] (pivot) belongs
 			int left = lo;
@@ -238,16 +271,30 @@ public class IntTimSort {
 			 */
 			int n = start - left; // The number of elements to move
 			// Switch is just an optimization for arraycopy in default case
+			int left1 = left + 1;
 			switch (n) {
 			case 2:
-				a[left + 2] = a[left + 1];
+				int left2 = left + 2;
+				a[left2] = a[left1];
+				for (int[] s : shadows) {
+					s[left2] = s[left1];
+				}
 			case 1:
-				a[left + 1] = a[left];
+				a[left1] = a[left];
+				for (int[] s : shadows) {
+					s[left1] = s[left];
+				}
 				break;
 			default:
-				System.arraycopy(a, left, a, left + 1, n);
+				System.arraycopy(a, left, a, left1, n);
+				for (int[] s : shadows) {
+					System.arraycopy(s, left, s, left1, n);
+				}
 			}
 			a[left] = pivot;
+			for (int i = 0; i < shadows.length; i++) {
+				shadows[i][left] = shadowPivots[i];
+			}
 		}
 	}
 
@@ -282,7 +329,7 @@ public class IntTimSort {
 	 *         specified array
 	 */
 	private static int countRunAndMakeAscending(int[] a, int lo, int hi,
-			MoveSorter c) {
+			MoveSorter c, int[]... shadows) {
 		assert lo < hi;
 		int runHi = lo + 1;
 		if (runHi == hi) {
@@ -294,7 +341,7 @@ public class IntTimSort {
 			while ((runHi < hi) && (c.compare(a[runHi], a[runHi - 1]) < 0)) {
 				runHi++;
 			}
-			reverseRange(a, lo, runHi);
+			reverseRange(a, lo, runHi, shadows);
 		} else { // Ascending
 			while ((runHi < hi) && (c.compare(a[runHi], a[runHi - 1]) >= 0)) {
 				runHi++;
@@ -314,13 +361,22 @@ public class IntTimSort {
 	 * @param hi
 	 *            the index after the last element in the range to be reversed
 	 */
-	private static void reverseRange(int[] a, int lo, int hi) {
+	private static void reverseRange(int[] a, int lo, int hi, int[]... shadows) {
 		hi--;
 		while (lo < hi) {
-			int t = a[lo];
-			a[lo++] = a[hi];
-			a[hi--] = t;
+			swap(a, lo, hi);
+			for (int[] s : shadows) {
+				swap(s, lo, hi);
+			}
+			lo++;
+			hi--;
 		}
+	}
+
+	private static void swap(int[] a, int lo, int hi) {
+		int t = a[lo];
+		a[lo] = a[hi];
+		a[hi] = t;
 	}
 
 	/**
@@ -638,6 +694,14 @@ public class IntTimSort {
 		return ofs;
 	}
 
+	private void copyValue(int[] a, int fromIndex, int toIndex,
+			int[]... shadows) {
+		a[toIndex] = a[fromIndex];
+		for (int[] s : shadows) {
+			s[toIndex] = s[fromIndex];
+		}
+	}
+
 	/**
 	 * Merges two adjacent runs in place, in a stable fashion. The first element
 	 * of the first run must be greater than the first element of the second run
@@ -664,21 +728,32 @@ public class IntTimSort {
 		// Copy first run into temp array
 		int[] a = this.a; // For performance
 		int[] tmp = ensureCapacity(len1);
+		int[][] shadowTmps = ensureCapacities(len1);
 		System.arraycopy(a, base1, tmp, 0, len1);
+		for (int i = 0; i < shadows.length; i++) {
+			System.arraycopy(shadows[i], base1, shadowTmps[i], 0, len1);
+		}
 
 		int cursor1 = 0; // Indexes into tmp array
 		int cursor2 = base2; // Indexes int a
 		int dest = base1; // Indexes int a
 
 		// Move first element of second run and deal with degenerate cases
-		a[dest++] = a[cursor2++];
+		copyValue(a, cursor2++, dest++, shadows);
 		if (--len2 == 0) {
 			System.arraycopy(tmp, cursor1, a, dest, len1);
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadowTmps[i], cursor1, shadows[i], dest, len1);
+			}
 			return;
 		}
 		if (len1 == 1) {
 			System.arraycopy(a, cursor2, a, dest, len2);
 			a[dest + len2] = tmp[cursor1]; // Last elt of run 1 to end of merge
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadows[i], cursor2, shadows[i], dest, len2);
+				shadows[i][dest + len2] = shadowTmps[i][cursor1];
+			}
 			return;
 		}
 
@@ -695,14 +770,19 @@ public class IntTimSort {
 			do {
 				assert (len1 > 1) && (len2 > 0);
 				if (c.compare(a[cursor2], tmp[cursor1]) < 0) {
-					a[dest++] = a[cursor2++];
+					copyValue(a, cursor2++, dest++, shadows);
 					count2++;
 					count1 = 0;
 					if (--len2 == 0) {
 						break outer;
 					}
 				} else {
-					a[dest++] = tmp[cursor1++];
+					a[dest] = tmp[cursor1];
+					for (int i = 0; i < shadows.length; i++) {
+						shadows[i][dest] = shadowTmps[i][cursor1];
+					}
+					dest++;
+					cursor1++;
 					count1++;
 					count2 = 0;
 					if (--len1 == 1) {
@@ -721,6 +801,10 @@ public class IntTimSort {
 				count1 = gallopRight(a[cursor2], tmp, cursor1, len1, 0, c);
 				if (count1 != 0) {
 					System.arraycopy(tmp, cursor1, a, dest, count1);
+					for (int i = 0; i < shadows.length; i++) {
+						System.arraycopy(shadowTmps[i], cursor1, shadows[i],
+								dest, count1);
+					}
 					dest += count1;
 					cursor1 += count1;
 					len1 -= count1;
@@ -728,7 +812,7 @@ public class IntTimSort {
 						break outer;
 					}
 				}
-				a[dest++] = a[cursor2++];
+				copyValue(a, cursor2++, dest++, shadows);
 				if (--len2 == 0) {
 					break outer;
 				}
@@ -736,6 +820,10 @@ public class IntTimSort {
 				count2 = gallopLeft(tmp[cursor1], a, cursor2, len2, 0, c);
 				if (count2 != 0) {
 					System.arraycopy(a, cursor2, a, dest, count2);
+					for (int i = 0; i < shadows.length; i++) {
+						System.arraycopy(shadows[i], cursor2, shadows[i], dest,
+								count2);
+					}
 					dest += count2;
 					cursor2 += count2;
 					len2 -= count2;
@@ -743,7 +831,12 @@ public class IntTimSort {
 						break outer;
 					}
 				}
-				a[dest++] = tmp[cursor1++];
+				a[dest] = tmp[cursor1];
+				for (int i = 0; i < shadows.length; i++) {
+					shadows[i][dest] = shadowTmps[i][cursor1];
+				}
+				dest++;
+				cursor1++;
 				if (--len1 == 1) {
 					break outer;
 				}
@@ -759,6 +852,10 @@ public class IntTimSort {
 		if (len1 == 1) {
 			assert len2 > 0;
 			System.arraycopy(a, cursor2, a, dest, len2);
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadows[i], cursor2, shadows[i], dest, len2);
+				shadows[i][dest + len2] = shadowTmps[i][cursor1];
+			}
 			a[dest + len2] = tmp[cursor1]; // Last elt of run 1 to end of merge
 		} else if (len1 == 0) {
 			throw new IllegalArgumentException(
@@ -767,6 +864,9 @@ public class IntTimSort {
 			assert len2 == 0;
 			assert len1 > 1;
 			System.arraycopy(tmp, cursor1, a, dest, len1);
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadowTmps[i], cursor1, shadows[i], dest, len1);
+			}
 		}
 	}
 
@@ -791,16 +891,24 @@ public class IntTimSort {
 		// Copy second run into temp array
 		int[] a = this.a; // For performance
 		int[] tmp = ensureCapacity(len2);
+		int[][] shadowTmps = ensureCapacities(len1);
 		System.arraycopy(a, base2, tmp, 0, len2);
+		for (int i = 0; i < shadows.length; i++) {
+			System.arraycopy(shadows[i], base2, shadowTmps[i], 0, len2);
+		}
 
 		int cursor1 = base1 + len1 - 1; // Indexes into a
 		int cursor2 = len2 - 1; // Indexes into tmp array
 		int dest = base2 + len2 - 1; // Indexes into a
 
 		// Move last element of first run and deal with degenerate cases
-		a[dest--] = a[cursor1--];
+		copyValue(a, cursor1--, dest--, shadows);
 		if (--len1 == 0) {
 			System.arraycopy(tmp, 0, a, dest - (len2 - 1), len2);
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadowTmps[i], 0, shadows[i], dest
+						- (len2 - 1), len2);
+			}
 			return;
 		}
 		if (len2 == 1) {
@@ -808,6 +916,11 @@ public class IntTimSort {
 			cursor1 -= len1;
 			System.arraycopy(a, cursor1 + 1, a, dest + 1, len1);
 			a[dest] = tmp[cursor2];
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadows[i], cursor1 + 1, shadows[i], dest + 1,
+						len1);
+				shadows[i][dest] = shadowTmps[i][cursor2];
+			}
 			return;
 		}
 
@@ -824,14 +937,19 @@ public class IntTimSort {
 			do {
 				assert (len1 > 0) && (len2 > 1);
 				if (c.compare(tmp[cursor2], a[cursor1]) < 0) {
-					a[dest--] = a[cursor1--];
+					copyValue(a, cursor1--, dest--, shadows);
 					count1++;
 					count2 = 0;
 					if (--len1 == 0) {
 						break outer;
 					}
 				} else {
-					a[dest--] = tmp[cursor2--];
+					a[dest] = tmp[cursor2];
+					for (int i = 0; i < shadows.length; i++) {
+						shadows[i][dest] = shadowTmps[i][cursor2];
+					}
+					dest--;
+					cursor2--;
 					count2++;
 					count1 = 0;
 					if (--len2 == 1) {
@@ -854,11 +972,20 @@ public class IntTimSort {
 					cursor1 -= count1;
 					len1 -= count1;
 					System.arraycopy(a, cursor1 + 1, a, dest + 1, count1);
+					for (int i = 0; i < shadows.length; i++) {
+						System.arraycopy(shadows[i], cursor1 + 1, shadows[i],
+								dest + 1, count1);
+					}
 					if (len1 == 0) {
 						break outer;
 					}
 				}
-				a[dest--] = tmp[cursor2--];
+				a[dest] = tmp[cursor2];
+				for (int i = 0; i < shadows.length; i++) {
+					shadows[i][dest] = shadowTmps[i][cursor2];
+				}
+				dest--;
+				cursor2--;
 				if (--len2 == 1) {
 					break outer;
 				}
@@ -870,11 +997,15 @@ public class IntTimSort {
 					cursor2 -= count2;
 					len2 -= count2;
 					System.arraycopy(tmp, cursor2 + 1, a, dest + 1, count2);
+					for (int i = 0; i < shadows.length; i++) {
+						System.arraycopy(shadowTmps[i], cursor2 + 1,
+								shadows[i], dest + 1, count2);
+					}
 					if (len2 <= 1) {
 						break outer;
 					}
 				}
-				a[dest--] = a[cursor1--];
+				copyValue(a, cursor1--, dest--, shadows);
 				if (--len1 == 0) {
 					break outer;
 				}
@@ -892,6 +1023,11 @@ public class IntTimSort {
 			dest -= len1;
 			cursor1 -= len1;
 			System.arraycopy(a, cursor1 + 1, a, dest + 1, len1);
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadows[i], cursor1 + 1, shadows[i], dest + 1,
+						len1);
+				shadows[i][dest] = shadowTmps[i][cursor2];
+			}
 			a[dest] = tmp[cursor2]; // Move first elt of run2 to front of merge
 		} else if (len2 == 0) {
 			throw new IllegalArgumentException(
@@ -900,6 +1036,10 @@ public class IntTimSort {
 			assert len1 == 0;
 			assert len2 > 0;
 			System.arraycopy(tmp, 0, a, dest - (len2 - 1), len2);
+			for (int i = 0; i < shadows.length; i++) {
+				System.arraycopy(shadowTmps[i], 0, shadows[i], dest
+						- (len2 - 1), len2);
+			}
 		}
 	}
 
@@ -933,6 +1073,32 @@ public class IntTimSort {
 			tmp = newArray;
 		}
 		return tmp;
+	}
+
+	private int[][] ensureCapacities(int minCapacity) {
+		for (int i = 0; i < shadowTmp.length; i++) {
+			int[] tmp = shadowTmp[i];
+			if (tmp.length < minCapacity) {
+				// Compute smallest power of 2 > minCapacity
+				int newSize = minCapacity;
+				newSize |= newSize >> 1;
+				newSize |= newSize >> 2;
+				newSize |= newSize >> 4;
+				newSize |= newSize >> 8;
+				newSize |= newSize >> 16;
+				newSize++;
+
+				if (newSize < 0) {
+					newSize = minCapacity;
+				} else {
+					newSize = Math.min(newSize, a.length >>> 1);
+				}
+
+				int[] newArray = new int[newSize];
+				shadowTmp[i] = newArray;
+			}
+		}
+		return shadowTmp;
 	}
 
 	/**
