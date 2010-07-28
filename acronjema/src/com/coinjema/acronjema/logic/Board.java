@@ -27,6 +27,39 @@ public class Board {
 		createSquares();
 	}
 
+	/**
+	 * gold rabits, cats, dogs, horses, camel, elephant, then silver rabbits,
+	 * cats, dogs, horses, camel, elephant
+	 * 
+	 * @param position
+	 */
+	public Board(SquareDesignation... position) {
+		this();
+		int count = 0;
+		for (int i = 0; i < 8; i++) {
+			addPiece(1, true, position[count++]);
+		}
+		addPiece(2, true, position[count++]);
+		addPiece(2, true, position[count++]);
+		addPiece(3, true, position[count++]);
+		addPiece(3, true, position[count++]);
+		addPiece(4, true, position[count++]);
+		addPiece(4, true, position[count++]);
+		addPiece(5, true, position[count++]);
+		addPiece(6, true, position[count++]);
+		for (int i = 0; i < 8; i++) {
+			addPiece(1, false, position[count++]);
+		}
+		addPiece(2, false, position[count++]);
+		addPiece(2, false, position[count++]);
+		addPiece(3, false, position[count++]);
+		addPiece(3, false, position[count++]);
+		addPiece(4, false, position[count++]);
+		addPiece(4, false, position[count++]);
+		addPiece(5, false, position[count++]);
+		addPiece(6, false, position[count++]);
+	}
+
 	public void reinit() {
 		createSquares();
 		stepCount = 0;
@@ -45,7 +78,9 @@ public class Board {
 	}
 
 	public void addPiece(int strength, boolean gold, SquareDesignation desig) {
-		squares[desig.index].setOccupant(new Piece(strength, gold));
+		if (desig.index > -1) {
+			squares[desig.index].setOccupant(new Piece(strength, gold));
+		}
 	}
 
 	public void print(PrintStream out) {
@@ -132,6 +167,7 @@ public class Board {
 			killTraps();
 		}
 		makeNewHash = true;
+		makeNewHash2 = true;
 		hashStack++;
 		if (hashStack == 20) {
 			hashStack = 4;
@@ -139,6 +175,10 @@ public class Board {
 			boardHashes[2] = boardHashes[18];
 			boardHashes[1] = boardHashes[17];
 			boardHashes[0] = boardHashes[16];
+			boardHashes2[3] = boardHashes2[19];
+			boardHashes2[2] = boardHashes2[18];
+			boardHashes2[1] = boardHashes2[17];
+			boardHashes2[0] = boardHashes2[16];
 		}
 	}
 
@@ -221,8 +261,10 @@ public class Board {
 	}
 
 	long[] boardHashes = new long[20];
+	long[] boardHashes2 = new long[20];
 	int hashStack = 0;
 	boolean makeNewHash = true;
+	boolean makeNewHash2 = true;
 
 	/**
 	 * @return
@@ -240,6 +282,22 @@ public class Board {
 			return hash;
 		} else {
 			return boardHashes[hashStack];
+		}
+	}
+
+	public long getBoardHash2() {
+		if (makeNewHash2) {
+			long hash = 0;
+			for (Square s : squares) {
+				if (!s.isEmpty()) {
+					hash += s.getOccupant().strength * (1l << (s.index));
+				}
+			}
+			boardHashes2[hashStack] = hash;
+			makeNewHash2 = false;
+			return hash;
+		} else {
+			return boardHashes2[hashStack];
 		}
 	}
 

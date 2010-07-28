@@ -15,9 +15,10 @@ package com.coinjema.acronjema.logic;
  */
 public class LongSet {
 	private static final int NO_NEGATIVE = Integer.MAX_VALUE;
-	private static final int SET_SIZE = 6037;
+	private static final int SET_SIZE = 9887;
 
-	private long[][] set = new long[SET_SIZE][10];
+	private final long[][] set = new long[SET_SIZE][10];
+	private final long[][] secSet = new long[SET_SIZE][10];
 
 	public LongSet() {
 		clear();
@@ -32,17 +33,24 @@ public class LongSet {
 				inner[i] = 0;
 			}
 		}
+		for (long[] inner : secSet) {
+			for (int i = 0; i < inner.length; i++) {
+				inner[i] = 1;
+			}
+		}
 	}
 
-	public boolean add(final long l) {
+	public boolean add(final long l, final long alt) {
 		final int index = ((int) (l ^ (l >>> 32)) & (NO_NEGATIVE)) % SET_SIZE;
 		final int innerLength = set[index].length;
 		final long[] innerArr = set[index];
+		final long[] innerAltArr = secSet[index];
 		for (int i = 0; i < innerLength; i++) {
-			if (innerArr[i] == 0) {
+			if (innerArr[i] == 0 && innerAltArr[i] == 1) {
 				innerArr[i] = l;
+				innerAltArr[i] = alt;
 				return true;
-			} else if (innerArr[i] == l) {
+			} else if (innerArr[i] == l && innerAltArr[i] == alt) {
 				return false;
 			}
 		}
@@ -51,8 +59,12 @@ public class LongSet {
 		// have to increase array and try again.
 		final long[] newInner = new long[innerLength * 2];
 		System.arraycopy(innerArr, 0, newInner, 0, innerLength);
+		final long[] newAltInner = new long[innerLength * 2];
+		System.arraycopy(innerAltArr, 0, newAltInner, 0, innerLength);
 		set[index] = newInner;
+		secSet[index] = newAltInner;
 		newInner[innerLength] = l;
+		newAltInner[innerLength] = alt;
 		return true;
 	}
 

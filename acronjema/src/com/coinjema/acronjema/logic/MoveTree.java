@@ -21,15 +21,21 @@ public class MoveTree {
 	IntBuffer moveCountNextPly;
 	IntBuffer addressNextPly;
 	IntBuffer evaluations;
+	LongSet duplicates = new LongSet();
 
 	private final Board board;
 
 	public MoveTree(Board b) {
 		this.board = b;
+		duplicates.add(board.getBoardHash(), board.getBoardHash2());
 	}
 
 	public void addMove(int move) {
-		moves.put(move);
+		if (duplicates.add(board.getBoardHash(), board.getBoardHash2())) {
+			moves.put(move);
+		} else {
+
+		}
 
 	}
 

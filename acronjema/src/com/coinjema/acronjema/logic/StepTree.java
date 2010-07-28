@@ -35,7 +35,7 @@ public class StepTree {
 		return steps.position(newPosition);
 	}
 
-	IntBuffer steps = ByteBuffer.allocateDirect(2000000).asIntBuffer();
+	IntBuffer steps = ByteBuffer.allocateDirect(8000000).asIntBuffer();
 
 	boolean acceptDoubleMove = true;
 
@@ -52,7 +52,8 @@ public class StepTree {
 	public void putStep(int step) {
 		if (acceptDoubleMove || (Move.getStepCount(step) == 1)) {
 			long hash = board.getBoardHashAfterMove(step);
-			if (duplicates.add(hash)) {
+			long altHash = board.stepCount + 1;
+			if (duplicates.add(hash, altHash)) {
 				steps.put(step);
 				steps.put(0);
 			}
@@ -83,7 +84,7 @@ public class StepTree {
 			return;
 		} else if (remainingStepCount == 4) {
 			duplicates.clear();
-			duplicates.add(board.getBoardHash());
+			duplicates.add(board.getBoardHash(), board.stepCount);
 		} else {
 			if (remainingStepCount == 1) {
 				acceptDoubleMove = false;
