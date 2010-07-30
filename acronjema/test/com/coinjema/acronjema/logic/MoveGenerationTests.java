@@ -569,11 +569,11 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen2() throws Exception {
-		MoveTree tree = new MoveTree(boards[2]);
+		MoveTree tree = new MoveTree(boards[2], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[2], tree);
 		boards[2].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[2], numMovesGenerated);
@@ -581,11 +581,11 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen4() throws Exception {
-		MoveTree tree = new MoveTree(boards[4]);
+		MoveTree tree = new MoveTree(boards[4], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[4], tree);
 		boards[4].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[4], numMovesGenerated);
@@ -594,11 +594,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen3() throws Exception {
 		int index = 3;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -606,11 +606,11 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen5() throws Exception {
-		MoveTree tree = new MoveTree(boards[5]);
+		MoveTree tree = new MoveTree(boards[5], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[5], tree);
 		boards[5].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[5], numMovesGenerated);
@@ -618,11 +618,11 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen0() throws Exception {
-		MoveTree tree = new MoveTree(boards[0]);
+		MoveTree tree = new MoveTree(boards[0], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[0], tree);
 		boards[0].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[0], numMovesGenerated);
@@ -631,12 +631,12 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen1() throws Exception {
 
-		MoveTree tree = new MoveTree(boards[1]);
+		MoveTree tree = new MoveTree(boards[1], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[1], tree);
 
 		boards[1].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[1], numMovesGenerated);
@@ -645,11 +645,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen6() throws Exception {
 		int index = 6;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -658,11 +658,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen7() throws Exception {
 		int index = 7;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -671,11 +671,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen8() throws Exception {
 		int index = 8;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -684,11 +684,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen9() throws Exception {
 		int index = 9;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -697,11 +697,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen10() throws Exception {
 		int index = 10;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -710,11 +710,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen11() throws Exception {
 		int index = 11;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -723,11 +723,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen12() throws Exception {
 		int index = 12;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -736,11 +736,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen13() throws Exception {
 		int index = 13;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(false);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, false);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[index], numMovesGenerated);
@@ -749,11 +749,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen14() throws Exception {
 		int index = 14;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		System.out.println("Ran search for steps " + stepBuffer.numTimes);
 		int numMovesGenerated = tree.getFirstNumber();
@@ -763,11 +763,11 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen15() throws Exception {
 		int index = 15;
-		MoveTree tree = new MoveTree(boards[index]);
+		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
-		stepBuffer.searchForMoves(true);
+		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
 		assertEquals(correctMoveCount[31], numMovesGenerated);

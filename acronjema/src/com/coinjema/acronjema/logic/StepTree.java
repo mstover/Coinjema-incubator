@@ -15,12 +15,12 @@ import java.util.Random;
  * @author michael
  * 
  */
-public class StepTree {
+public class StepTree implements StepBuffer {
 
 	int curSize = 0;
 
-	private final Board board;
-	private final MoveTree moveTree;
+	final Board board;
+	public final MoveTree moveTree;
 
 	public StepTree(Board b, MoveTree moveTree) {
 		this.board = b;
@@ -116,21 +116,6 @@ public class StepTree {
 			board.rewindSteps(move, true);
 		}
 
-	}
-
-	public void searchForMoves(boolean gold) {
-		searchForMinSteps(gold, 0, 2, Move.EMPTY_MOVE);
-		int moveCount = moveTree.getFirstNumber();
-		for (int i = 0; i < moveCount; i++) {
-			clear();
-			int move = moveTree.moves.get(i);
-			int diff = Move.getStepCountOfMove(move);
-			if (diff > 1) {
-				board.executeMove(move);
-				searchForSteps(gold, 4 - diff, move);
-				board.rewindMove(move);
-			}
-		}
 	}
 
 	public void searchForMinSteps(boolean gold, int startStepCount,

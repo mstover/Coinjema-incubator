@@ -9,7 +9,6 @@
  */
 package com.coinjema.acronjema.logic;
 
-import java.nio.IntBuffer;
 
 /**
  * @author michaelstover
@@ -17,7 +16,19 @@ import java.nio.IntBuffer;
  */
 public class IntTimSort {
 
-	private static class NullMoveSorter implements MoveSorter {
+	private static class DescMoveSorter implements MoveSorter {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.coinjema.acronjema.logic.MoveSorter#compare(int, int)
+		 */
+		@Override
+		public int compare(int key, int l) {
+			return key > l ? -1 : (key == l ? 0 : 1);
+		}
+	}
+
+	private static class AscMoveSorter implements MoveSorter {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -27,22 +38,10 @@ public class IntTimSort {
 		public int compare(int key, int l) {
 			return key > l ? 1 : (key == l ? 0 : -1);
 		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.coinjema.acronjema.logic.MoveSorter#sort(java.nio.IntBuffer,
-		 * int, com.coinjema.acronjema.logic.Board, boolean)
-		 */
-		@Override
-		public void sort(IntBuffer moves, int length, Board board,
-				boolean movingSide) {
-			IntTimSort.sort(moves.array(), moves.position() - length,
-					moves.position(), this);
-		}
 	}
 
-	public static final MoveSorter SORTER = new NullMoveSorter();
+	public static final MoveSorter ASC_SORTER = new AscMoveSorter();
+	public static final MoveSorter DESC_SORTER = new DescMoveSorter();
 
 	/**
 	 * This is the minimum sized sequence that will be merged. Shorter sequences
@@ -169,7 +168,7 @@ public class IntTimSort {
 
 	static void sort(int[] a, int lo, int hi, MoveSorter c, int[]... shadowArrs) {
 		if (c == null) {
-			c = SORTER;
+			c = ASC_SORTER;
 		}
 
 		int nRemaining = hi - lo;

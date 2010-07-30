@@ -23,7 +23,7 @@ public class Board {
 
 	long[] boardHashes2 = new long[20];
 	int goldPieceCount = 0;
-	private final Piece[] goldPieces = new Piece[16];
+	final Piece[] goldPieces = new Piece[16];
 	int hashStack = 0;
 
 	boolean makeNewHash = true;
@@ -32,10 +32,10 @@ public class Board {
 
 	int pieceCount = 0;
 
-	private final Piece[] pieces = new Piece[32];
+	final Piece[] pieces = new Piece[32];
 
 	int silverPieceCount = 0;
-	private final Piece[] silverPieces = new Piece[16];
+	final Piece[] silverPieces = new Piece[16];
 	Square[] squares = new Square[64];
 
 	int stepCount = 0;
@@ -146,10 +146,10 @@ public class Board {
 		}
 		int[] seq = Move.getStepSequence(step);
 		squares[seq[0]].moveOccupantTo(squares[seq[1]], notify);
-		killTraps(notify);
+		killTraps(seq[0], seq[1], notify);
 		if (seq.length == 4) {
 			squares[seq[2]].moveOccupantTo(squares[seq[3]], notify);
-			killTraps(notify);
+			killTraps(seq[2], seq[3], notify);
 		}
 		makeNewHash = true;
 		makeNewHash2 = true;
@@ -167,11 +167,12 @@ public class Board {
 		}
 	}
 
-	void findAllSteps(StepTree stepBuffer, boolean gold) {
+	void findAllSteps(StepBuffer stepBuffer, boolean gold) {
 
-		for (Square s : squares) {
-			if (!s.isEmpty() && (s.getOccupant().gold == gold)) {
-				s.getOccupant().getSteps(stepBuffer);
+		for (Piece p : gold ? goldPieces : silverPieces) {
+			Square s = p.square;
+			if (s != null) {
+				p.getSteps(stepBuffer);
 			}
 		}
 	}
@@ -262,18 +263,19 @@ public class Board {
 	/**
 	 * 
 	 */
-	private void killTraps(boolean notify) {
-		if (((TrapSquare) squares[18]).checkKill()) {
-			((TrapSquare) squares[18]).killPiece(stepCount, notify);
+	private void killTraps(final int sq, final int sq2, boolean notify) {
+		int trapIndex = squares[sq].nextToTrap;
+		if (trapIndex >= 0) {
+			if (((TrapSquare) squares[trapIndex]).checkKill()) {
+				((TrapSquare) squares[trapIndex]).killPiece(stepCount, notify);
+			}
 		}
-		if (((TrapSquare) squares[21]).checkKill()) {
-			((TrapSquare) squares[21]).killPiece(stepCount, notify);
-		}
-		if (((TrapSquare) squares[42]).checkKill()) {
-			((TrapSquare) squares[42]).killPiece(stepCount, notify);
-		}
-		if (((TrapSquare) squares[45]).checkKill()) {
-			((TrapSquare) squares[45]).killPiece(stepCount, notify);
+		int otherTrapIndex = squares[sq2].nextToTrap;
+		if ((otherTrapIndex >= 0) && (otherTrapIndex != trapIndex)) {
+			if (((TrapSquare) squares[otherTrapIndex]).checkKill()) {
+				((TrapSquare) squares[otherTrapIndex]).killPiece(stepCount,
+						notify);
+			}
 		}
 		stepCount++;
 	}
@@ -302,6 +304,9 @@ public class Board {
 	}
 
 	public void reinit() {
+		pieceCount = 0;
+		goldPieceCount = 0;
+		silverPieceCount = 0;
 		createSquares();
 		stepCount = 0;
 	}

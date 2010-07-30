@@ -14,13 +14,12 @@ package com.coinjema.acronjema.logic;
  * @author michaelstover
  * 
  */
-public interface MoveSorter {
+public interface Evaluator {
 
 	/**
-	 * @param key
-	 * @param l
+	 * @param board
 	 * @return
 	 */
-	public int compare(int key, int l);
+	int evaluate(Board board);
 
 }

@@ -28,8 +28,7 @@ public class GameController {
 	 */
 	public static void main(String[] args) {
 		Board b = new Board();
-		sorter = new BasicMoveSorter(b);
-		tree = new MoveTree(b);
+		tree = new MoveTree(b, new BaseEvaluator());
 		stepBuffer = new StepTree(b, tree);
 
 		// Gold pieces
@@ -39,6 +38,21 @@ public class GameController {
 
 		b.print(System.out);
 		try {
+			findMoves(b, true);
+			b.print(System.out);
+			findMoves(b, false);
+			b.print(System.out);
+			findMoves(b, true);
+			b.print(System.out);
+			findMoves(b, false);
+			b.print(System.out);
+			findMoves(b, true);
+			b.print(System.out);
+			findMoves(b, false);
+			b.print(System.out);
+			findMoves(b, true);
+			b.print(System.out);
+			findMoves(b, false);
 			findMoves(b, true);
 			b.print(System.out);
 			findMoves(b, false);
@@ -65,27 +79,27 @@ public class GameController {
 		// runMoves(b, false);
 		// b.print(System.out);
 		// }
-		long time = System.currentTimeMillis();
-		try {
-			for (int i = 0; i < 100; i++) {
-				initBoard(b);
-				for (int j = 0; j < 20; j++) {
-					findMoves(b, true);
-					findMoves(b, false);
-				}
-				// b.print(System.out);
-			}
-		} catch (GameEndException e) {
-			System.out.println("Somebody ran out of moves");
-		}
-		System.out.println("Processed "
-				+ (4000d / (System.currentTimeMillis() - time))
-				+ " movesets/ms");
-
-		System.out
-				.println("Generated "
-						+ ((double) numMovesGenerated / (System
-								.currentTimeMillis() - time)) + " moves/ms");
+		// long time = System.currentTimeMillis();
+		// try {
+		// for (int i = 0; i < 100; i++) {
+		// initBoard(b);
+		// for (int j = 0; j < 20; j++) {
+		// findMoves(b, true);
+		// findMoves(b, false);
+		// }
+		// // b.print(System.out);
+		// }
+		// } catch (GameEndException e) {
+		// System.out.println("Somebody ran out of moves");
+		// }
+		// System.out.println("Processed "
+		// + (4000d / (System.currentTimeMillis() - time))
+		// + " movesets/ms");
+		//
+		// System.out
+		// .println("Generated "
+		// + ((double) numMovesGenerated / (System
+		// .currentTimeMillis() - time)) + " moves/ms");
 	}
 
 	private static void initBoard(Board b) {
@@ -142,7 +156,9 @@ public class GameController {
 		if (tree.moves.position() == 0) {
 			throw new GameEndException();
 		}
-		int move = tree.moves.get(rand.nextInt(tree.getFirstNumber()));
+		tree.sortPly(0, tree.getFirstNumber(), gold ? IntTimSort.DESC_SORTER
+				: IntTimSort.ASC_SORTER);
+		int move = tree.moves.get(0);
 		b.executeMove(move);
 
 	}

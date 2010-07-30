@@ -118,7 +118,7 @@ public class Piece {
 		this.square = square;
 	}
 
-	public void getSteps(StepTree stepBuffer) {
+	public void getSteps(StepBuffer stepBuffer) {
 		if (recalcSteps) {
 			if (!isFrozen()) {
 				validStepCount = 0;
@@ -132,7 +132,7 @@ public class Piece {
 		copyToBuffer(stepBuffer);
 	}
 
-	private void copyToBuffer(StepTree stepBuffer) {
+	private void copyToBuffer(StepBuffer stepBuffer) {
 		for (int i = 0; i < validStepCount; i++) {
 			stepBuffer.putStep(potentialSteps[i]);
 		}

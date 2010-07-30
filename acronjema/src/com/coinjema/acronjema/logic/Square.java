@@ -17,6 +17,7 @@ import java.io.PrintStream;
  */
 public class Square {
 
+	int nextToTrap = -1;
 	public final Square[] adjacent;
 	protected Piece occupant;
 

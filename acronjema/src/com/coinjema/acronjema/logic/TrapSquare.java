@@ -25,6 +25,15 @@ public class TrapSquare extends Square {
 	 */
 	public TrapSquare(Board b, int index) {
 		super(b, index, 4);
+		nextToTrap = index;
+	}
+
+	@Override
+	public void setAdjacent(Square... squares) {
+		for (int i = 0; i < adjacent.length; i++) {
+			adjacent[i] = squares[i];
+			adjacent[i].nextToTrap = index;
+		}
 	}
 
 	/*
