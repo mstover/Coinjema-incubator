@@ -51,8 +51,10 @@ public class StepTree {
 
 	public void putStep(int step) {
 		if (acceptDoubleMove || (Move.getStepCount(step) == 1)) {
-			long hash = board.getBoardHashAfterMove(step);
-			long altHash = board.stepCount + 1;
+			board.executeStep(step, false);
+			long hash = board.getBoardHash();
+			long altHash = board.getBoardHash2();
+			board.rewindSteps(step, false);
 			if (duplicates.add(hash, altHash)) {
 				steps.put(step);
 				steps.put(0);
@@ -71,6 +73,8 @@ public class StepTree {
 	}
 
 	boolean traceon = false;
+
+	public int numTimes;
 
 	/**
 	 * Searches for all unique step sequences that make up a full Move.
@@ -95,6 +99,7 @@ public class StepTree {
 		int sizeCountPosition = steps.position();
 		steps.put(0);
 		int thisStart = steps.position();
+		numTimes++;
 		board.findAllSteps(this, gold);
 		curSize = steps.position();
 		steps.put(sizeCountPosition, ((curSize - sizeCountPosition) - 1) / 2);
@@ -104,11 +109,57 @@ public class StepTree {
 			int stepCount = Move.getStepCount(move);
 			int tempWholeMove = Move.appendSteps(wholeMove, move,
 					remainingStepCount, stepCount);
-			board.executeStep(move);
+			board.executeStep(move, true);
 			moveTree.addMove(tempWholeMove);
 			steps.put(i + 1, curSize);
 			searchForSteps(gold, remainingStepCount - stepCount, tempWholeMove);
-			board.rewindSteps(move);
+			board.rewindSteps(move, true);
+		}
+
+	}
+
+	public void searchForMoves(boolean gold) {
+		searchForMinSteps(gold, 0, 2, Move.EMPTY_MOVE);
+		int moveCount = moveTree.getFirstNumber();
+		for (int i = 0; i < moveCount; i++) {
+			clear();
+			int move = moveTree.moves.get(i);
+			int diff = Move.getStepCountOfMove(move);
+			if (diff > 1) {
+				board.executeMove(move);
+				searchForSteps(gold, 4 - diff, move);
+				board.rewindMove(move);
+			}
+		}
+	}
+
+	public void searchForMinSteps(boolean gold, int startStepCount,
+			int remainingStepCount, int wholeMove) {
+		if (remainingStepCount <= 0) {
+			return;
+		} else if (remainingStepCount == 4) {
+			duplicates.clear();
+			duplicates.add(board.getBoardHash(), board.stepCount);
+		}
+		int sizeCountPosition = steps.position();
+		steps.put(0);
+		int thisStart = steps.position();
+		numTimes++;
+		board.findAllSteps(this, gold);
+		curSize = steps.position();
+		steps.put(sizeCountPosition, ((curSize - sizeCountPosition) - 1) / 2);
+		int thisEnd = steps.position();
+		for (int i = thisStart; i < thisEnd; i += 2) {
+			int move = steps.get(i);
+			int stepCount = Move.getStepCount(move);
+			int tempWholeMove = Move.appendSteps(wholeMove, move,
+					4 - startStepCount, stepCount);
+			board.executeStep(move, true);
+			moveTree.addMove(tempWholeMove);
+			steps.put(i + 1, curSize);
+			searchForMinSteps(gold, stepCount, remainingStepCount - stepCount,
+					tempWholeMove);
+			board.rewindSteps(move, true);
 		}
 
 	}

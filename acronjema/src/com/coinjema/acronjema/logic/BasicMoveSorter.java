@@ -107,7 +107,7 @@ public class BasicMoveSorter implements MoveSorter {
 								: 2);
 			}
 		}
-		board.executeStep(steps);
+		board.executeStep(steps, true);
 
 		return sum;
 	}

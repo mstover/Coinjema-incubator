@@ -64,12 +64,12 @@ public class TrapSquare extends Square {
 		return true;
 	}
 
-	void unkillPiece(int stepCount) {
-		while (stepCount >= killedPieces.length) {
-			expandKilledPieces();
+	void unkillPiece(int stepCount, boolean notify) {
+		if (stepCount >= killedPieces.length) {
+			return;
 		}
 		if (killedPieces[stepCount] != null) {
-			setOccupant(killedPieces[stepCount]);
+			setOccupant(killedPieces[stepCount], notify);
 			killedPieces[stepCount] = null;
 		}
 	}
@@ -77,13 +77,13 @@ public class TrapSquare extends Square {
 	/**
 	 * @param occupant
 	 */
-	void killPiece(int stepCount) {
-		futureIsEmpty(stepCount);
+	void killPiece(int stepCount, boolean notify) {
 		while (stepCount >= killedPieces.length) {
 			expandKilledPieces();
 		}
 		killedPieces[stepCount] = occupant;
-		setOccupant(null);
+		occupant.setSquare(null);
+		setOccupant(null, notify);
 	}
 
 	/**

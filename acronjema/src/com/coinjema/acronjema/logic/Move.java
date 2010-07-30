@@ -152,6 +152,18 @@ public class Move {
 		return step >>> 8 == 2 ? 1 : 2;
 	}
 
+	public static int getStepCountOfMove(int move) {
+		if ((move & (~CLEAR_MOVE[0])) != (2 << 24)) {
+			return 4;
+		} else if ((move & (~CLEAR_MOVE[1])) != (2 << 16)) {
+			return 3;
+		} else if ((move & (~CLEAR_MOVE[2])) != (2 << 8)) {
+			return 2;
+		} else {
+			return 1;
+		}
+	}
+
 	private static int getDirection(int from, int to) {
 		switch (from - to) {
 		case 1:

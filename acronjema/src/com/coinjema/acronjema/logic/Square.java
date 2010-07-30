@@ -72,7 +72,7 @@ public class Square {
 	 * @param occupant
 	 *            the occupant to set
 	 */
-	public void setOccupant(Piece occupant) {
+	public void setOccupant(Piece occupant, boolean notify) {
 		if ((occupant == null) && (this.occupant == null)) {
 			return;
 		}
@@ -80,7 +80,9 @@ public class Square {
 		if (occupant != null) {
 			occupant.setSquare(this);
 		}
-		fireOccupantChanged();
+		if (notify) {
+			fireOccupantChanged();
+		}
 	}
 
 	/**
@@ -101,10 +103,10 @@ public class Square {
 	/**
 	 * @param square
 	 */
-	public void moveOccupantTo(Square square) {
+	public void moveOccupantTo(Square square, boolean notify) {
 		Piece thisOccupant = occupant;
-		setOccupant(null);
-		square.setOccupant(thisOccupant);
+		setOccupant(null, notify);
+		square.setOccupant(thisOccupant, notify);
 	}
 
 }

@@ -46,7 +46,7 @@ public class Piece {
 
 	public final int strength;
 	public final boolean gold;
-	private Square square;
+	Square square;
 	private boolean recalcSteps = true;
 	private int validStepCount;
 	public final int bit;
