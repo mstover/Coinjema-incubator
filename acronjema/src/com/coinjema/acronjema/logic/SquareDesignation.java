@@ -94,6 +94,12 @@ public class SquareDesignation {
 		}
 	}
 
+	public SquareDesignation(byte[] in) {
+		String s = new String(in);
+		desig = s.substring(0, 2);
+		index = calcIndex();
+	}
+
 	/**
 	 * 
 	 */

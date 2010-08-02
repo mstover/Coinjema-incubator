@@ -28,7 +28,7 @@ public class GameController {
 	 */
 	public static void main(String[] args) {
 		Board b = new Board();
-		tree = new MoveTree(b, new BaseEvaluator());
+		tree = new MoveTree(b, new BaseEvaluator(new BaseEvaluatorConfig()));
 		stepBuffer = new StepTree(b, tree);
 
 		// Gold pieces
@@ -37,42 +37,25 @@ public class GameController {
 		initBoard(b);
 
 		b.print(System.out);
-		try {
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			b.print(System.out);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			b.print(System.out);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			b.print(System.out);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			b.print(System.out);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			b.print(System.out);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-			b.print(System.out);
-			findMoves(b, true);
-			b.print(System.out);
-			findMoves(b, false);
-		} catch (GameEndException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		boolean turn = true;
+		int moves = 0;
+		while (b.getWinner() == null) {
+			try {
+				findMoves(b, turn);
+				b.print(System.out);
+				turn = !turn;
+				if (turn) {
+					moves++;
+				}
+			} catch (GameEndException e1) {
+				b.setWinner(!turn);
+			}
 		}
 		b.print(System.out);
+		System.out.println("The winner is "
+				+ (b.getWinner() ? "gold" : "silver") + " in " + moves
+				+ " moves");
+		System.exit(0);
 		// for (int i = 0; i < 100; i++) {
 		// runMoves(b, true);
 		// b.print(System.out);
@@ -139,8 +122,8 @@ public class GameController {
 		b.addPiece(Piece.DOG, false, new SquareDesignation("a7"));
 		b.addPiece(Piece.HORSE, false, new SquareDesignation("b7"));
 		b.addPiece(Piece.CAT, false, new SquareDesignation("c7"));
-		b.addPiece(Piece.ELEPHANT, false, new SquareDesignation("d7"));
-		b.addPiece(Piece.CAMEL, false, new SquareDesignation("e7"));
+		b.addPiece(Piece.ELEPHANT, false, new SquareDesignation("e7"));
+		b.addPiece(Piece.CAMEL, false, new SquareDesignation("d7"));
 		b.addPiece(Piece.CAT, false, new SquareDesignation("f7"));
 		b.addPiece(Piece.HORSE, false, new SquareDesignation("g7"));
 		b.addPiece(Piece.DOG, false, new SquareDesignation("h7"));

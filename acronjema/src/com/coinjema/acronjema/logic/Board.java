@@ -39,6 +39,7 @@ public class Board {
 	Square[] squares = new Square[64];
 
 	int stepCount = 0;
+	private Boolean winner;
 
 	public Board() {
 		createSquares();
@@ -96,15 +97,25 @@ public class Board {
 	 */
 	private Square createSquare(int i) {
 		if ((i == 0) || (i == 7) || (i == 56) || (i == 63)) {
-			return new Square(this, i, 2);
+			return new Square(this, i, 2, 3);
+		}
+		if (i == 1 || i == 8 || i == 6 || i == 15 || i == 48 || i == 57
+				|| i == 62 || i == 55) {
+			return new Square(this, i, 3, 4);
+		}
+		if (i == 9 || i == 14 || i == 49 || i == 54) {
+			return new Square(this, i, 4, 6);
 		}
 		if ((i % 8 == 0) || (i < 8) || ((i + 1) % 8 == 0) || (i > 56)) {
-			return new Square(this, i, 3);
+			return new Square(this, i, 3, 5);
+		}
+		if ((i % 8 == 1) || (i < 16) || ((i + 2) % 8 == 0) || (i > 48)) {
+			return new Square(this, i, 4, 7);
 		}
 		if ((i == 18) || (i == 21) || (i == 42) || (i == 45)) {
 			return new TrapSquare(this, i);
 		}
-		return new Square(this, i, 4);
+		return new Square(this, i, 4, 8);
 
 	}
 
@@ -126,6 +137,9 @@ public class Board {
 		}
 		for (int i = 0; i < squares.length; i++) {
 			squares[i].setAdjacent(getAdjacent(i));
+		}
+		for (Square s : squares) {
+			s.init();
 		}
 	}
 
@@ -350,5 +364,46 @@ public class Board {
 		reviveTraps(notify);
 		squares[seq[1]].moveOccupantTo(squares[seq[0]], notify);
 		hashStack--;
+	}
+
+	public Boolean getWinner() {
+		if (winner != null) {
+			return winner;
+		} else {
+			int goldRabbits = 0;
+			for (Piece p : goldPieces) {
+				if (p.square != null) {
+					if (p.strength == 1) {
+						goldRabbits++;
+						if (p.square.index / 8 == 7) {
+							winner = Boolean.TRUE;
+						}
+					}
+				}
+			}
+			if (goldRabbits == 0) {
+				winner = Boolean.FALSE;
+			}
+			int silverRabbits = 0;
+			for (Piece p : silverPieces) {
+				if (p.square != null) {
+					if (p.strength == 1) {
+						silverRabbits++;
+						if (p.square.index / 8 == 0) {
+							winner = Boolean.FALSE;
+						}
+					}
+				}
+			}
+			if (silverRabbits == 0) {
+				winner = Boolean.TRUE;
+			}
+		}
+		return winner;
+	}
+
+	public void setWinner(boolean b) {
+		winner = b;
+
 	}
 }

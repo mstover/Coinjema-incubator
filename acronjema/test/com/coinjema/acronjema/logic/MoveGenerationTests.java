@@ -84,474 +84,474 @@ public class MoveGenerationTests {
 			// String text[] = {
 			// "10w "+
 			// " +-----------------+"+
-			// "8| r r r Ê Ê r r Ê |"+
-			// "7| r Ê m c c h r r |"+
-			// "6| Ê d Ê Ê Ê Ê d Ê |"+
-			// "5| Ê Ê Ê Ê E Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê H Ê Ê e Ê D Ê |"+
-			// "2| R Ê C Ê Ê C Ê R |"+
+			// "8| r r r ï¿½ ï¿½ r r ï¿½ |"+
+			// "7| r ï¿½ m c c h r r |"+
+			// "6| ï¿½ d ï¿½ ï¿½ ï¿½ ï¿½ d ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ E ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ H ï¿½ ï¿½ e ï¿½ D ï¿½ |"+
+			// "2| R ï¿½ C ï¿½ ï¿½ C ï¿½ R |"+
 			// "1| R R R D M R R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 80"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"21w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"21w "+
 			// " +-----------------+"+
-			// "8| r r r Ê Ê Ê r Ê |"+
-			// "7| r Ê m h c r Ê r |"+
-			// "6| Ê d Ê E Ê Ê d Ê |"+
-			// "5| Ê r Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê H Ê Ê e Ê D Ê |"+
-			// "2| R Ê C Ê C Ê Ê R |"+
-			// "1| R R R Ê M R R R |"+
+			// "8| r r r ï¿½ ï¿½ ï¿½ r ï¿½ |"+
+			// "7| r ï¿½ m h c r ï¿½ r |"+
+			// "6| ï¿½ d ï¿½ E ï¿½ ï¿½ d ï¿½ |"+
+			// "5| ï¿½ r ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ H ï¿½ ï¿½ e ï¿½ D ï¿½ |"+
+			// "2| R ï¿½ C ï¿½ C ï¿½ ï¿½ R |"+
+			// "1| R R R ï¿½ M R R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 168"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"22w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"22w "+
 			// " +-----------------+"+
-			// "8| r r r Ê Ê Ê r Ê |"+
-			// "7| r Ê m h c r Ê r |"+
-			// "6| Ê d Ê E Ê Ê d Ê |"+
-			// "5| r Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê H Ê Ê e Ê D Ê |"+
-			// "2| R Ê C Ê C Ê Ê R |"+
-			// "1| R R R M Ê R R R |"+
+			// "8| r r r ï¿½ ï¿½ ï¿½ r ï¿½ |"+
+			// "7| r ï¿½ m h c r ï¿½ r |"+
+			// "6| ï¿½ d ï¿½ E ï¿½ ï¿½ d ï¿½ |"+
+			// "5| r ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ H ï¿½ ï¿½ e ï¿½ D ï¿½ |"+
+			// "2| R ï¿½ C ï¿½ C ï¿½ ï¿½ R |"+
+			// "1| R R R M ï¿½ R R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 176"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"6b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"6b "+
 			// " +-----------------+"+
-			// "8| r r r m Ê r r r |"+
-			// "7| r Ê c Ê Ê d Ê r |"+
-			// "6| Ê h Ê Ê c Ê h Ê |"+
-			// "5| Ê Ê Ê d E Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| H H Ê Ê e Ê M Ê |"+
-			// "2| D D R Ê Ê C C Ê |"+
-			// "1| R R R R Ê R R R |"+
+			// "8| r r r m ï¿½ r r r |"+
+			// "7| r ï¿½ c ï¿½ ï¿½ d ï¿½ r |"+
+			// "6| ï¿½ h ï¿½ ï¿½ c ï¿½ h ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ d E ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| H H ï¿½ ï¿½ e ï¿½ M ï¿½ |"+
+			// "2| D D R ï¿½ ï¿½ C C ï¿½ |"+
+			// "1| R R R R ï¿½ R R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 52"+
 			new Board(a1, b1, c1, c2, d1, f1, g1, h1, f2, g2, a2, b2, a3, b3,
 					g3, e5, a7, a8, b8, c8, f8, g8, h8, h7, c7, e6, f7, d5, b6,
 					g6, d8, e3),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"23b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"23b "+
 			// " +-----------------+"+
-			// "8| r r r Ê m r r r |"+
-			// "7| r Ê d Ê Ê c Ê r |"+
-			// "6| D Ê d E Ê Ê h Ê |"+
-			// "5| h Ê H c Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê C Ê Ê H Ê |"+
-			// "3| Ê R Ê e Ê Ê M D |"+
-			// "2| Ê Ê R Ê Ê C Ê R |"+
-			// "1| R R Ê Ê Ê Ê R R |"+
+			// "8| r r r ï¿½ m r r r |"+
+			// "7| r ï¿½ d ï¿½ ï¿½ c ï¿½ r |"+
+			// "6| D ï¿½ d E ï¿½ ï¿½ h ï¿½ |"+
+			// "5| h ï¿½ H c ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ C ï¿½ ï¿½ H ï¿½ |"+
+			// "3| ï¿½ R ï¿½ e ï¿½ ï¿½ M D |"+
+			// "2| ï¿½ ï¿½ R ï¿½ ï¿½ C ï¿½ R |"+
+			// "1| R R ï¿½ ï¿½ ï¿½ ï¿½ R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 188"+
 			new Board(a1, b1, b3, c2, g1, h1, h2, xx, f2, d4, h3, a6, c5, g4,
 					g3, d6, a7, a8, b8, c8, f8, g8, h8, h7, f7, d5, c7, c6, a5,
 					g6, e8, d3),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"11w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"11w "+
 			// " +-----------------+"+
-			// "8| r r r Ê Ê r r r |"+
-			// "7| Ê Ê c Ê r c Ê Ê |"+
-			// "6| Ê d Ê Ê Ê Ê h Ê |"+
-			// "5| h Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê E Ê d Ê |"+
-			// "3| Ê C Ê Ê e Ê H Ê |"+
-			// "2| R Ê D D Ê C Ê R |"+
-			// "1| R R R Ê M R R R |"+
+			// "8| r r r ï¿½ ï¿½ r r r |"+
+			// "7| ï¿½ ï¿½ c ï¿½ r c ï¿½ ï¿½ |"+
+			// "6| ï¿½ d ï¿½ ï¿½ ï¿½ ï¿½ h ï¿½ |"+
+			// "5| h ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ E ï¿½ d ï¿½ |"+
+			// "3| ï¿½ C ï¿½ ï¿½ e ï¿½ H ï¿½ |"+
+			// "2| R ï¿½ D D ï¿½ C ï¿½ R |"+
+			// "1| R R R ï¿½ M R R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 88"+
 			new Board(a1, a2, b1, c1, f1, g1, h1, h2, f2, b3, c2, d2, g3, xx,
 					e1, e4, a8, b8, c8, f8, g8, h8, e7, xx, c7, f7, b6, g4, a5,
 					g6, xx, e3),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"18b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"18b "+
 			// " +-----------------+"+
-			// "8| r r r Ê m r r r |"+
-			// "7| r Ê c d c d Ê r |"+
-			// "6| Ê h Ê Ê Ê Ê h Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| R Ê Ê E Ê Ê Ê Ê |"+
-			// "3| Ê H Ê e Ê Ê H Ê |"+
-			// "2| M Ê D C C D Ê R |"+
-			// "1| R R R Ê Ê R R R |"+
+			// "8| r r r ï¿½ m r r r |"+
+			// "7| r ï¿½ c d c d ï¿½ r |"+
+			// "6| ï¿½ h ï¿½ ï¿½ ï¿½ ï¿½ h ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| R ï¿½ ï¿½ E ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ H ï¿½ e ï¿½ ï¿½ H ï¿½ |"+
+			// "2| M ï¿½ D C C D ï¿½ R |"+
+			// "1| R R R ï¿½ ï¿½ R R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 148"+
 			new Board(a1, b1, c1, a4, f1, g1, h1, h2, d2, e2, c2, f2, b3, g3,
 					a2, d4, a7, a8, b8, c8, f8, g8, h8, h7, c7, e7, d7, f7, b6,
 					g6, e8, d3),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"25w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"25w "+
 			// " +-----------------+"+
-			// "8| r r Ê m r Ê r r |"+
-			// "7| r c d c Ê d r Ê |"+
-			// "6| Ê h Ê e E Ê h Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê R |"+
-			// "3| Ê H Ê Ê Ê Ê H Ê |"+
-			// "2| Ê Ê D Ê D C C Ê |"+
-			// "1| R R R Ê M Ê R R |"+
+			// "8| r r ï¿½ m r ï¿½ r r |"+
+			// "7| r c d c ï¿½ d r ï¿½ |"+
+			// "6| ï¿½ h ï¿½ e E ï¿½ h ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ R |"+
+			// "3| ï¿½ H ï¿½ ï¿½ ï¿½ ï¿½ H ï¿½ |"+
+			// "2| ï¿½ ï¿½ D ï¿½ D C C ï¿½ |"+
+			// "1| R R R ï¿½ M ï¿½ R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 200"+
 			new Board(a1, b1, c1, g1, h1, h4, xx, xx, f2, g2, c2, e2, b3, g3,
 					e1, e6, a7, a8, b8, e8, g8, g7, h8, xx, b7, d7, c7, f7, b6,
 					g6, d8, d6),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"40w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"40w "+
 			// " +-----------------+"+
-			// "8| r r Ê Ê m r Ê r |"+
-			// "7| r c d h Ê d r R |"+
-			// "6| Ê Ê Ê e E Ê r Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê Ê Ê D Ê H Ê |"+
-			// "2| Ê Ê Ê D Ê C C Ê |"+
-			// "1| R R R M Ê Ê R R |"+
+			// "8| r r ï¿½ ï¿½ m r ï¿½ r |"+
+			// "7| r c d h ï¿½ d r R |"+
+			// "6| ï¿½ ï¿½ ï¿½ e E ï¿½ r ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ ï¿½ ï¿½ D ï¿½ H ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ D ï¿½ C C ï¿½ |"+
+			// "1| R R R M ï¿½ ï¿½ R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 320"+
 			new Board(a1, b1, c1, g1, h1, h7, xx, xx, f2, g2, d2, e3, g3, xx,
 					d1, e6, a7, a8, b8, f8, g7, g6, h8, xx, b7, xx, c7, f7, d7,
 					xx, e8, d6),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"14b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"14b "+
 			// " +-----------------+"+
-			// "8| r r r m Ê r r r |"+
-			// "7| r d d c Ê Ê c r |"+
-			// "6| Ê h Ê Ê Ê Ê Ê h |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê H Ê e Ê Ê H E |"+
-			// "2| R D D C M C Ê R |"+
-			// "1| R R R Ê R Ê R R |"+
+			// "8| r r r m ï¿½ r r r |"+
+			// "7| r d d c ï¿½ ï¿½ c r |"+
+			// "6| ï¿½ h ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ h |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ H ï¿½ e ï¿½ ï¿½ H E |"+
+			// "2| R D D C M C ï¿½ R |"+
+			// "1| R R R ï¿½ R ï¿½ R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 116"+
 			new Board(a1, a2, b1, c1, e1, g1, h1, h2, d2, f2, b2, c2, b3, g3,
 					e2, h3, a7, a8, b8, c8, f8, g8, h8, h7, d7, g7, b7, c7, b6,
 					h6, d8, d3),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"24b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"24b "+
 			// " +-----------------+"+
-			// "8| r r r Ê m r r r |"+
-			// "7| r d d c Ê Ê c r |"+
-			// "6| Ê h Ê Ê Ê Ê h Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| C H Ê e Ê Ê R H |"+
-			// "2| R D D E Ê C R R |"+
-			// "1| R R R Ê M Ê Ê R |"+
+			// "8| r r r ï¿½ m r r r |"+
+			// "7| r d d c ï¿½ ï¿½ c r |"+
+			// "6| ï¿½ h ï¿½ ï¿½ ï¿½ ï¿½ h ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| C H ï¿½ e ï¿½ ï¿½ R H |"+
+			// "2| R D D E ï¿½ C R R |"+
+			// "1| R R R ï¿½ M ï¿½ ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 196"+
 			new Board(a1, a2, b1, c1, h1, h2, g2, g3, f2, a3, b2, c2, b3, h3,
 					e1, d2, a7, a8, b8, c8, f8, g8, h8, h7, d7, g7, b7, c7, b6,
 					g6, e8, d3),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"12w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"12w "+
 			// " +-----------------+"+
-			// "8| r e Ê Ê Ê Ê Ê Ê |"+
-			// "7| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "1| R E Ê Ê Ê Ê Ê Ê |"+
+			// "8| r e ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "1| R E ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "TS: 44"+
 			new Board(a1, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx,
 					xx, b1, a8, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx,
 					xx, xx, b8),
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"48b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"48b "+
 			// " +-----------------+"+
-			// "8| r Ê Ê Ê Ê D r Ê |"+
-			// "7| r Ê Ê r Ê Ê Ê Ê |"+
-			// "6| Ê c Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê c Ê Ê |"+
-			// "4| R r h Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê D r Ê Ê E Ê |"+
-			// "2| Ê Ê C d R R d R |"+
-			// "1| Ê Ê Ê R Ê Ê Ê R |"+
+			// "8| r ï¿½ ï¿½ ï¿½ ï¿½ D r ï¿½ |"+
+			// "7| r ï¿½ ï¿½ r ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ c ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ c ï¿½ ï¿½ |"+
+			// "4| R r h ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ D r ï¿½ ï¿½ E ï¿½ |"+
+			// "2| ï¿½ ï¿½ C d R R d R |"+
+			// "1| ï¿½ ï¿½ ï¿½ R ï¿½ ï¿½ ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
 			new Board(a4, d1, e2, f2, h2, h1, xx, xx, c2, xx, f8, c3, xx, xx,
 					xx, g3, a8, a7, g8, d7, b4, d3, xx, xx, b6, f5, d2, g2, c4,
 					xx, xx, xx),
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"48b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"48b "+
 			// " +-----------------+"+
-			// "8| r Ê Ê Ê Ê D r Ê |"+
-			// "7| r Ê Ê r Ê Ê Ê Ê |"+
-			// "6| Ê c Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê c Ê Ê |"+
-			// "4| R r h Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê Ê Ê r e E Ê |"+
-			// "2| Ê D C d R R d R |"+
-			// "1| Ê Ê Ê Ê R Ê Ê R |"+
+			// "8| r ï¿½ ï¿½ ï¿½ ï¿½ D r ï¿½ |"+
+			// "7| r ï¿½ ï¿½ r ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ c ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ c ï¿½ ï¿½ |"+
+			// "4| R r h ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ ï¿½ ï¿½ r e E ï¿½ |"+
+			// "2| ï¿½ D C d R R d R |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ R ï¿½ ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
 			new Board(a4, e1, e2, f2, h1, h2, xx, xx, c2, xx, b2, f8, xx, xx,
 					xx, g3, a7, a8, b4, e3, g8, d7, xx, xx, b6, f5, g2, d2, c4,
 					xx, xx, f3),
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"20w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"20w "+
 			// " +-----------------+"+
-			// "8| r r Ê m h Ê r Ê |"+
-			// "7| r Ê M Ê Ê r Ê r |"+
-			// "6| r Ê Ê E Ê Ê Ê Ê |"+
-			// "5| Ê R Ê Ê Ê Ê Ê H |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê e |"+
-			// "3| D Ê Ê Ê C Ê Ê R |"+
-			// "2| Ê Ê H C Ê R Ê Ê |"+
-			// "1| R R R Ê Ê Ê R R |"+
+			// "8| r r ï¿½ m h ï¿½ r ï¿½ |"+
+			// "7| r ï¿½ M ï¿½ ï¿½ r ï¿½ r |"+
+			// "6| r ï¿½ ï¿½ E ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ H |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ e |"+
+			// "3| D ï¿½ ï¿½ ï¿½ C ï¿½ ï¿½ R |"+
+			// "2| ï¿½ ï¿½ H C ï¿½ R ï¿½ ï¿½ |"+
+			// "1| R R R ï¿½ ï¿½ ï¿½ R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
 			new Board(a1, b1, c1, b5, f2, g1, h1, h3, d2, e3, a3, xx, c2, h5,
 					c7, d6, a6, a7, a8, b8, f7, g8, h7, xx, xx, xx, xx, xx, e8,
 					xx, d8, h4),
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"16w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"16w "+
 			// " +-----------------+"+
-			// "8| Ê Ê e Ê Ê Ê Ê Ê |"+
-			// "7| R Ê Ê Ê Ê Ê Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê E Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê Ê R Ê Ê Ê Ê |"+
-			// "2| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "1| Ê Ê Ê Ê Ê Ê Ê Ê |"+
+			// "8| ï¿½ ï¿½ e ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ E ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "", // Endgame
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"16b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"16b "+
 			// " +-----------------+"+
-			// "8| Ê Ê e Ê Ê Ê Ê Ê |"+
-			// "7| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê E Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê Ê R Ê Ê Ê Ê |"+
-			// "2| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "1| Ê Ê Ê Ê Ê Ê Ê Ê |"+
+			// "8| ï¿½ ï¿½ e ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ E ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "", // Endgame
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"16w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"16w "+
 			// " +-----------------+"+
-			// "8| Ê Ê e Ê Ê Ê Ê Ê |"+
-			// "7| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê E Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "3| Ê Ê Ê R Ê Ê Ê Ê |"+
-			// "2| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "1| Ê Ê Ê Ê Ê Ê Ê Ê |"+
+			// "8| ï¿½ ï¿½ e ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ E ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "3| ï¿½ ï¿½ ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "", // Endgame
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"26b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"26b "+
 			// " +-----------------+"+
-			// "8| r r r r r Ê r r |"+
-			// "7| M E d h Ê Ê Ê Ê |"+
-			// "6| h D C c c Ê R H |"+
-			// "5| R R R R r m Ê e |"+
-			// "4| Ê Ê Ê Ê Ê Ê H R |"+
-			// "3| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê Ê Ê R Ê Ê Ê |"+
-			// "1| Ê Ê Ê Ê Ê Ê Ê Ê |"+
+			// "8| r r r r r ï¿½ r r |"+
+			// "7| M E d h ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| h D C c c ï¿½ R H |"+
+			// "5| R R R R r m ï¿½ e |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ H R |"+
+			// "3| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ ï¿½ R ï¿½ ï¿½ ï¿½ |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"46b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"46b "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "7| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê r Ê r Ê |"+
-			// "3| r Ê r Ê E Ê D r |"+
-			// "2| R M e R m Ê Ê R |"+
-			// "1| Ê h R Ê Ê Ê Ê Ê |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ r ï¿½ r ï¿½ |"+
+			// "3| r ï¿½ r ï¿½ E ï¿½ D r |"+
+			// "2| R M e R m ï¿½ ï¿½ R |"+
+			// "1| ï¿½ h R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"61w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"61w "+
 			// " +-----------------+"+
-			// "8| r H r Ê Ê Ê Ê Ê |"+
-			// "7| Ê m E Ê Ê Ê Ê Ê |"+
-			// "6| Ê r R d c Ê r Ê |"+
-			// "5| Ê R Ê R R Ê R r |"+
-			// "4| R D e R Ê r C r |"+
-			// "3| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "1| Ê Ê Ê Ê Ê Ê Ê Ê |"+
+			// "8| r H r ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| ï¿½ m E ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ r R d c ï¿½ r ï¿½ |"+
+			// "5| ï¿½ R ï¿½ R R ï¿½ R r |"+
+			// "4| R D e R ï¿½ r C r |"+
+			// "3| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"58b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"58b "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "7| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "4| Ê C Ê Ê Ê Ê M r |"+
-			// "3| R e r E Ê Ê Ê Ê |"+
-			// "2| Ê Ê D r r r Ê R |"+
-			// "1| Ê Ê R R R R R Ê |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "7| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ C ï¿½ ï¿½ ï¿½ ï¿½ M r |"+
+			// "3| R e r E ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ D r r r ï¿½ R |"+
+			// "1| ï¿½ ï¿½ R R R R R ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"40b "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"40b "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê r Ê r r |"+
-			// "7| r Ê Ê Ê Ê Ê Ê c |"+
-			// "6| Ê Ê Ê Ê D Ê Ê Ê |"+
-			// "5| Ê H Ê R Ê Ê Ê Ê |"+
-			// "4| Ê Ê Ê Ê Ê M Ê Ê |"+
-			// "3| Ê m Ê Ê Ê Ê Ê H |"+
-			// "2| Ê E e R Ê Ê Ê r |"+
-			// "1| Ê Ê Ê Ê Ê Ê R R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ r ï¿½ r r |"+
+			// "7| r ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ c |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ D ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ H ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ M ï¿½ ï¿½ |"+
+			// "3| ï¿½ m ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ H |"+
+			// "2| ï¿½ E e R ï¿½ ï¿½ ï¿½ r |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ R R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| r r Ê Ê r Ê H Ê |"+
-			// "7| Ê Ê c r R h Ê r |"+
-			// "6| Ê d Ê Ê Ê H R Ê |"+
-			// "5| Ê Ê Ê Ê Ê Ê e Ê |"+
-			// "4| Ê h E Ê Ê Ê r C |"+
-			// "3| Ê d R c Ê Ê R Ê |"+
-			// "2| Ê Ê R Ê Ê Ê Ê Ê |"+
-			// "1| Ê Ê Ê Ê Ê Ê Ê Ê |"+
+			// "8| r r ï¿½ ï¿½ r ï¿½ H ï¿½ |"+
+			// "7| ï¿½ ï¿½ c r R h ï¿½ r |"+
+			// "6| ï¿½ d ï¿½ ï¿½ ï¿½ H R ï¿½ |"+
+			// "5| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ e ï¿½ |"+
+			// "4| ï¿½ h E ï¿½ ï¿½ ï¿½ r C |"+
+			// "3| ï¿½ d R c ï¿½ ï¿½ R ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "1| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê E Ê M Ê C Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê H Ê D Ê |"+
-			// "4| Ê Ê Ê H Ê C Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ E ï¿½ M ï¿½ C ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ H ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ H ï¿½ C ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê E Ê H Ê C Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê H Ê D Ê |"+
-			// "4| Ê Ê Ê M Ê C Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ E ï¿½ H ï¿½ C ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ H ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ M ï¿½ C ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê C Ê H Ê E Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê H Ê D Ê |"+
-			// "4| Ê Ê Ê M Ê C Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ C ï¿½ H ï¿½ E ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ H ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ M ï¿½ C ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê C Ê H Ê E Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê H Ê D Ê |"+
-			// "4| Ê Ê Ê M Ê C Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ C ï¿½ H ï¿½ E ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ H ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ M ï¿½ C ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê C Ê H Ê E Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê M Ê D Ê |"+
-			// "4| Ê Ê Ê H Ê C Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ C ï¿½ H ï¿½ E ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ M ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ H ï¿½ C ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê C Ê H Ê E Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê M Ê D Ê |"+
-			// "4| Ê Ê Ê C Ê H Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ C ï¿½ H ï¿½ E ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ M ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ C ï¿½ H ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| Ê E Ê H Ê C Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê M Ê D Ê |"+
-			// "4| Ê Ê Ê C Ê H Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| ï¿½ E ï¿½ H ï¿½ C ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ M ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ C ï¿½ H ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
+			// " ï¿½ a b c d e f g h"+
 			// "",
-			// Ê Ê Ê Ê Ê Ê Ê Ê Ê"63w "+
+			// ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½"63w "+
 			// " +-----------------+"+
-			// "8| Ê Ê Ê Ê Ê Ê Ê r |"+
-			// "7| E Ê Ê H Ê C Ê Ê |"+
-			// "6| Ê Ê Ê Ê Ê Ê Ê Ê |"+
-			// "5| Ê Ê D Ê M Ê D Ê |"+
-			// "4| Ê Ê Ê C Ê H Ê Ê |"+
-			// "3| Ê R Ê Ê Ê Ê Ê Ê |"+
-			// "2| Ê Ê R Ê R Ê R Ê |"+
-			// "1| Ê R Ê R Ê R Ê R |"+
+			// "8| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ r |"+
+			// "7| E ï¿½ ï¿½ H ï¿½ C ï¿½ ï¿½ |"+
+			// "6| ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "5| ï¿½ ï¿½ D ï¿½ M ï¿½ D ï¿½ |"+
+			// "4| ï¿½ ï¿½ ï¿½ C ï¿½ H ï¿½ ï¿½ |"+
+			// "3| ï¿½ R ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ |"+
+			// "2| ï¿½ ï¿½ R ï¿½ R ï¿½ R ï¿½ |"+
+			// "1| ï¿½ R ï¿½ R ï¿½ R ï¿½ R |"+
 			// " +-----------------+"+
-			// " Ê a b c d e f g h"+
-			// "" Ê
+			// " ï¿½ a b c d e f g h"+
+			// "" ï¿½
 			new Board(b1, b3, c2, d1, e2, f1, g2, h1, d4, f7, c5, g5, f4, d7,
 					e5, a7, h8, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx,
 					xx, xx, xx),
-			new Board(b3, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx,
-					xx, d5, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx,
-					xx, xx, c8),
+			new Board(h6, a1, a2, b1, c1, f1, g1, h1, e1, d1, c2, f2, b2, g2,
+					e2, d2, a7, a8, b8, c8, f8, g8, h8, h7, e8, d8, c7, f7, b7,
+					g6, e7, d7),
 			new Board(a1, a2, b1, c1, f1, g1, h1, h2, c2, e2, g3, xx, b3, xx,
 					e1, d6, a8, a7, b8, c8, e8, f7, h7, b5, e7, xx, b6, g6, d7,
 					xx, c7, e6),
@@ -569,7 +569,7 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen2() throws Exception {
-		MoveTree tree = new MoveTree(boards[2], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[2], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[2], tree);
 		boards[2].print(System.out);
 		long time = System.currentTimeMillis();
@@ -581,7 +581,7 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen4() throws Exception {
-		MoveTree tree = new MoveTree(boards[4], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[4], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[4], tree);
 		boards[4].print(System.out);
 		long time = System.currentTimeMillis();
@@ -594,7 +594,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen3() throws Exception {
 		int index = 3;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -606,7 +606,7 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen5() throws Exception {
-		MoveTree tree = new MoveTree(boards[5], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[5], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[5], tree);
 		boards[5].print(System.out);
 		long time = System.currentTimeMillis();
@@ -618,7 +618,7 @@ public class MoveGenerationTests {
 
 	@Test
 	public void moveGen0() throws Exception {
-		MoveTree tree = new MoveTree(boards[0], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[0], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[0], tree);
 		boards[0].print(System.out);
 		long time = System.currentTimeMillis();
@@ -631,7 +631,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen1() throws Exception {
 
-		MoveTree tree = new MoveTree(boards[1], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[1], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[1], tree);
 
 		boards[1].print(System.out);
@@ -645,7 +645,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen6() throws Exception {
 		int index = 6;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -658,7 +658,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen7() throws Exception {
 		int index = 7;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -671,7 +671,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen8() throws Exception {
 		int index = 8;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -684,7 +684,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen9() throws Exception {
 		int index = 9;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -697,7 +697,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen10() throws Exception {
 		int index = 10;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -710,7 +710,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen11() throws Exception {
 		int index = 11;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -723,7 +723,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen12() throws Exception {
 		int index = 12;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -736,7 +736,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen13() throws Exception {
 		int index = 13;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -749,7 +749,7 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen14() throws Exception {
 		int index = 14;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
@@ -763,13 +763,27 @@ public class MoveGenerationTests {
 	@Test
 	public void moveGen15() throws Exception {
 		int index = 15;
-		MoveTree tree = new MoveTree(boards[index], new BaseEvaluator());
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
 		StepTree stepBuffer = new StepTree(boards[index], tree);
 		boards[index].print(System.out);
 		long time = System.currentTimeMillis();
 		stepBuffer.moveTree.searchForMoves(stepBuffer, true);
 		System.out.println("Time = " + (System.currentTimeMillis() - time));
 		int numMovesGenerated = tree.getFirstNumber();
+		assertEquals(correctMoveCount[31], numMovesGenerated);
+	}
+
+	@Test
+	public void moveGen16() throws Exception {
+		int index = 16;
+		MoveTree tree = new MoveTree(boards[index], new EmptyEvaluator());
+		StepTree stepBuffer = new StepTree(boards[index], tree);
+		boards[index].print(System.out);
+		long time = System.currentTimeMillis();
+		tree.searchForMoves(stepBuffer, false);
+		System.out.println("Time = " + (System.currentTimeMillis() - time));
+		int numMovesGenerated = tree.getFirstNumber();
+		tree.sortPly(0, tree.getFirstNumber(), IntTimSort.ASC_SORTER);
 		assertEquals(correctMoveCount[31], numMovesGenerated);
 	}
 

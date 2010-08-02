@@ -138,6 +138,10 @@ public class Piece {
 		}
 	}
 
+	public boolean isInDanger() {
+		return false; // if()
+	}
+
 	/**
 	 * @param count
 	 * @param potentialSteps2

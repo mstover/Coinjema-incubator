@@ -9,6 +9,8 @@
  */
 package com.coinjema.acronjema.logic;
 
+import java.util.StringTokenizer;
+
 /**
  * @author michaelstover
  * 
@@ -249,6 +251,76 @@ public class Move {
 		for (int i : getStepSequence(getSecondHalf(move))) {
 			System.out.println(i);
 		}
+	}
+
+	public static String toString(int move) {
+		StringBuilder out = new StringBuilder();
+		int[] seq = getStepSequence(getFirstHalf(move));
+		for (int i = 0; i < seq.length; i += 2) {
+			out.append(String.valueOf((char) ('a' + (seq[i] % 8)))
+					+ ((seq[i] / 8) + 1));
+			switch (seq[i] - seq[i + 1]) {
+			case 1:
+				out.append("w");
+				break;
+			case -1:
+				out.append("e");
+				break;
+			case 8:
+				out.append("s");
+				break;
+			case -8:
+				out.append("n");
+				break;
+			}
+			out.append(" ");
+		}
+		seq = getStepSequence(getSecondHalf(move));
+		for (int i = 0; i < seq.length; i += 2) {
+			out.append(String.valueOf((char) ('a' + (seq[i] % 8)))
+					+ ((seq[i] / 8) + 1));
+			switch (seq[i] - seq[i + 1]) {
+			case 1:
+				out.append("w");
+				break;
+			case -1:
+				out.append("e");
+				break;
+			case 8:
+				out.append("s");
+				break;
+			case -8:
+				out.append("n");
+				break;
+			}
+			out.append(" ");
+		}
+		return out.toString();
+	}
+
+	public static int parse(String instructions) {
+		StringTokenizer tokenizer = new StringTokenizer(instructions, " ,;");
+		int move = EMPTY_MOVE;
+		int remainingStepCount = 4;
+		while (tokenizer.hasMoreTokens()) {
+			String s = tokenizer.nextToken();
+
+			SquareDesignation sq = new SquareDesignation(s.substring(1, 3));
+			String dir = s.substring(3, 4);
+			int toIndex = sq.index;
+			if (dir.equals("e")) {
+				toIndex++;
+			} else if (dir.equals("w")) {
+				toIndex--;
+			} else if (dir.equals("n")) {
+				toIndex += 8;
+			} else {
+				toIndex -= 8;
+			}
+			move = appendSteps(move, getStep(sq.index, toIndex),
+					remainingStepCount--, 1);
+		}
+		return move;
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.coinjema.acronjema.logic;
 
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The tree structure is defined by:
@@ -22,6 +24,7 @@ public class MoveTree {
 	IntBuffer addressNextPly;
 	IntBuffer evaluations = IntBuffer.allocate(1000000);
 	LongSet duplicates = new LongSet();
+	List<long[]> permanentDups = new ArrayList<long[]>();
 	Evaluator evaluator;
 
 	private final Board board;
@@ -37,7 +40,7 @@ public class MoveTree {
 			moves.put(move);
 			evaluations.put(evaluator.evaluate(board));
 		} else {
-
+			evaluator.evaluate(board);
 		}
 
 	}
@@ -49,19 +52,23 @@ public class MoveTree {
 	public void rewind() {
 		moves.rewind();
 		evaluations.rewind();
+		duplicates.clear();
 	}
 
 	public void sortPly(int start, int end, MoveSorter c) {
 		IntTimSort.sort(evaluations.array(), start, end, c, moves.array());
-		System.out.println("After sorting, top move has evaluation of "
-				+ evaluations.get(0));
 	}
 
 	public void searchForMoves(StepTree stepTree, boolean gold) {
+		permanentDups.add(new long[] { board.getBoardHash(),
+				board.getBoardHash2() });
+		for (long[] pos : permanentDups) {
+			duplicates.add(pos[0], pos[1]);
+		}
 		stepTree.searchForMinSteps(gold, 0, 2, Move.EMPTY_MOVE);
 		int moveCount = getFirstNumber();
 		for (int i = 0; i < moveCount; i++) {
-			stepTree.clear();
+			stepTree.refresh();
 			int move = moves.get(i);
 			int diff = Move.getStepCountOfMove(move);
 			if (diff > 1) {

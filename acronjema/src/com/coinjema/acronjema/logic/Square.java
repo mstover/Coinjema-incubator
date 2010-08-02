@@ -19,13 +19,15 @@ public class Square {
 
 	int nextToTrap = -1;
 	public final Square[] adjacent;
+	public final Square[] twoAway;
 	protected Piece occupant;
 
 	public final int index;
 	public final Board board;
 
-	public Square(Board b, int index, int numAdj) {
+	public Square(Board b, int index, int numAdj, int numTwoAway) {
 		adjacent = new Square[numAdj];
+		twoAway = new Square[numTwoAway];
 		this.index = index;
 		this.board = b;
 	}
@@ -36,29 +38,40 @@ public class Square {
 		}
 	}
 
-	protected void fireOccupantChanged() {
-		fireTertiaryOccupantChanged();
-		for (Square s : adjacent) {
-			s.fireSecondaryOccupantChanged(this);
-		}
-	}
-
-	protected void fireSecondaryOccupantChanged(Square notS) {
-		if (fireTertiaryOccupantChanged()) {
-			for (Square s : adjacent) {
-				if (s != notS) {
-					s.fireTertiaryOccupantChanged();
+	public void init() {
+		int count = 0;
+		for (Square a : adjacent) {
+			for (Square s : a.adjacent) {
+				if (s != this && !contains(adjacent, s)
+						&& !contains(twoAway, s)) {
+					twoAway[count++] = s;
 				}
 			}
 		}
 	}
 
-	protected boolean fireTertiaryOccupantChanged() {
+	private boolean contains(Square[] adjacent2, Square s) {
+		for (Square test : adjacent2) {
+			if (s == test) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected void fireOccupantChanged() {
+		fireTertiaryOccupantChanged();
+		for (Square s : adjacent) {
+			s.fireTertiaryOccupantChanged();
+		}
+		for (Square s : twoAway) {
+			s.fireTertiaryOccupantChanged();
+		}
+	}
+
+	protected void fireTertiaryOccupantChanged() {
 		if (occupant != null) {
 			occupant.change();
-			return true;
-		} else {
-			return false;
 		}
 	}
 

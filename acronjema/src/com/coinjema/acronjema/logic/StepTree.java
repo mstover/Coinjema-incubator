@@ -68,8 +68,16 @@ public class StepTree implements StepBuffer {
 	}
 
 	public final Buffer clear() {
+		acceptDoubleMove = true;
 		curSize = 0;
+		duplicates.clear();
 		return steps.clear();
+	}
+
+	public void refresh() {
+		acceptDoubleMove = true;
+		curSize = 0;
+		steps.clear();
 	}
 
 	boolean traceon = false;
