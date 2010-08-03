@@ -15,15 +15,6 @@ public class Player {
 		gold = color;
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) throws Exception {
-		Player player = new Player(new Board(), true, new BaseEvaluator(
-				new BaseEvaluatorConfig()));
-		player.startUp();
-	}
-
 	public void startUp() throws Exception {
 		byte[] in = new byte[10];
 		for (int i = 0; i < 32; i++) {

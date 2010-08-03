@@ -79,16 +79,7 @@ public class Board {
 	}
 
 	public void addPiece(int strength, boolean gold, SquareDesignation desig) {
-		if (desig.index > -1) {
-			Piece occupant = new Piece(strength, gold);
-			pieces[pieceCount++] = occupant;
-			if (gold) {
-				goldPieces[goldPieceCount++] = occupant;
-			} else {
-				silverPieces[silverPieceCount++] = occupant;
-			}
-			squares[desig.index].setOccupant(occupant, false);
-		}
+		addPiece(strength, gold, desig.index);
 	}
 
 	/**
@@ -405,5 +396,27 @@ public class Board {
 	public void setWinner(boolean b) {
 		winner = b;
 
+	}
+
+	public void addPiece(int strength, boolean gold, int index) {
+		if (index > -1) {
+			Piece occupant = new Piece(strength, gold);
+			pieces[pieceCount++] = occupant;
+			if (gold) {
+				goldPieces[goldPieceCount++] = occupant;
+			} else {
+				silverPieces[silverPieceCount++] = occupant;
+			}
+			squares[index].setOccupant(occupant, false);
+		}
+
+	}
+
+	public Board copy() {
+		Board b = new Board();
+		for (Piece p : pieces) {
+			b.addPiece(p.strength, p.gold, p.square.index);
+		}
+		return b;
 	}
 }
