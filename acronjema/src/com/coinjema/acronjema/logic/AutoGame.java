@@ -50,10 +50,10 @@ public class AutoGame {
 			gamesPlayed++;
 		}
 		Collections.sort(evaluatorConfigs);
-		System.out.println("Played " + gamesPlayed + " games");
-		for (BaseEvaluatorConfig c : evaluatorConfigs) {
-			System.out.println(c.toString());
-		}
+		// System.out.println("Played " + gamesPlayed + " games");
+		// for (BaseEvaluatorConfig c : evaluatorConfigs) {
+		// System.out.println(c.toString());
+		// }
 
 	}
 
@@ -64,8 +64,8 @@ public class AutoGame {
 			boolean gold = (side == 0);
 			for (int i = 0; i < 8; i++) {
 				int count = rand.nextInt(16 - i);
-				for (int j = (gold ? 0 : 48); count >= 0
-						&& j < (gold ? 16 : 64); j++) {
+				for (int j = (gold ? 0 : 48); (count >= 0)
+						&& (j < (gold ? 16 : 64)); j++) {
 					if (b.squares[j].isEmpty()) {
 						if (count == 0) {
 							b.addPiece(getStrength(i), gold, j);
@@ -123,7 +123,7 @@ public class AutoGame {
 			Player silverPlayer) {
 		boolean turn = true;
 		int count = 0;
-		while (b.getWinner() == null && count < 200) {
+		while ((b.getWinner() == null) && (count < 200)) {
 			try {
 				int move = turn ? goldPlayer.findMoves() : silverPlayer
 						.findMoves();
@@ -131,6 +131,7 @@ public class AutoGame {
 				silverPlayer.executeMove(move);
 				turn = !turn;
 				count++;
+				b.print(System.out);
 			} catch (GameEndException e) {
 				b.setWinner(!turn);
 			}

@@ -25,6 +25,7 @@ public class StepTree implements StepBuffer {
 	public StepTree(Board b, MoveTree moveTree) {
 		this.board = b;
 		this.moveTree = moveTree;
+		System.out.println("Board = " + board);
 	}
 
 	public int get(int index) {

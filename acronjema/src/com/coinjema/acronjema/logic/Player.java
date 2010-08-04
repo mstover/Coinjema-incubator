@@ -3,16 +3,17 @@ package com.coinjema.acronjema.logic;
 import java.io.IOException;
 
 public class Player {
-	StepTree stepBuffer;
 	private final MoveTree tree;
 	Board b;
 	private boolean gold;
+	AlphaBetaThinker brain;
 
 	public Player(Board b, boolean color, Evaluator eval) {
 		this.tree = new MoveTree(b, eval);
 		this.b = b;
-		this.stepBuffer = new StepTree(b, tree);
 		gold = color;
+		brain = new AlphaBetaThinker(tree);
+
 	}
 
 	public void startUp() throws Exception {
@@ -136,21 +137,20 @@ public class Player {
 	}
 
 	public int findMoves() throws GameEndException {
-		stepBuffer.clear();
-		tree.rewind();
-		tree.searchForMoves(stepBuffer, gold);
+		return brain.inSearchOf(tree);
 		// sorter.sort(tree.moves, tree.moves.position(), b, gold);
-		if (tree.moves.position() == 0) {
-			throw new GameEndException();
-		}
-		tree.sortPly(0, tree.getFirstNumber(), gold ? IntTimSort.DESC_SORTER
-				: IntTimSort.ASC_SORTER);
-		return tree.moves.get(0);
+		// if (tree.moves.position() == 0) {
+		// throw new GameEndException();
+		// }
+		// tree.sortPly(0, tree.getFirstNumber(), gold ? IntTimSort.DESC_SORTER
+		// : IntTimSort.ASC_SORTER);
+		// return tree.moves.get(0);
 
 	}
 
 	public void executeMove(int move) {
 		b.executeMove(move);
+		brain.executeMove(move);
 
 	}
 

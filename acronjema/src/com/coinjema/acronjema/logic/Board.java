@@ -41,6 +41,8 @@ public class Board {
 	int stepCount = 0;
 	private Boolean winner;
 
+	public boolean currentTurn = true;
+
 	public Board() {
 		createSquares();
 	}
@@ -90,11 +92,11 @@ public class Board {
 		if ((i == 0) || (i == 7) || (i == 56) || (i == 63)) {
 			return new Square(this, i, 2, 3);
 		}
-		if (i == 1 || i == 8 || i == 6 || i == 15 || i == 48 || i == 57
-				|| i == 62 || i == 55) {
+		if ((i == 1) || (i == 8) || (i == 6) || (i == 15) || (i == 48)
+				|| (i == 57) || (i == 62) || (i == 55)) {
 			return new Square(this, i, 3, 4);
 		}
-		if (i == 9 || i == 14 || i == 49 || i == 54) {
+		if ((i == 9) || (i == 14) || (i == 49) || (i == 54)) {
 			return new Square(this, i, 4, 6);
 		}
 		if ((i % 8 == 0) || (i < 8) || ((i + 1) % 8 == 0) || (i > 56)) {
@@ -140,6 +142,7 @@ public class Board {
 	public void executeMove(int move) {
 		executeStep(Move.getFirstHalf(move), true);
 		executeStep(Move.getSecondHalf(move), true);
+		currentTurn = !currentTurn;
 	}
 
 	/**
@@ -331,6 +334,7 @@ public class Board {
 		try {
 			rewindSteps(Move.getSecondHalf(move), true);
 			rewindSteps(Move.getFirstHalf(move), true);
+			currentTurn = !currentTurn;
 		} catch (Exception e) {
 
 			Move.printStepsForMove(move);
@@ -415,7 +419,8 @@ public class Board {
 	public Board copy() {
 		Board b = new Board();
 		for (Piece p : pieces) {
-			b.addPiece(p.strength, p.gold, p.square.index);
+			b.addPiece(p.strength, p.gold, p.square != null ? p.square.index
+					: -1);
 		}
 		return b;
 	}
