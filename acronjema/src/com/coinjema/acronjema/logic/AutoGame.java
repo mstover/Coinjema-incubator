@@ -48,7 +48,7 @@ public class AutoGame {
 					config1.loss();
 				}
 			}
-			System.out.println("Game ended ");
+			System.out.println("Game ended winner was " + b.getWinner());
 			b.print(System.out);
 			gamesPlayed++;
 		}

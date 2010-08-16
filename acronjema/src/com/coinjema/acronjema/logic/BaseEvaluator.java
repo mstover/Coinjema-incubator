@@ -84,6 +84,9 @@ public class BaseEvaluator implements Evaluator {
 
 	@Override
 	public int evaluate(Board board) {
+		if (board.getWinner() != null) {
+			return board.getWinner() ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+		}
 		adjTrapPieceValue = 0;
 		int sum = 0;
 		buffer.steps.clear();

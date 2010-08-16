@@ -149,6 +149,7 @@ public class Board {
 	public int executeMoveIfLegal(int move, Evaluator eval, int currentEval,
 			boolean goldEval) {
 		boolean turn = currentTurn;
+		int stack = hashStack;
 		long hash1 = getBoardHash();
 		long hash2 = getBoardHash2();
 		boolean legal = true;
@@ -218,7 +219,6 @@ public class Board {
 		}
 		if (legal) {
 			int newEval = eval.evaluate(this);
-			int stack = hashStack;
 			rewindMove(move);
 			hashStack = stack;
 			makeNewHash = true;
@@ -238,6 +238,7 @@ public class Board {
 				i -= 2;
 			}
 			currentTurn = turn;
+			hashStack = stack;
 			return currentEval;
 		}
 
@@ -457,6 +458,7 @@ public class Board {
 		reviveTraps(notify);
 		squares[seq[1]].moveOccupantTo(squares[seq[0]], notify);
 		hashStack--;
+		winner = null;
 	}
 
 	public Boolean getWinner() {

@@ -122,6 +122,13 @@ public class AlphaBetaThinker {
 				thinkers[i].sortAndSend();
 			}
 			tree.sortDirtyPlys();
+			if (tree.board.currentTurn) {
+				if (tree.evaluations.get(0) == Integer.MAX_VALUE) {
+					break;
+				}
+			} else if (tree.evaluations.get(0) == Integer.MIN_VALUE) {
+				break;
+			}
 			count++;
 			if (count % 100 == 0) {
 				System.out.println("number of moves found = " + tree.next
@@ -135,7 +142,7 @@ public class AlphaBetaThinker {
 		}
 		System.out.println("Seaching 2 ply took "
 				+ (System.currentTimeMillis() - time) + " ms and " + tree.next
-				+ " positions");
+				+ " positions.  Score = " + tree.evaluations.get(0));
 		return tree.moves.get(0);
 	}
 
