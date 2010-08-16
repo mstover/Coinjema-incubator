@@ -8,4 +8,14 @@ public class EmptyEvaluator implements Evaluator {
 		return 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.coinjema.acronjema.logic.Evaluator#copy()
+	 */
+	@Override
+	public Evaluator copy() {
+		return this;
+	}
+
 }

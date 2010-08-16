@@ -14,8 +14,8 @@ import java.util.TreeSet;
  * 
  * [x,x+1] long giving step, int pointing to tree branch after given step
  * 
- * Each branched position requires 12 bytes per legal move. Say average of
- * 20,000 moves per ply, that requires 240,000 bytes p
+ * Each branched position requires 12 bytes per legal moveService. Say average
+ * of 20,000 moves per ply, that requires 240,000 bytes p
  * 
  * @author michael
  * 
@@ -34,11 +34,13 @@ public class MoveTree {
 	int next = 0;
 	StepTree stepTree;
 	SortedSet<Ply> dirtyPlys = new TreeSet<Ply>();
+	private Move moveService = new Move();
 
 	final Board board;
 
 	public MoveTree(Board b, Evaluator evaluator) {
-		this(b, evaluator, 25000000);
+		this(b, evaluator, 200000000);
+		System.out.println("Making really big move tree");
 	}
 
 	protected MoveTree(Board b, Evaluator evaluator, int size) {
@@ -47,8 +49,8 @@ public class MoveTree {
 		this.evaluator = evaluator;
 		moves = IntBuffer.allocate(size);
 		evaluations = IntBuffer.allocate(size);
-		addressNextPly = IntBuffer.allocate(size / 2);
-		moveCountNextPly = IntBuffer.allocate(size / 2);
+		addressNextPly = IntBuffer.allocate(size / 5);
+		moveCountNextPly = IntBuffer.allocate(size / 5);
 		stepTree = new StepTree(board, this);
 
 	}
@@ -76,8 +78,8 @@ public class MoveTree {
 	 * @return
 	 */
 	public ChildMoveTree spawn() {
-		ChildMoveTree tree = new ChildMoveTree(this, board.copy(), evaluator,
-				500000);
+		ChildMoveTree tree = new ChildMoveTree(this, board.copy(),
+				evaluator.copy(), 1000000);
 		return tree;
 	}
 
@@ -101,15 +103,37 @@ public class MoveTree {
 		for (int i : trail.indexes) {
 			dirtyPlys.add(new Ply(depth++, i));
 		}
+		applyKillerMove(trail.nextTurn, moveSrc.get(0), evalSrc.get(0));
+	}
 
+	/**
+	 * @param nextTurn
+	 * @param i
+	 */
+	private void applyKillerMove(boolean nextTurn, int move, int threshhold) {
+		for (int i = 0; i < sizeOfFirstPly; i++) {
+			// if (evaluations.get(i) < threshhold) {
+			// break;
+			// }
+			if (addressNextPly.get(i) == 0) {
+				board.executeMove(moves.get(i));
+				evaluations.put(
+						i,
+						board.executeMoveIfLegal(move, evaluator,
+								evaluations.get(i), nextTurn));
+				board.rewindMove(moves.get(i));
+			}
+		}
 	}
 
 	public void rewind() {
-		System.out.println("Rewinding " + this);
-		moves.rewind();
-		evaluations.rewind();
-		addressNextPly.rewind();
-		moveCountNextPly.rewind();
+		moves.clear();
+		evaluations.clear();
+		for (int i = 0; i < addressNextPly.capacity(); i++) {
+			addressNextPly.put(i, 0);
+		}
+		addressNextPly.clear();
+		moveCountNextPly.clear();
 		duplicates.clear();
 		currentPosition = 0;
 		next = 0;
@@ -118,23 +142,29 @@ public class MoveTree {
 	}
 
 	public void sortPly(int start, int end, MoveSorter c) {
-		IntTimSort.sort(evaluations.array(), start, end, c, moves.array(),
-				addressNextPly.array(), moveCountNextPly.array());
+		if ((end < addressNextPly.capacity())) {
+			if (end >= 5000000) {
+				System.out.println("End = " + end + " capacity = "
+						+ addressNextPly.capacity());
+			}
+			IntTimSort.sort(evaluations.array(), start, end, c, moves.array(),
+					addressNextPly.array(), moveCountNextPly.array());
+		} else {
+			IntTimSort.sort(evaluations.array(), start, end, c, moves.array());
+
+		}
 	}
 
 	public void searchForMoves(boolean gold) {
 		stepTree.clear();
 		preservePosition();
-		System.out.println("Starting step search");
-		board.print(System.out);
-		stepTree.searchForMinSteps(gold, 0, 2, Move.EMPTY_MOVE);
-		System.out.println("Ending half of step search");
-		board.print(System.out);
-		int moveCount = getFirstNumber();
+		int moveCount = 0;
+		stepTree.searchForMinSteps(gold, 0, 2, moveService.EMPTY_MOVE);
+		moveCount = getFirstNumber();
 		for (int i = 0; i < moveCount; i++) {
 			stepTree.refresh();
 			int move = moves.get(i);
-			int diff = Move.getStepCountOfMove(move);
+			int diff = moveService.getStepCountOfMove(move);
 			if (diff > 1) {
 				board.executeMove(move);
 				stepTree.searchForSteps(gold, 4 - diff, move);
@@ -159,15 +189,14 @@ public class MoveTree {
 		int moveCount = 0;
 		List<Integer> trail = new LinkedList<Integer>();
 		while (i > -1) {
-			if (addressNextPly.get(moveCount) == 0) {
+			if ((moveCount >= addressNextPly.capacity())
+					|| (addressNextPly.get(moveCount) == 0)) {
 				if (i > 0) {
 					i--;
 					moveCount++;
 					// if we have thousands of processors, this might break;
 				} else {
 					i--;
-					System.out.println("Addming move " + moves.get(moveCount)
-							+ " to trail");
 					trail.add(moveCount);
 				}
 			} else {
@@ -185,7 +214,8 @@ public class MoveTree {
 	public void sortDirtyPlys() {
 		int depth = dirtyPlys.first().depth;
 		for (Ply plySet : dirtyPlys) {
-			if (depth != plySet.depth) {
+			if ((depth != plySet.depth) && (plySet.depth > 0)) {
+
 				sortPly(addressNextPly.get(plySet.index),
 						addressNextPly.get(plySet.index)
 								+ moveCountNextPly.get(plySet.index),
@@ -272,5 +302,17 @@ public class MoveTree {
 		private MoveTree getOuterType() {
 			return MoveTree.this;
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public int getBestCalculatedIndex() {
+		for (int i = 0; i < sizeOfFirstPly; i++) {
+			if (addressNextPly.get(i) > 0) {
+				return i;
+			}
+		}
+		return sizeOfFirstPly - 1;
 	}
 }

@@ -53,8 +53,8 @@ public class Move {
 
 	public final static int EMPTY_MOVE = 2 | 2 << 8 | 2 << 16 | 2 << 24;
 
-	private final static int[] singleSeq = new int[2];
-	private final static int[] doubleSeq = new int[4];
+	private final int[] singleSeq = new int[2];
+	private final int[] doubleSeq = new int[4];
 
 	private final static int UP = 0;
 	private final static int DOWN = 1;
@@ -66,7 +66,7 @@ public class Move {
 	 * @param s
 	 * @return
 	 */
-	public static int getStep(Square from, Square to) {
+	public int getStep(Square from, Square to) {
 		int move = (from.index << 2) | EMPTY_SECOND_MOVE
 				| getDirection(from.index, to.index);
 
@@ -74,7 +74,7 @@ public class Move {
 
 	}
 
-	public static int getStep(int from, int to) {
+	public int getStep(int from, int to) {
 		int move = (from << 2) | EMPTY_SECOND_MOVE | getDirection(from, to);
 
 		return move;
@@ -86,7 +86,7 @@ public class Move {
 	 * @param s
 	 * @return
 	 */
-	private static int getSubStep(Square from, Square to) {
+	private int getSubStep(Square from, Square to) {
 		int move = from.index << 2;
 		move = move | getDirection(from.index, to.index);
 
@@ -100,7 +100,7 @@ public class Move {
 	 * @param pushTo
 	 * @return
 	 */
-	public static int getPushStep(Square me, Square other, Square pushTo) {
+	public int getPushStep(Square me, Square other, Square pushTo) {
 		int move = getSubStep(other, pushTo);
 		move = (getSubStep(me, other) << 8) | move;
 		return move;
@@ -112,17 +112,60 @@ public class Move {
 	 * @param pullTo
 	 * @return
 	 */
-	public static int getPullStep(Square me, Square other, Square pullTo) {
+	public int getPullStep(Square me, Square other, Square pullTo) {
 		int move = getSubStep(me, pullTo);
 		move = (getSubStep(other, me) << 8) | move;
 		return move;
+	}
+
+	private int[] allSteps = new int[8];
+
+	public int[] getWholeMoveStepSequence(int move) {
+		int[] one = getStepSequence(getFirstHalf(move));
+		allSteps[0] = one[0];
+		allSteps[1] = one[1];
+		if (one.length == 4) {
+			allSteps[2] = one[2];
+			allSteps[3] = one[3];
+			int[] two = getStepSequence(getSecondHalf(move));
+			allSteps[4] = two[0];
+			allSteps[5] = two[1];
+			if (two.length == 4) {
+				allSteps[6] = two[2];
+				allSteps[7] = two[3];
+			} else {
+				allSteps[6] = -1;
+				allSteps[7] = -1;
+			}
+		} else {
+			allSteps[2] = -1;
+			allSteps[3] = -1;
+			allSteps[4] = -1;
+			allSteps[5] = -1;
+			allSteps[6] = -1;
+			allSteps[7] = -1;
+		}
+		return allSteps;
+	}
+
+	/**
+	 * @param one
+	 * @return
+	 */
+	private String toString(int[] one) {
+		StringBuilder buf = new StringBuilder(String.valueOf(one[0]));
+		for (int i = 1; i < one.length; i++) {
+			buf.append(", ");
+			buf.append(one[i]);
+		}
+		return buf.toString();
 	}
 
 	/**
 	 * @param move
 	 * @return
 	 */
-	public static int[] getStepSequence(int move) {
+	public int[] getStepSequence(int move) {
 		int[] seq;
 		if (move >>> 8 != 2) {
 			seq = doubleSeq;
@@ -136,7 +179,7 @@ public class Move {
 		return seq;
 	}
 
-	private static int resolveDirection(int i) {
+	private int resolveDirection(int i) {
 		switch (i) {
 		case UP:
 			return 8;
@@ -150,11 +193,11 @@ public class Move {
 		throw new RuntimeException("Bad direction hash " + i);
 	}
 
-	public static int getStepCount(int step) {
+	public int getStepCount(int step) {
 		return step >>> 8 == 2 ? 1 : 2;
 	}
 
-	public static int getStepCountOfMove(int move) {
+	public int getStepCountOfMove(int move) {
 		if ((move & (~CLEAR_MOVE[0])) != (2 << 24)) {
 			return 4;
 		} else if ((move & (~CLEAR_MOVE[1])) != (2 << 16)) {
@@ -166,7 +209,7 @@ public class Move {
 		}
 	}
 
-	private static int getDirection(int from, int to) {
+	private int getDirection(int from, int to) {
 		switch (from - to) {
 		case 1:
 			return LEFT;
@@ -182,23 +225,13 @@ public class Move {
 	}
 
 	public static void main(String[] args) {
-
-		int[] steps = new int[] { getStep(63, 62), getStep(63, 62),
-				getStep(63, 62), getStep(63, 62) };
-		int move = appendSteps(EMPTY_MOVE, steps[0], 4, 1);
-		move = appendSteps(move, steps[1], 3, 1);
-		move = appendSteps(move, steps[2], 2, 1);
-		move = appendSteps(move, steps[3], 1, 1);
-		System.out.println("move = " + move);
+		Move m = new Move();
+		int[] steps = m.getStepSequence(m.getSecondHalf(33727425));
+		System.out.println("Number of steps = " + steps.length);
 		for (int i : steps) {
-			System.out.println("Steps = " + i);
+			System.out.println("Step = " + i);
 		}
-		for (int i : getStepSequence(getFirstHalf(move))) {
-			System.out.println("move = " + i);
-		}
-		for (int i : getStepSequence(getSecondHalf(move))) {
-			System.out.println("move = " + i);
-		}
+
 	}
 
 	/**
@@ -207,8 +240,8 @@ public class Move {
 	 * @param remainingStepCount
 	 * @return
 	 */
-	public static int appendSteps(int wholeMove, int move,
-			int remainingStepCount, int numSteps) {
+	public int appendSteps(int wholeMove, int move, int remainingStepCount,
+			int numSteps) {
 		int tmp = wholeMove & CLEAR_MOVE[remainingStepCount - 1];
 		if (numSteps == 2) {
 			tmp = tmp & CLEAR_MOVE[remainingStepCount - 2];
@@ -220,15 +253,20 @@ public class Move {
 	 * @param move
 	 * @return
 	 */
-	public static int getFirstHalf(int move) {
+	public int getFirstHalf(int move) {
 		return move & CLEAR_MOVE[0] & CLEAR_MOVE[1];
+	}
+
+	public int getFirstQuarter(int move) {
+		return (move & CLEAR_MOVE[0] & CLEAR_MOVE[1] & CLEAR_MOVE[2])
+				| EMPTY_SECOND_MOVE;
 	}
 
 	/**
 	 * @param move
 	 * @return
 	 */
-	public static int getSecondHalf(int move) {
+	public int getSecondHalf(int move) {
 		return move >>> 16;
 	}
 
@@ -236,14 +274,14 @@ public class Move {
 	 * @param step
 	 * @return
 	 */
-	public static boolean isNullMove(int step) {
+	public boolean isNullMove(int step) {
 		return (step & CLEAR_MOVE[2]) == 2;
 	}
 
 	/**
 	 * @param move
 	 */
-	public static void printStepsForMove(int move) {
+	public void printStepsForMove(int move) {
 		System.out.println("Move = " + move);
 		for (int i : getStepSequence(getFirstHalf(move))) {
 			System.out.println(i);
@@ -253,7 +291,7 @@ public class Move {
 		}
 	}
 
-	public static String toString(int move) {
+	public String toString(int move) {
 		StringBuilder out = new StringBuilder();
 		int[] seq = getStepSequence(getFirstHalf(move));
 		for (int i = 0; i < seq.length; i += 2) {
@@ -298,7 +336,7 @@ public class Move {
 		return out.toString();
 	}
 
-	public static int parse(String instructions) {
+	public int parse(String instructions) {
 		StringTokenizer tokenizer = new StringTokenizer(instructions, " ,;");
 		int move = EMPTY_MOVE;
 		int remainingStepCount = 4;

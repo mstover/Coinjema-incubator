@@ -9,7 +9,6 @@
  */
 package com.coinjema.acronjema.logic;
 
-
 /**
  * @author michaelstover
  * 
@@ -166,39 +165,49 @@ public class IntTimSort {
 		sort(a, 0, a.length, c, shadowArrs);
 	}
 
-	static void sort(int[] a, int lo, int hi, MoveSorter c, int[]... shadowArrs) {
+	static void sort(int[] a, final int origlo, final int orighi, MoveSorter c,
+			int[]... shadowArrs) {
 		if (c == null) {
 			c = ASC_SORTER;
 		}
 
-		int nRemaining = hi - lo;
-
+		int nRemaining = orighi - origlo;
+		int lo = origlo;
+		int hi = orighi;
 		/**
 		 * March over the array once, left to right, finding natural runs,
 		 * extending short natural runs to minRun elements, and merging runs to
 		 * maintain stack invariant.
 		 */
 		IntTimSort ts = new IntTimSort(a, c, shadowArrs);
-		int minRun = minRunLength(nRemaining);
-		do {
-			// Identify next run
-			int runLen = countRunAndMakeAscending(a, lo, hi, c, shadowArrs);
+		try {
+			int minRun = minRunLength(nRemaining);
+			do {
+				// Identify next run
+				int runLen = countRunAndMakeAscending(a, lo, hi, c, shadowArrs);
 
-			// If run is short, extend to min(minRun, nRemaining)
-			if (runLen < minRun) {
-				int force = nRemaining <= minRun ? nRemaining : minRun;
-				binarySort(a, lo, lo + force, lo + runLen, c, shadowArrs);
-				runLen = force;
+				// If run is short, extend to min(minRun, nRemaining)
+				if (runLen < minRun) {
+					int force = nRemaining <= minRun ? nRemaining : minRun;
+					binarySort(a, lo, lo + force, lo + runLen, c, shadowArrs);
+					runLen = force;
+				}
+
+				// Push run onto pending-run stack, and maybe merge
+				ts.pushRun(lo, runLen);
+				ts.mergeCollapse();
+
+				// Advance to find next run
+				lo += runLen;
+				nRemaining -= runLen;
+			} while (nRemaining != 0);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("lo = " + lo + " hi = " + hi);
+			for (int[] s : shadowArrs) {
+				System.out.println("shadow length = " + s.length);
 			}
-
-			// Push run onto pending-run stack, and maybe merge
-			ts.pushRun(lo, runLen);
-			ts.mergeCollapse();
-
-			// Advance to find next run
-			lo += runLen;
-			nRemaining -= runLen;
-		} while (nRemaining != 0);
+			throw e;
+		}
 
 		// Merge all remaining runs to complete sort
 		assert lo == hi;
@@ -820,8 +829,14 @@ public class IntTimSort {
 				if (count2 != 0) {
 					System.arraycopy(a, cursor2, a, dest, count2);
 					for (int i = 0; i < shadows.length; i++) {
-						System.arraycopy(shadows[i], cursor2, shadows[i], dest,
-								count2);
+						try {
+							System.arraycopy(shadows[i], cursor2, shadows[i],
+									dest, count2);
+						} catch (ArrayIndexOutOfBoundsException e) {
+							System.out.println("trying to copy from " + cursor2
+									+ " to " + dest + " len =" + count2);
+							throw e;
+						}
 					}
 					dest += count2;
 					cursor2 += count2;

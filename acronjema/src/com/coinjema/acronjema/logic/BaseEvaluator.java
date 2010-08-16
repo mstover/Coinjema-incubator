@@ -43,6 +43,7 @@ public class BaseEvaluator implements Evaluator {
 	private final int winValue;
 	private final int rabbitRowMult;
 	private final int numMovesMult;
+	private BaseEvaluatorConfig config;
 
 	/*
 	 * (non-Javadoc)
@@ -56,6 +57,7 @@ public class BaseEvaluator implements Evaluator {
 	 */
 	public BaseEvaluator(BaseEvaluatorConfig config) {
 		super();
+		this.config = config;
 		this.frozenMult = config.frozenMult;
 		this.dominationMult = config.dominationMult;
 		this.dominationValue = config.dominationValue;
@@ -68,6 +70,16 @@ public class BaseEvaluator implements Evaluator {
 		this.rabbitRowMult = config.rabbitRowMult;
 		this.numMovesMult = config.numMovesMult;
 		buffer = new EvaluatorBuffer();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.coinjema.acronjema.logic.Evaluator#copy()
+	 */
+	@Override
+	public Evaluator copy() {
+		return new BaseEvaluator(config);
 	}
 
 	@Override

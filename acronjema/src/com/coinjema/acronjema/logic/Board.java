@@ -18,6 +18,7 @@ import java.io.PrintStream;
 public class Board {
 	private final static int FIRST_STEPS = Integer.MAX_VALUE >>> 16;
 	private final static long SECOND_STEPS = FIRST_STEPS << 16;
+	private Move moveService = new Move();
 
 	long[] boardHashes = new long[20];
 
@@ -36,7 +37,7 @@ public class Board {
 
 	int silverPieceCount = 0;
 	final Piece[] silverPieces = new Piece[16];
-	Square[] squares = new Square[64];
+	final Square[] squares = new Square[64];
 
 	int stepCount = 0;
 	private Boolean winner;
@@ -140,19 +141,116 @@ public class Board {
 	 * @param move
 	 */
 	public void executeMove(int move) {
-		executeStep(Move.getFirstHalf(move), true);
-		executeStep(Move.getSecondHalf(move), true);
+		executeStep(moveService.getFirstHalf(move), true);
+		executeStep(moveService.getSecondHalf(move), true);
 		currentTurn = !currentTurn;
+	}
+
+	public int executeMoveIfLegal(int move, Evaluator eval, int currentEval,
+			boolean goldEval) {
+		boolean turn = currentTurn;
+		long hash1 = getBoardHash();
+		long hash2 = getBoardHash2();
+		boolean legal = true;
+		final int[] steps = moveService.getWholeMoveStepSequence(move);
+		int i = 0;
+		while (legal && (i < 8)) {
+			if ((steps[i] < 0) || (steps[i + 1] < 0)) {
+				if (i == 0) {
+					legal = false;
+				}
+				break;
+			}
+			if (squares[steps[i]].isEmpty()) {
+				legal = false;
+				break;
+			} else if ((i < 6)
+					&& (steps[i + 3] == steps[i])
+					&& !squares[steps[i + 2]].isEmpty()
+					&& (squares[steps[i]].occupant.gold != squares[steps[i + 2]].occupant.gold)) {
+				if (squares[steps[i + 1]].isEmpty()) { // opening available
+					if (squares[steps[i]].occupant.gold == goldEval) { // pull
+						if ((squares[steps[i]].occupant.strength > squares[steps[i + 2]].occupant.strength)
+								&& !squares[steps[i]].occupant.isFrozen()) {
+							squares[steps[i]].moveOccupantTo(
+									squares[steps[i + 1]], true);
+							killTraps(steps[i], steps[i + 1], true);
+							squares[steps[i + 2]].moveOccupantTo(
+									squares[steps[i + 3]], true);
+							killTraps(steps[i + 2], steps[i + 3], true);
+							i += 4;
+						} else {
+							legal = false;
+							break;
+						}
+					} else { // push move
+						if ((squares[steps[i + 2]].occupant.strength > squares[steps[i]].occupant.strength)
+								&& !squares[steps[i + 2]].occupant.isFrozen()) {
+							squares[steps[i]].moveOccupantTo(
+									squares[steps[i + 1]], true);
+							killTraps(steps[i], steps[i + 1], true);
+							squares[steps[i + 2]].moveOccupantTo(
+									squares[steps[i + 3]], true);
+							killTraps(steps[i + 2], steps[i + 3], true);
+							i += 4;
+						} else {
+							legal = false;
+							break;
+						}
+					}
+				} else {
+					legal = false;
+					break;
+				}
+			} else { // simple step
+				if ((squares[steps[i]].occupant.gold == goldEval)
+						&& !squares[steps[i]].occupant.isFrozen()
+						&& squares[steps[i + 1]].isEmpty()) {
+					squares[steps[i]].moveOccupantTo(squares[steps[i + 1]],
+							true);
+					killTraps(steps[i], steps[i + 1], true);
+					i += 2;
+				} else {
+					legal = false;
+					break;
+				}
+			}
+		}
+		if (legal) {
+			int newEval = eval.evaluate(this);
+			int stack = hashStack;
+			rewindMove(move);
+			hashStack = stack;
+			makeNewHash = true;
+			makeNewHash2 = true;
+			if ((hash1 != getBoardHash()) || (hash2 != getBoardHash2())) {
+				System.out.println("Bad finding legal move");
+				throw new RuntimeException("Bad finding legal move");
+			}
+			currentTurn = turn;
+			return goldEval ? Math.max(currentEval, newEval) : Math.min(
+					currentEval, newEval);
+		} else {
+			i -= 2;
+			while (i >= 0) {
+				reviveTraps(true);
+				squares[steps[i + 1]].moveOccupantTo(squares[steps[i]], true);
+				i -= 2;
+			}
+			currentTurn = turn;
+			return currentEval;
+		}
+
 	}
 
 	/**
 	 * @param step
 	 */
 	public void executeStep(int step, boolean notify) {
-		if (Move.isNullMove(step)) {
+		if (moveService.isNullMove(step)) {
 			return;
 		}
-		int[] seq = Move.getStepSequence(step);
+		int[] seq = moveService.getStepSequence(step);
 		squares[seq[0]].moveOccupantTo(squares[seq[1]], notify);
 		killTraps(seq[0], seq[1], notify);
 		if (seq.length == 4) {
@@ -332,12 +430,12 @@ public class Board {
 
 	public void rewindMove(int move) {
 		try {
-			rewindSteps(Move.getSecondHalf(move), true);
-			rewindSteps(Move.getFirstHalf(move), true);
+			rewindSteps(moveService.getSecondHalf(move), true);
+			rewindSteps(moveService.getFirstHalf(move), true);
 			currentTurn = !currentTurn;
 		} catch (Exception e) {
 
-			Move.printStepsForMove(move);
+			moveService.printStepsForMove(move);
 			print(System.out);
 			e.printStackTrace();
 			System.exit(0);
@@ -348,10 +446,10 @@ public class Board {
 	 * @param move
 	 */
 	public void rewindSteps(int move, boolean notify) {
-		if (Move.isNullMove(move)) {
+		if (moveService.isNullMove(move)) {
 			return;
 		}
-		int[] seq = Move.getStepSequence(move);
+		int[] seq = moveService.getStepSequence(move);
 		if (seq.length == 4) {
 			reviveTraps(notify);
 			squares[seq[3]].moveOccupantTo(squares[seq[2]], notify);

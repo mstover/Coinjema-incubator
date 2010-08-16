@@ -9,7 +9,6 @@
  */
 package com.coinjema.acronjema.logic;
 
-
 /**
  * @author michaelstover
  * 
@@ -21,5 +20,10 @@ public interface Evaluator {
 	 * @return
 	 */
 	int evaluate(Board board);
+
+	/**
+	 * @return
+	 */
+	Evaluator copy();
 
 }

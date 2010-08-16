@@ -10,8 +10,6 @@
 package com.coinjema.acronjema.logic;
 
 import java.io.PrintStream;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author michaelstover
@@ -39,10 +37,9 @@ public class Piece {
 	public final static int ELEPHANT = 6;
 
 	protected static final int[] NO_STEPS = new int[0];
+	private Move moveService = new Move();
 
 	private final int[] potentialSteps = new int[24];
-
-	private final Set<Square> watching = new HashSet<Square>();
 
 	public final int strength;
 	public final boolean gold;
@@ -156,16 +153,16 @@ public class Piece {
 					for (Square pushTo : s.adjacent) {
 						if (pushTo != square) {
 							if (pushTo.isEmpty()) {
-								temp[count + subCount] = Move.getPushStep(
-										square, s, pushTo);
+								temp[count + subCount] = moveService
+										.getPushStep(square, s, pushTo);
 								subCount++;
 							}
 						}
 					}
 					for (Square pullTo : square.adjacent) {
 						if ((pullTo != s) && pullTo.isEmpty()) {
-							temp[count + subCount] = Move.getPullStep(square,
-									s, pullTo);
+							temp[count + subCount] = moveService.getPullStep(
+									square, s, pullTo);
 							subCount++;
 						}
 					}
@@ -185,7 +182,7 @@ public class Piece {
 				if ((strength != Piece.RABBIT)
 						|| (gold && (s.index > square.index - 8))
 						|| (!gold && (s.index < square.index + 8))) {
-					temp[count + subCount] = Move.getStep(square, s);
+					temp[count + subCount] = moveService.getStep(square, s);
 					subCount++;
 				}
 			}

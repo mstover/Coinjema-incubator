@@ -7,10 +7,11 @@ public class Player {
 	Board b;
 	private boolean gold;
 	AlphaBetaThinker brain;
+	private Move moveService = new Move();
 
-	public Player(Board b, boolean color, Evaluator eval) {
-		this.tree = new MoveTree(b, eval);
-		this.b = b;
+	public Player(MoveTree tree, boolean color) {
+		this.tree = tree;
+		this.b = tree.board;
 		gold = color;
 		brain = new AlphaBetaThinker(tree);
 
@@ -92,7 +93,7 @@ public class Player {
 					int move = findMoves();
 					b.executeMove(move);
 					System.out.println("Move " + (count++) + (turn ? "g" : "s")
-							+ ": " + Move.toString(move));
+							+ ": " + moveService.toString(move));
 					b.print(System.out);
 					turn = !turn;
 				} catch (GameEndException e) {
@@ -108,11 +109,11 @@ public class Player {
 						System.out.print("Come again? ");
 					}
 				}
-				int move = Move.parse(instructions);
+				int move = moveService.parse(instructions);
 
 				b.executeMove(move);
 				System.out.println("Move " + move + (turn ? "g" : "s") + ": "
-						+ Move.toString(move));
+						+ moveService.toString(move));
 				b.print(System.out);
 				turn = !turn;
 			}
@@ -149,7 +150,6 @@ public class Player {
 	}
 
 	public void executeMove(int move) {
-		b.executeMove(move);
 		brain.executeMove(move);
 
 	}

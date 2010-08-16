@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class AutoGame {
 
+	public static Object GLOBAL_SYNC = new Object();
+
 	/**
 	 * @param args
 	 * @throws IOException
@@ -26,13 +28,14 @@ public class AutoGame {
 			Board b = makeRandomBoard();
 			b.print(System.out);
 			Board bb = b.copy();
-			BaseEvaluatorConfig config1 = chooseConfig(evaluatorConfigs);
-			BaseEvaluatorConfig config2 = chooseConfig(evaluatorConfigs,
-					config1);
-
-			Player goldPlayer = new Player(b, true, new BaseEvaluator(config1));
-			Player silverPlayer = new Player(bb, false, new BaseEvaluator(
-					config2));
+			pool.cull(evaluatorConfigs);
+			BaseEvaluatorConfig config1 = evaluatorConfigs.get(evaluatorConfigs
+					.size() - 1);
+			BaseEvaluatorConfig config2 = evaluatorConfigs.get(evaluatorConfigs
+					.size() - 2);
+			MoveTree tree = new MoveTree(b, new BaseEvaluator(config1));
+			Player goldPlayer = new Player(tree, true);
+			Player silverPlayer = new Player(tree, false);
 			System.out.println("Game On!");
 			bb.print(System.out);
 			Boolean winner = runGame(b, goldPlayer, silverPlayer);
@@ -57,7 +60,7 @@ public class AutoGame {
 
 	}
 
-	private static Board makeRandomBoard() {
+	public static Board makeRandomBoard() {
 		Board b = new Board();
 		Random rand = new Random();
 		for (int side = 0; side < 2; side++) {
@@ -129,6 +132,8 @@ public class AutoGame {
 						.findMoves();
 				goldPlayer.executeMove(move);
 				silverPlayer.executeMove(move);
+				b.executeMove(move);
+				System.out.println((turn ? "gold" : "silver") + " moved");
 				turn = !turn;
 				count++;
 				b.print(System.out);

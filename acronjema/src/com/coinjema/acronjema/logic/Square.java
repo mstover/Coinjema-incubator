@@ -42,7 +42,7 @@ public class Square {
 		int count = 0;
 		for (Square a : adjacent) {
 			for (Square s : a.adjacent) {
-				if (s != this && !contains(adjacent, s)
+				if ((s != this) && !contains(adjacent, s)
 						&& !contains(twoAway, s)) {
 					twoAway[count++] = s;
 				}
@@ -89,6 +89,10 @@ public class Square {
 	public void setOccupant(Piece occupant, boolean notify) {
 		if ((occupant == null) && (this.occupant == null)) {
 			return;
+		}
+		if ((occupant != null) && (this.occupant != null)) {
+			board.print(System.out);
+			throw new RuntimeException("Can't replace an occupant!");
 		}
 		this.occupant = occupant;
 		if (occupant != null) {
