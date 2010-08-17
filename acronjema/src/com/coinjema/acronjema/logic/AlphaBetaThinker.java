@@ -21,12 +21,13 @@ import java.util.concurrent.Future;
  */
 public class AlphaBetaThinker {
 
-	int numThreads = 2;// Runtime.getRuntime().availableProcessors();
-	private PlyThinker[] thinkers;
-	private ExecutorService multiThinkService;
-	private ExecutorService singleThinkService;
-	private Future<?>[] futures;
+	int numThreads = Runtime.getRuntime().availableProcessors();
+	private final PlyThinker[] thinkers;
+	private final ExecutorService multiThinkService;
+	private final ExecutorService singleThinkService;
+	private final Future<?>[] futures;
 	private MoveTrail[] trails;
+	private final Move moveService = new Move();
 
 	class PlyThinker implements Callable<MoveTrail> {
 		MoveTrail trail;
@@ -48,15 +49,17 @@ public class AlphaBetaThinker {
 		@Override
 		public MoveTrail call() {
 			tree.rewind();
-			try {
-				tree.searchForMoves(trail.nextTurn, trail.indexes);
-				tree.sizeOfFirstPly = tree.getFirstNumber();
-				tree.sortPly(0, tree.sizeOfFirstPly,
-						(trail.nextTurn ? IntTimSort.DESC_SORTER
-								: IntTimSort.ASC_SORTER));
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Thread = " + Thread.currentThread());
+			if (trail != null) {
+				try {
+					tree.searchForMoves(trail.nextTurn, trail.indexes);
+					tree.sizeOfFirstPly = tree.getFirstNumber();
+					tree.sortPly(0, tree.sizeOfFirstPly,
+							(trail.nextTurn ? IntTimSort.DESC_SORTER
+									: IntTimSort.ASC_SORTER));
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Thread = " + Thread.currentThread());
+				}
 			}
 			return trail;
 		}
@@ -100,50 +103,66 @@ public class AlphaBetaThinker {
 		trails = new MoveTrail[numThreads];
 		int count = 0;
 		long time = System.currentTimeMillis();
-		while ((trails[0] == null) || (trails[0].indexes.size() < 2)) {
-			int moveTrailCount = 0;
-			for (int i = 0; i < thinkers.length; i++) {
-				MoveTrail trail = tree.getMoveTrail(moveTrailCount++);
-				thinkers[i].setParams(trail);
-				futures[i] = multiThinkService.submit(thinkers[i]);
-			}
-			for (int i = 0; i < thinkers.length; i++) {
-				try {
-					trails[i] = (MoveTrail) futures[i].get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		if ((tree.board.currentTurn && tree.evaluations.get(0) == Integer.MAX_VALUE)
+				|| (!tree.board.currentTurn && tree.evaluations.get(0) == Integer.MIN_VALUE)) {
+			// winner
+			System.out.println("We win NOW!");
+		} else {
+			setupThinkers(tree);
+			waitForThinkers();
+			while ((trails[0] != null) && (trails[0].indexes.size() < 2)) {
+				for (int i = 0; i < thinkers.length; i++) {
+					thinkers[i].sortAndSend();
 				}
-			}
-			for (int i = 0; i < thinkers.length; i++) {
-				thinkers[i].sortAndSend();
-			}
-			tree.sortDirtyPlys();
-			if (tree.board.currentTurn) {
-				if (tree.evaluations.get(0) == Integer.MAX_VALUE) {
-					break;
+				tree.sortDirtyPlys();
+				count++;
+				if (count % 100 == 0) {
+					System.out.println("number of moves found = " + tree.next
+							+ " best move = " + tree.moves.get(0) + ","
+							+ tree.evaluations.get(0));
+					int bestCalced = tree.getBestCalculatedIndex();
+					System.out.println("Best calculated move = "
+							+ tree.moves.get(bestCalced) + ","
+							+ tree.evaluations.get(bestCalced));
 				}
-			} else if (tree.evaluations.get(0) == Integer.MIN_VALUE) {
-				break;
-			}
-			count++;
-			if (count % 100 == 0) {
-				System.out.println("number of moves found = " + tree.next
-						+ " best move = " + tree.moves.get(0) + ","
-						+ tree.evaluations.get(0));
-				int bestCalced = tree.getBestCalculatedIndex();
-				System.out.println("Best calculated move = "
-						+ tree.moves.get(bestCalced) + ","
-						+ tree.evaluations.get(bestCalced));
+				setupThinkers(tree);
+				waitForThinkers();
 			}
 		}
+		System.out.println("Trails[0] = " + trails[0]);
 		System.out.println("Seaching 2 ply took "
-				+ (System.currentTimeMillis() - time) + " ms and " + tree.next
-				+ " positions.  Score = " + tree.evaluations.get(0));
+				+ (System.currentTimeMillis() - time)
+				+ " ms and "
+				+ tree.next
+				+ " positions.  Score = "
+				+ tree.evaluations.get(0)
+				+ " best response = "
+				+ moveService.toString(tree.moves.get(tree.addressNextPly
+						.get(0))));
 		return tree.moves.get(0);
+	}
+
+	private void waitForThinkers() {
+		for (int i = 0; i < thinkers.length; i++) {
+			try {
+				trails[i] = (MoveTrail) futures[i].get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void setupThinkers(MoveTree tree) {
+		int moveTrailCount = 0;
+		for (int i = 0; i < thinkers.length; i++) {
+			MoveTrail trail = tree.getMoveTrail(moveTrailCount++);
+			thinkers[i].setParams(trail);
+			futures[i] = multiThinkService.submit(thinkers[i]);
+		}
 	}
 
 	/**

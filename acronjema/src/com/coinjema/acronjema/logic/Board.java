@@ -18,7 +18,7 @@ import java.io.PrintStream;
 public class Board {
 	private final static int FIRST_STEPS = Integer.MAX_VALUE >>> 16;
 	private final static long SECOND_STEPS = FIRST_STEPS << 16;
-	private Move moveService = new Move();
+	private final Move moveService = new Move();
 
 	long[] boardHashes = new long[20];
 
@@ -219,6 +219,7 @@ public class Board {
 		}
 		if (legal) {
 			int newEval = eval.evaluate(this);
+			hashStack = 10;
 			rewindMove(move);
 			hashStack = stack;
 			makeNewHash = true;
@@ -260,18 +261,8 @@ public class Board {
 		}
 		makeNewHash = true;
 		makeNewHash2 = true;
-		hashStack++;
-		if (hashStack == 20) {
-			hashStack = 4;
-			boardHashes[3] = boardHashes[19];
-			boardHashes[2] = boardHashes[18];
-			boardHashes[1] = boardHashes[17];
-			boardHashes[0] = boardHashes[16];
-			boardHashes2[3] = boardHashes2[19];
-			boardHashes2[2] = boardHashes2[18];
-			boardHashes2[1] = boardHashes2[17];
-			boardHashes2[0] = boardHashes2[16];
-		}
+		hashStack = (1 + hashStack) % 20;
+
 	}
 
 	void findAllSteps(StepBuffer stepBuffer, boolean gold) {
@@ -458,6 +449,12 @@ public class Board {
 		reviveTraps(notify);
 		squares[seq[1]].moveOccupantTo(squares[seq[0]], notify);
 		hashStack--;
+		if (hashStack < 0) {
+			hashStack = 19;
+		}
+		if (hashStack < 0) {
+			throw new RuntimeException("Hash stack goes below zero!");
+		}
 		winner = null;
 	}
 

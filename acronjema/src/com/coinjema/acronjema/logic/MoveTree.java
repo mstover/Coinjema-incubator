@@ -34,12 +34,12 @@ public class MoveTree {
 	int next = 0;
 	StepTree stepTree;
 	SortedSet<Ply> dirtyPlys = new TreeSet<Ply>();
-	private Move moveService = new Move();
+	private final Move moveService = new Move();
 
 	final Board board;
 
 	public MoveTree(Board b, Evaluator evaluator) {
-		this(b, evaluator, 200000000);
+		this(b, evaluator, 100000000);
 		System.out.println("Making really big move tree");
 	}
 
@@ -49,8 +49,8 @@ public class MoveTree {
 		this.evaluator = evaluator;
 		moves = IntBuffer.allocate(size);
 		evaluations = IntBuffer.allocate(size);
-		addressNextPly = IntBuffer.allocate(size / 5);
-		moveCountNextPly = IntBuffer.allocate(size / 5);
+		addressNextPly = IntBuffer.allocate(size / 4);
+		moveCountNextPly = IntBuffer.allocate(size / 4);
 		stepTree = new StepTree(board, this);
 
 	}
@@ -112,7 +112,9 @@ public class MoveTree {
 	 */
 	private void applyKillerMove(boolean nextTurn, int move, int threshhold) {
 		for (int i = 0; i < sizeOfFirstPly; i++) {
-			// if (evaluations.get(i) < threshhold) {
+			// if (nextTurn && evaluations.get(i) > threshhold) {
+			// break;
+			// } else if (!nextTurn && evaluations.get(i) < threshhold) {
 			// break;
 			// }
 			if (addressNextPly.get(i) == 0) {
@@ -122,6 +124,8 @@ public class MoveTree {
 						board.executeMoveIfLegal(move, evaluator,
 								evaluations.get(i), nextTurn));
 				board.rewindMove(moves.get(i));
+			} else if (i > Runtime.getRuntime().availableProcessors()) {
+				break;
 			}
 		}
 	}
@@ -186,6 +190,10 @@ public class MoveTree {
 	 * @return
 	 */
 	public MoveTrail getMoveTrail(int i) {
+		if ((board.currentTurn && evaluations.get(0) == Integer.MIN_VALUE)
+				|| (!board.currentTurn && evaluations.get(0) == Integer.MAX_VALUE)) {
+			return null;
+		}
 		int moveCount = 0;
 		List<Integer> trail = new LinkedList<Integer>();
 		while (i > -1) {
@@ -198,6 +206,7 @@ public class MoveTree {
 				} else {
 					i--;
 					trail.add(moveCount);
+					break;
 				}
 			} else {
 				trail.add(moveCount);
