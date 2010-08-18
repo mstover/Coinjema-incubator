@@ -103,14 +103,14 @@ public class AlphaBetaThinker {
 		trails = new MoveTrail[numThreads];
 		int count = 0;
 		long time = System.currentTimeMillis();
-		if ((tree.board.currentTurn && tree.evaluations.get(0) == Integer.MAX_VALUE)
-				|| (!tree.board.currentTurn && tree.evaluations.get(0) == Integer.MIN_VALUE)) {
+		if ((tree.board.currentTurn && (tree.evaluations.get(0) == Integer.MAX_VALUE))
+				|| (!tree.board.currentTurn && (tree.evaluations.get(0) == Integer.MIN_VALUE))) {
 			// winner
 			System.out.println("We win NOW!");
 		} else {
 			setupThinkers(tree);
 			waitForThinkers();
-			while ((trails[0] != null) && (trails[0].indexes.size() < 2)) {
+			while ((trails[0] != null) && (trails[0].indexes.size() < 4)) {
 				for (int i = 0; i < thinkers.length; i++) {
 					thinkers[i].sortAndSend();
 				}

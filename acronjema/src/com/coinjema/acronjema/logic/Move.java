@@ -343,8 +343,8 @@ public class Move {
 		while (tokenizer.hasMoreTokens()) {
 			String s = tokenizer.nextToken();
 
-			SquareDesignation sq = new SquareDesignation(s.substring(1, 3));
-			String dir = s.substring(3, 4);
+			SquareDesignation sq = new SquareDesignation(s.substring(0, 2));
+			String dir = s.substring(2, 3);
 			int toIndex = sq.index;
 			if (dir.equals("e")) {
 				toIndex++;

@@ -17,6 +17,13 @@ public class GenePool {
 		directory = new File(dirName);
 	}
 
+	public BaseEvaluatorConfig getBestConfig() throws FileNotFoundException,
+			IOException {
+		List<BaseEvaluatorConfig> configs = getConfigs();
+		Collections.sort(configs);
+		return configs.get(configs.size() - 1);
+	}
+
 	public List<BaseEvaluatorConfig> getConfigs() throws FileNotFoundException,
 			IOException {
 		final List<BaseEvaluatorConfig> configs = new ArrayList<BaseEvaluatorConfig>();

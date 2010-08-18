@@ -34,8 +34,8 @@ public class AutoGame {
 			BaseEvaluatorConfig config2 = evaluatorConfigs.get(evaluatorConfigs
 					.size() - 2);
 			MoveTree tree = new MoveTree(b, new BaseEvaluator(config1));
-			Player goldPlayer = new Player(tree, true);
-			Player silverPlayer = new Player(tree, false);
+			Player goldPlayer = new ComputerPlayer(tree, true);
+			Player silverPlayer = new ComputerPlayer(tree, false);
 			System.out.println("Game On!");
 			bb.print(System.out);
 			Boolean winner = runGame(b, goldPlayer, silverPlayer);

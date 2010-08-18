@@ -202,7 +202,7 @@ public class IntTimSort {
 				nRemaining -= runLen;
 			} while (nRemaining != 0);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("lo = " + lo + " hi = " + hi);
+			System.out.println("lo = " + origlo + " hi = " + orighi);
 			for (int[] s : shadowArrs) {
 				System.out.println("shadow length = " + s.length);
 			}
