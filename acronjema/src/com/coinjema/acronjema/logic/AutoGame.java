@@ -21,6 +21,8 @@ public class AutoGame {
 		List<BaseEvaluatorConfig> evaluatorConfigs = pool.getConfigs();
 		int numToPlay = Integer.parseInt(args[1]);
 		int gamesPlayed = 0;
+		System.out.println("Best config is "
+				+ pool.getBestConfig().saveTo.getAbsolutePath());
 		while (gamesPlayed < numToPlay) {
 			if (gamesPlayed % 800 == 799) {
 				evaluatorConfigs = pool.cull(evaluatorConfigs);
@@ -28,23 +30,21 @@ public class AutoGame {
 			Board b = makeRandomBoard();
 			b.print(System.out);
 			Board bb = b.copy();
-			pool.cull(evaluatorConfigs);
-			BaseEvaluatorConfig config1 = evaluatorConfigs.get(evaluatorConfigs
-					.size() - 1);
-			BaseEvaluatorConfig config2 = evaluatorConfigs.get(evaluatorConfigs
-					.size() - 2);
+			BaseEvaluatorConfig config1 = pool.getBestConfig();
 			MoveTree tree = new MoveTree(b, new BaseEvaluator(config1));
-			Player goldPlayer = new ComputerPlayer(tree, true);
-			Player silverPlayer = new ComputerPlayer(tree, false);
+			Player goldPlayer = new ComputerPlayer(tree, true,
+					Long.parseLong(args[2]), new BaseEvaluator(config1));
+			Player silverPlayer = new ComputerPlayer(tree, false,
+					Long.parseLong(args[2]), new SuperEvaluator());
 			System.out.println("Game On!");
 			bb.print(System.out);
 			Boolean winner = runGame(b, goldPlayer, silverPlayer);
 			if (winner != null) {
 				if (winner) {
 					config1.win();
-					config2.loss();
+					// config2.loss();
 				} else {
-					config2.win();
+					// config2.win();
 					config1.loss();
 				}
 			}

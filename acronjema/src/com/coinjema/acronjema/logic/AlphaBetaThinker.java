@@ -28,6 +28,7 @@ public class AlphaBetaThinker {
 	private final Future<?>[] futures;
 	private MoveTrail[] trails;
 	private final Move moveService = new Move();
+	private Evaluator evaluator;
 
 	class PlyThinker implements Callable<MoveTrail> {
 		MoveTrail trail;
@@ -72,7 +73,7 @@ public class AlphaBetaThinker {
 		}
 	}
 
-	public AlphaBetaThinker(MoveTree tree) {
+	public AlphaBetaThinker(MoveTree tree, Evaluator evaluator) {
 		thinkers = new PlyThinker[numThreads];
 		for (int i = 0; i < numThreads; i++) {
 			thinkers[i] = new PlyThinker(tree.spawn());
@@ -82,6 +83,7 @@ public class AlphaBetaThinker {
 		singleThinkService = Executors.newFixedThreadPool(1);
 		futures = new Future<?>[numThreads];
 		trails = new MoveTrail[numThreads];
+		this.evaluator = evaluator;
 	}
 
 	/**
@@ -90,7 +92,14 @@ public class AlphaBetaThinker {
 	 * @param tree
 	 * @return
 	 */
-	public int inSearchOf(MoveTree tree) throws GameEndException {
+	public int inSearchOf(MoveTree tree, long normalTime, long maxTime)
+			throws GameEndException {
+		tree.evaluator = evaluator;
+		for (PlyThinker t : thinkers) {
+			t.tree.evaluator = evaluator;
+		}
+		System.out.println("normal time = " + normalTime + " maxTime = "
+				+ maxTime);
 		tree.rewind();
 		boolean turn = tree.board.currentTurn;
 		tree.searchForMoves(turn);
@@ -101,6 +110,8 @@ public class AlphaBetaThinker {
 		tree.sortPly(0, tree.sizeOfFirstPly, (turn ? IntTimSort.DESC_SORTER
 				: IntTimSort.ASC_SORTER));
 		trails = new MoveTrail[numThreads];
+		int best = tree.evaluations.get(0);
+		int depth = 0;
 		int count = 0;
 		long time = System.currentTimeMillis();
 		if ((tree.board.currentTurn && (tree.evaluations.get(0) == Integer.MAX_VALUE))
@@ -110,24 +121,28 @@ public class AlphaBetaThinker {
 		} else {
 			setupThinkers(tree);
 			waitForThinkers();
-			while ((trails[0] != null) && (trails[0].indexes.size() < 8)
-					&& (System.currentTimeMillis() - time < 90000)) {
+			long since = System.currentTimeMillis() - time;
+			while ((trails[0] != null)
+					&& (since < maxTime)
+					&& ((since < normalTime) || (depth < 3) || (tree.board.currentTurn ? best < 0
+							: best > 0))) {
 				for (int i = 0; i < thinkers.length; i++) {
 					thinkers[i].sortAndSend();
 				}
 				tree.sortDirtyPlys();
 				count++;
 				if (count % 100 == 0) {
+					int bestCalced = tree.getBestCalculatedIndex();
 					System.out.println("number of moves found = " + tree.next
 							+ " best move = " + tree.moves.get(0) + ","
-							+ tree.evaluations.get(0));
-					int bestCalced = tree.getBestCalculatedIndex();
-					System.out.println("Best calculated move = "
-							+ tree.moves.get(bestCalced) + ","
 							+ tree.evaluations.get(bestCalced));
 				}
 				setupThinkers(tree);
 				waitForThinkers();
+				depth = trails[0].indexes.size();
+				best = tree.evaluations.get(0);
+				since = System.currentTimeMillis() - time;
+
 			}
 		}
 		System.out.println("Trails[0] = " + trails[0]);

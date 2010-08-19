@@ -8,11 +8,17 @@ public class ComputerPlayer implements Player {
 	private boolean gold;
 	AlphaBetaThinker brain;
 	private Move moveService = new Move();
+	private long timePerMove;
+	public long timeRemaining = 0;
+	private Evaluator evaluator;
 
-	public ComputerPlayer(MoveTree tree, boolean color) {
+	public ComputerPlayer(MoveTree tree, boolean color, long timePerMove,
+			Evaluator eval) {
 		this.tree = tree;
 		this.b = tree.board;
 		gold = color;
+		this.timePerMove = timePerMove;
+		this.evaluator = eval;
 
 	}
 
@@ -155,9 +161,10 @@ public class ComputerPlayer implements Player {
 
 	public int findMoves() throws GameEndException {
 		if (brain == null) {
-			brain = new AlphaBetaThinker(tree);
+			brain = new AlphaBetaThinker(tree, evaluator);
 		}
-		return brain.inSearchOf(tree);
+		return brain.inSearchOf(tree, timePerMove, timePerMove
+				+ (timeRemaining / 2));
 		// sorter.sort(tree.moves, tree.moves.position(), b, gold);
 		// if (tree.moves.position() == 0) {
 		// throw new GameEndException();
@@ -170,7 +177,7 @@ public class ComputerPlayer implements Player {
 
 	public void executeMove(int move) {
 		if (brain == null) {
-			brain = new AlphaBetaThinker(tree);
+			brain = new AlphaBetaThinker(tree, evaluator);
 		}
 		brain.executeMove(move);
 

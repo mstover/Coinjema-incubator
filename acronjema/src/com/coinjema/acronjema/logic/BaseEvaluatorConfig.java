@@ -25,7 +25,7 @@ public class BaseEvaluatorConfig implements Comparable<BaseEvaluatorConfig> {
 	public int losses = 0;
 	public int streak = 0;
 	public boolean alive = true;
-	private final File saveTo;
+	public final File saveTo;
 
 	public BaseEvaluatorConfig(File f) throws FileNotFoundException,
 			IOException {

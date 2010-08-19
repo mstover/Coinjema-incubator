@@ -39,7 +39,7 @@ public class MoveTree {
 	final Board board;
 
 	public MoveTree(Board b, Evaluator evaluator) {
-		this(b, evaluator, 100000000);
+		this(b, evaluator, 200000000);
 		System.out.println("Making really big move tree");
 	}
 
@@ -83,37 +83,44 @@ public class MoveTree {
 		return tree;
 	}
 
-	void compactPly(int pointerIndex) {
+	void compactPly(int pointerIndex, MoveTrail trail) {
 		System.out.println("Eliminating ply at pointer " + pointerIndex);
 		if (addressNextPly.get(addressNextPly.get(pointerIndex)) > 0) {
-			compactPly(addressNextPly.get(pointerIndex));
+			compactPly(addressNextPly.get(pointerIndex), trail);
 		}
 		int length = moveCountNextPly.get(pointerIndex);
 		moveCountNextPly.put(pointerIndex, 1);
 		int[] arr = moves.array();
+		int destPos = addressNextPly.get(pointerIndex) + 1;
 		int srcPos = addressNextPly.get(pointerIndex) + length;
-		System.arraycopy(arr, srcPos, arr,
-				addressNextPly.get(pointerIndex) + 1, next - srcPos);
+		System.arraycopy(arr, srcPos, arr, destPos, next - srcPos);
 
 		arr = evaluations.array();
-		System.arraycopy(arr, srcPos, arr,
-				addressNextPly.get(pointerIndex) + 1, next - srcPos);
+		System.out.println("Copying from " + srcPos + " to " + (next) + " to "
+				+ destPos);
+		System.arraycopy(arr, srcPos, arr, destPos, next - srcPos);
 
 		arr = addressNextPly.array();
 		if (srcPos < addressNextPly.capacity()) {
 			int copyLen = Math.min(next, addressNextPly.capacity()) - srcPos;
-			System.arraycopy(arr, srcPos, arr,
-					addressNextPly.get(pointerIndex) + 1, copyLen);
+			System.out.println("compacting addressbuffer srcpos = " + srcPos
+					+ " destPos = " + destPos + " leng = " + copyLen);
+			System.arraycopy(arr, srcPos, arr, destPos, copyLen);
 			arr = moveCountNextPly.array();
-			System.arraycopy(arr, srcPos, arr,
-					addressNextPly.get(pointerIndex) + 1, copyLen);
+			System.arraycopy(arr, srcPos, arr, destPos, copyLen);
 		}
 		length--;
 		next -= length;
-		for (int i = 0; i < addressNextPly.capacity() && i < next; i++) {
+		for (int i = 0; (i < addressNextPly.capacity()) && (i < next); i++) {
 			int point = addressNextPly.get(i);
 			if (point > srcPos) {
 				addressNextPly.put(i, point - length);
+			}
+		}
+		for (int i = 0; i < trail.indexes.size(); i++) {
+			int point = trail.indexes.get(i);
+			if (point > srcPos) {
+				trail.indexes.set(i, point - length);
 			}
 		}
 	}
@@ -141,15 +148,20 @@ public class MoveTree {
 			}
 			applyKillerMove(trail, moveSrc.get(0), evalSrc.get(0));
 		} catch (IndexOutOfBoundsException e) {
+			System.out.println("overrun occurred on line "
+					+ e.getStackTrace()[0].getLineNumber());
 			// remove some low plys
 			System.out.println("Compacting some plys");
 			int count = 5;
-			for (int i = sizeOfFirstPly - 1; count > 0 && i > 0; i--) {
-				if (addressNextPly.get(i) > 0) {
-					compactPly(i);
+			for (int i = sizeOfFirstPly - 1; (count > 0) && (i > 0); i--) {
+				if ((moveCountNextPly.get(i) > 1)
+						&& (addressNextPly.get(i) > 0)) {
+					compactPly(i, trail);
 					count--;
 				}
 			}
+			System.out.println("Now lastIndex = "
+					+ trail.indexes.get(trail.indexes.size() - 1));
 			copyPly(trail, moveSrc, evalSrc);
 		}
 	}

@@ -136,7 +136,41 @@ public class Piece {
 	}
 
 	public boolean isInDanger() {
-		return false; // if()
+		boolean nearTrap = (square instanceof TrapSquare)
+				&& !((TrapSquare) square).isOwnedBy(gold);
+		boolean nearStrongEnemies = false;
+
+		for (Square s : square.adjacent) {
+			if (s instanceof TrapSquare) {
+				nearTrap = nearTrap || !((TrapSquare) s).isOwnedBy(gold);
+				if (!s.isEmpty() && (s.occupant.gold != gold)
+						&& (s.occupant.strength > strength)) {
+					nearStrongEnemies = true;
+				}
+			}
+			for (Square ss : s.adjacent) {
+				if (ss instanceof TrapSquare) {
+					nearTrap = nearTrap || !((TrapSquare) ss).isOwnedBy(gold);
+					if (!s.isEmpty() && (s.occupant.gold != gold)
+							&& (s.occupant.strength > strength)) {
+						nearStrongEnemies = true;
+					}
+				}
+			}
+		}
+		return nearTrap && nearStrongEnemies; // if()
+	}
+
+	public boolean isDominated() {
+		for (Square s : square.adjacent) {
+			if (!s.isEmpty()) {
+				int str = s.getOccupant().strength;
+				if (s.getOccupant().gold != gold) {
+					return s.occupant.strength > strength;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

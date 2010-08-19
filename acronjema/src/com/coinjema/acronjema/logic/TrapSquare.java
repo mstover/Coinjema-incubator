@@ -104,4 +104,42 @@ public class TrapSquare extends Square {
 		killedPieces = tmp;
 	}
 
+	/**
+	 * @param gold
+	 * @return
+	 */
+	public boolean isOwnedBy(boolean b) {
+		int goldSum = 0;
+		int goldStrength = 0;
+		int silverStrength = 0;
+		int silverSum = 0;
+		for (Square s : adjacent) {
+			if (!s.isEmpty() && !s.occupant.isDominated()) {
+				if ((s.occupant.strength == Piece.ELEPHANT)
+						&& (b == s.occupant.gold)) {
+					return true;
+				}
+				if (s.occupant.gold) {
+					goldSum++;
+					goldStrength += s.occupant.strength;
+				} else {
+					silverSum++;
+					silverStrength += s.occupant.strength;
+				}
+			}
+		}
+		if (goldSum > silverSum) {
+			return true == b;
+		} else if (silverSum > goldSum) {
+			return false == b;
+		} else {
+			if (goldStrength > silverStrength) {
+				return true == b;
+			} else if (silverStrength > goldStrength) {
+				return false == b;
+			}
+		}
+		return false;
+	}
+
 }

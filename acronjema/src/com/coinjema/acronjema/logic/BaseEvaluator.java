@@ -9,27 +9,11 @@
  */
 package com.coinjema.acronjema.logic;
 
-import java.nio.IntBuffer;
-
 /**
  * @author michaelstover
  * 
  */
 public class BaseEvaluator implements Evaluator {
-
-	class EvaluatorBuffer implements StepBuffer {
-		IntBuffer steps = IntBuffer.allocate(200);
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.coinjema.acronjema.logic.StepBuffer#putStep(int)
-		 */
-		@Override
-		public void putStep(int i) {
-			steps.put(i);
-		}
-	}
 
 	private final EvaluatorBuffer buffer;
 	private final int frozenMult;
@@ -98,9 +82,6 @@ public class BaseEvaluator implements Evaluator {
 		for (Piece p : board.goldPieces) {
 			if (p.square != null) {
 				sum += pieceValue;
-				if ((p.strength == 1) && (p.square.index / 8 == 7)) {
-					sum += winValue;
-				}
 				if (p.strength == 1) {
 					sum += rabbitRowMult * (p.square.index / 8);
 				}
@@ -130,9 +111,6 @@ public class BaseEvaluator implements Evaluator {
 		for (Piece p : board.silverPieces) {
 			if (p.square != null) {
 				sum -= pieceValue;
-				if ((p.strength == 1) && (p.square.index / 8 == 0)) {
-					sum -= winValue;
-				}
 				if (p.strength == 1) {
 					sum -= rabbitRowMult * (7 - p.square.index / 8);
 				}

@@ -36,12 +36,13 @@ public class Play {
 		Board b = new Board();
 		MoveTree tree = new MoveTree(b, new BaseEvaluator(
 				new GenePool(args[0]).getBestConfig()));
-		Player gold = computerSide ? new ComputerPlayer(tree, true)
+		Player gold = computerSide ? new ComputerPlayer(tree, true,
+				Long.parseLong(args[2]), new SuperEvaluator())
 				: new HumanPlayer(b, true);
 		Player silver = computerSide ? new HumanPlayer(b, false)
-				: new ComputerPlayer(tree, false);
+				: new ComputerPlayer(tree, false, Long.parseLong(args[2]),
+						new SuperEvaluator());
 		Game g = new Game(b, gold, silver);
 		g.playGame();
 	}
-
 }
