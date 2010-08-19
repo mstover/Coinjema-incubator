@@ -83,6 +83,41 @@ public class MoveTree {
 		return tree;
 	}
 
+	void compactPly(int pointerIndex) {
+		System.out.println("Eliminating ply at pointer " + pointerIndex);
+		if (addressNextPly.get(addressNextPly.get(pointerIndex)) > 0) {
+			compactPly(addressNextPly.get(pointerIndex));
+		}
+		int length = moveCountNextPly.get(pointerIndex);
+		moveCountNextPly.put(pointerIndex, 1);
+		int[] arr = moves.array();
+		int srcPos = addressNextPly.get(pointerIndex) + length;
+		System.arraycopy(arr, srcPos, arr,
+				addressNextPly.get(pointerIndex) + 1, next - srcPos);
+
+		arr = evaluations.array();
+		System.arraycopy(arr, srcPos, arr,
+				addressNextPly.get(pointerIndex) + 1, next - srcPos);
+
+		arr = addressNextPly.array();
+		if (srcPos < addressNextPly.capacity()) {
+			int copyLen = Math.min(next, addressNextPly.capacity()) - srcPos;
+			System.arraycopy(arr, srcPos, arr,
+					addressNextPly.get(pointerIndex) + 1, copyLen);
+			arr = moveCountNextPly.array();
+			System.arraycopy(arr, srcPos, arr,
+					addressNextPly.get(pointerIndex) + 1, copyLen);
+		}
+		length--;
+		next -= length;
+		for (int i = 0; i < addressNextPly.capacity() && i < next; i++) {
+			int point = addressNextPly.get(i);
+			if (point > srcPos) {
+				addressNextPly.put(i, point - length);
+			}
+		}
+	}
+
 	/**
 	 * Write operation - not threadsafe.
 	 * 
@@ -91,19 +126,32 @@ public class MoveTree {
 	 * @param evalSrc
 	 */
 	void copyPly(MoveTrail trail, IntBuffer moveSrc, IntBuffer evalSrc) {
-		int lastIndex = trail.indexes.get(trail.indexes.size() - 1);
-		moveCountNextPly.put(lastIndex, moveSrc.remaining());
-		addressNextPly.put(lastIndex, next);
-		moves.position(next);
-		evaluations.position(next);
-		moves.put(moveSrc);
-		evaluations.put(evalSrc);
-		next = moves.position();
-		int depth = 0;
-		for (int i : trail.indexes) {
-			dirtyPlys.add(new Ply(depth++, i));
+		try {
+			int lastIndex = trail.indexes.get(trail.indexes.size() - 1);
+			moveCountNextPly.put(lastIndex, moveSrc.remaining());
+			addressNextPly.put(lastIndex, next);
+			moves.position(next);
+			evaluations.position(next);
+			moves.put(moveSrc);
+			evaluations.put(evalSrc);
+			next = moves.position();
+			int depth = 0;
+			for (int i : trail.indexes) {
+				dirtyPlys.add(new Ply(depth++, i));
+			}
+			applyKillerMove(trail, moveSrc.get(0), evalSrc.get(0));
+		} catch (IndexOutOfBoundsException e) {
+			// remove some low plys
+			System.out.println("Compacting some plys");
+			int count = 5;
+			for (int i = sizeOfFirstPly - 1; count > 0 && i > 0; i--) {
+				if (addressNextPly.get(i) > 0) {
+					compactPly(i);
+					count--;
+				}
+			}
+			copyPly(trail, moveSrc, evalSrc);
 		}
-		applyKillerMove(trail, moveSrc.get(0), evalSrc.get(0));
 	}
 
 	/**
@@ -237,7 +285,7 @@ public class MoveTree {
 								+ moveCountNextPly.get(plySet.index),
 						board.currentTurn ? ((plySet.depth % 2 == 1) ? IntTimSort.DESC_SORTER
 								: IntTimSort.ASC_SORTER)
-								: ((plySet.depth % 2 == 0) ? IntTimSort.ASC_SORTER
+								: ((plySet.depth % 2 == 1) ? IntTimSort.ASC_SORTER
 										: IntTimSort.DESC_SORTER));
 				depth = plySet.depth;
 			}

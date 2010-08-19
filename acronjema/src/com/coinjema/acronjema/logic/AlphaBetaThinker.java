@@ -110,7 +110,8 @@ public class AlphaBetaThinker {
 		} else {
 			setupThinkers(tree);
 			waitForThinkers();
-			while ((trails[0] != null) && (trails[0].indexes.size() < 4)) {
+			while ((trails[0] != null) && (trails[0].indexes.size() < 8)
+					&& (System.currentTimeMillis() - time < 90000)) {
 				for (int i = 0; i < thinkers.length; i++) {
 					thinkers[i].sortAndSend();
 				}
