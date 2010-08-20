@@ -137,6 +137,14 @@ public class BaseEvaluator implements Evaluator {
 				}
 			}
 		}
+		sum += ((TrapSquare) board.squares[18]).isOwnedBy(true) ? 500 : 0;
+		sum += ((TrapSquare) board.squares[21]).isOwnedBy(true) ? 500 : 0;
+		sum += ((TrapSquare) board.squares[42]).isOwnedBy(true) ? 500 : 0;
+		sum += ((TrapSquare) board.squares[45]).isOwnedBy(true) ? 500 : 0;
+		sum -= ((TrapSquare) board.squares[18]).isOwnedBy(false) ? 500 : 0;
+		sum -= ((TrapSquare) board.squares[21]).isOwnedBy(false) ? 500 : 0;
+		sum -= ((TrapSquare) board.squares[42]).isOwnedBy(false) ? 500 : 0;
+		sum -= ((TrapSquare) board.squares[45]).isOwnedBy(false) ? 500 : 0;
 		return sum;
 	}
 }

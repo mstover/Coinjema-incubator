@@ -54,9 +54,11 @@ public class AlphaBetaThinker {
 				try {
 					tree.searchForMoves(trail.nextTurn, trail.indexes);
 					tree.sizeOfFirstPly = tree.getFirstNumber();
-					tree.sortPly(0, tree.sizeOfFirstPly,
-							(trail.nextTurn ? IntTimSort.DESC_SORTER
-									: IntTimSort.ASC_SORTER));
+					if (tree.sizeOfFirstPly > 1) {
+						tree.sortPly(0, tree.sizeOfFirstPly,
+								(trail.nextTurn ? IntTimSort.DESC_SORTER
+										: IntTimSort.ASC_SORTER));
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("Thread = " + Thread.currentThread());
@@ -94,6 +96,10 @@ public class AlphaBetaThinker {
 	 */
 	public int inSearchOf(MoveTree tree, long normalTime, long maxTime)
 			throws GameEndException {
+		if (tree.board.stepCount == 0) {
+			normalTime = Math.max(10000, normalTime);
+			maxTime = Math.max(10000, maxTime);
+		}
 		tree.evaluator = evaluator;
 		for (PlyThinker t : thinkers) {
 			t.tree.evaluator = evaluator;
@@ -139,7 +145,7 @@ public class AlphaBetaThinker {
 				}
 				setupThinkers(tree);
 				waitForThinkers();
-				depth = trails[0].indexes.size();
+				depth = trails[0] != null ? trails[0].indexes.size() : 0;
 				best = tree.evaluations.get(0);
 				since = System.currentTimeMillis() - time;
 
@@ -155,7 +161,7 @@ public class AlphaBetaThinker {
 				+ " best response = "
 				+ moveService.toString(tree.moves.get(tree.addressNextPly
 						.get(0))));
-		return tree.moves.get(0);
+		return tree.moves.get(tree.getBestCalculatedIndex());
 	}
 
 	private void waitForThinkers() {

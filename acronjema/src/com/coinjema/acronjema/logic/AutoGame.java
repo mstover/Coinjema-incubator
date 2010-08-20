@@ -27,17 +27,17 @@ public class AutoGame {
 			if (gamesPlayed % 800 == 799) {
 				evaluatorConfigs = pool.cull(evaluatorConfigs);
 			}
-			Board b = makeRandomBoard();
-			b.print(System.out);
-			Board bb = b.copy();
+			Board b = new Board();
 			BaseEvaluatorConfig config1 = pool.getBestConfig();
 			MoveTree tree = new MoveTree(b, new BaseEvaluator(config1));
 			Player goldPlayer = new ComputerPlayer(tree, true,
 					Long.parseLong(args[2]), new BaseEvaluator(config1));
 			Player silverPlayer = new ComputerPlayer(tree, false,
 					Long.parseLong(args[2]), new SuperEvaluator());
+			goldPlayer.setup();
+			silverPlayer.setup();
+			b.print(System.out);
 			System.out.println("Game On!");
-			bb.print(System.out);
 			Boolean winner = runGame(b, goldPlayer, silverPlayer);
 			if (winner != null) {
 				if (winner) {
