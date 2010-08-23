@@ -15,16 +15,15 @@ package com.coinjema.acronjema.logic;
  */
 public class SuperEvaluator implements Evaluator {
 
-	private final EvaluatorBuffer buffer = new EvaluatorBuffer();
 	private final int frozenMult = 89;
-	private final int dominationMult = 73;
-	private final int dominationValue = 82;
+	private final int dominationMult = 30;
+	private final int dominationValue = 30;
 	private final int friendValue = 48;
 	private final int frozenValue = 86;
-	private final int adjTrapStrMult = 27;
-	private int adjTrapPieceValue = 79;
+	private final int adjTrapStrMult = 0;
+	private final int adjTrapPieceValue = 0;
 	private final int pieceValue = 8289;
-	private final int rabbitRowMult = 17;
+	private final int rabbitRowMult = 40;
 	private final int numMovesMult = 50;
 
 	/*
@@ -39,21 +38,13 @@ public class SuperEvaluator implements Evaluator {
 		if (board.getWinner() != null) {
 			return board.getWinner() ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		}
-		adjTrapPieceValue = 0;
 		int sum = 0;
-		buffer.steps.clear();
 		for (Piece p : board.pieces) {
 			if (p.strength > 1) {
 				if (p.gold && (p.square != null)) {
-					p.getSteps(buffer);
-					sum += p.strength / 2 * numMovesMult
-							* buffer.steps.position();
-					buffer.steps.clear();
+					sum += p.strength / 2 * numMovesMult * p.getStepCount();
 				} else if (!p.gold && (p.square != null)) {
-					p.getSteps(buffer);
-					sum -= p.strength / 2 * numMovesMult
-							* buffer.steps.position();
-					buffer.steps.clear();
+					sum -= p.strength / 2 * numMovesMult * p.getStepCount();
 				}
 			}
 		}

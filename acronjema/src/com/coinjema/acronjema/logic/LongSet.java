@@ -28,14 +28,21 @@ public class LongSet {
 	 * 
 	 */
 	public void clear() {
-		for (long[] inner : set) {
-			for (int i = 0; i < inner.length; i++) {
-				inner[i] = 0;
+		for (int i = 0; i < set.length; i++) {
+			if (set[i].length > 10) {
+				set[i] = new long[10];
+			} else {
+				for (int j = 0; j < set[i].length; j++) {
+					set[i][j] = 0;
+				}
 			}
 		}
-		for (long[] inner : secSet) {
-			for (int i = 0; i < inner.length; i++) {
-				inner[i] = 1;
+		for (int i = 0; i < secSet.length; i++) {
+			if (secSet[i].length > 10) {
+				secSet[i] = new long[10];
+			}
+			for (int j = 0; j < secSet[i].length; j++) {
+				secSet[i][j] = 1;
 			}
 		}
 	}

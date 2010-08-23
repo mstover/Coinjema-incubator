@@ -15,19 +15,18 @@ package com.coinjema.acronjema.logic;
  */
 public class BaseEvaluator implements Evaluator {
 
-	private final EvaluatorBuffer buffer;
 	private final int frozenMult;
 	private final int dominationMult;
 	private final int dominationValue;
 	private final int friendValue;
 	private final int frozenValue;
 	private final int adjTrapStrMult;
-	private int adjTrapPieceValue;
+	private final int adjTrapPieceValue;
 	private final int pieceValue;
 	private final int winValue;
 	private final int rabbitRowMult;
 	private final int numMovesMult;
-	private BaseEvaluatorConfig config;
+	private final BaseEvaluatorConfig config;
 
 	/*
 	 * (non-Javadoc)
@@ -53,7 +52,6 @@ public class BaseEvaluator implements Evaluator {
 		this.winValue = config.winValue;
 		this.rabbitRowMult = config.rabbitRowMult;
 		this.numMovesMult = config.numMovesMult;
-		buffer = new EvaluatorBuffer();
 	}
 
 	/*
@@ -71,14 +69,17 @@ public class BaseEvaluator implements Evaluator {
 		if (board.getWinner() != null) {
 			return board.getWinner() ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		}
-		adjTrapPieceValue = 0;
 		int sum = 0;
-		buffer.steps.clear();
-		board.findAllSteps(buffer, true);
-		sum = numMovesMult * buffer.steps.position();
-		buffer.steps.clear();
-		board.findAllSteps(buffer, false);
-		sum -= numMovesMult * buffer.steps.position();
+		for (Piece p : board.goldPieces) {
+			if (p.square != null) {
+				sum += numMovesMult * p.getStepCount();
+			}
+		}
+		for (Piece p : board.silverPieces) {
+			if (p.square != null) {
+				sum -= numMovesMult * p.getStepCount();
+			}
+		}
 		for (Piece p : board.goldPieces) {
 			if (p.square != null) {
 				sum += pieceValue;

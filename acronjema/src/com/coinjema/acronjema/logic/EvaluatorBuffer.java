@@ -22,6 +22,13 @@ class EvaluatorBuffer implements StepBuffer {
 	 */
 	@Override
 	public void putStep(int i) {
-		steps.put(i);
+		try {
+			steps.put(i);
+		} catch (Exception e) {
+			System.out.println("evaluator buffer position = "
+					+ steps.position());
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 }

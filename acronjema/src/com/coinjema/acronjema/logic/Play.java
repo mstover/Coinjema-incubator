@@ -31,16 +31,15 @@ public class Play {
 	 */
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException {
-		boolean computerSide = args[1] != null ? Boolean.parseBoolean(args[1])
+		boolean computerSide = args[0] != null ? Boolean.parseBoolean(args[0])
 				: false;
 		Board b = new Board();
-		MoveTree tree = new MoveTree(b, new BaseEvaluator(
-				new GenePool(args[0]).getBestConfig()));
+		MoveTree tree = new MoveTree(b, new SuperEvaluator());
 		Player gold = computerSide ? new ComputerPlayer(tree, true,
-				Long.parseLong(args[2]), new SuperEvaluator())
+				Long.parseLong(args[1]), new SuperEvaluator())
 				: new HumanPlayer(b, true);
 		Player silver = computerSide ? new HumanPlayer(b, false)
-				: new ComputerPlayer(tree, false, Long.parseLong(args[2]),
+				: new ComputerPlayer(tree, false, Long.parseLong(args[1]),
 						new SuperEvaluator());
 		Game g = new Game(b, gold, silver);
 		g.playGame();

@@ -39,7 +39,7 @@ public class MoveTree {
 	final Board board;
 
 	public MoveTree(Board b, Evaluator evaluator) {
-		this(b, evaluator, 200000000);
+		this(b, evaluator, 50000000);
 		System.out.println("Making really big move tree");
 	}
 
@@ -49,8 +49,8 @@ public class MoveTree {
 		this.evaluator = evaluator;
 		moves = IntBuffer.allocate(size);
 		evaluations = IntBuffer.allocate(size);
-		addressNextPly = IntBuffer.allocate(size / 4);
-		moveCountNextPly = IntBuffer.allocate(size / 4);
+		addressNextPly = IntBuffer.allocate(size);
+		moveCountNextPly = IntBuffer.allocate(size);
 		stepTree = new StepTree(board, this);
 
 	}
@@ -148,21 +148,8 @@ public class MoveTree {
 			}
 			applyKillerMove(trail, moveSrc.get(0), evalSrc.get(0));
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("overrun occurred on line "
-					+ e.getStackTrace()[0].getLineNumber());
-			// remove some low plys
-			System.out.println("Compacting some plys");
-			int count = 5;
-			for (int i = sizeOfFirstPly - 1; (count > 0) && (i > 0); i--) {
-				if ((moveCountNextPly.get(i) > 1)
-						&& (addressNextPly.get(i) > 0)) {
-					compactPly(i, trail);
-					count--;
-				}
-			}
-			System.out.println("Now lastIndex = "
-					+ trail.indexes.get(trail.indexes.size() - 1));
-			copyPly(trail, moveSrc, evalSrc);
+			e.printStackTrace();
+			System.out.println("next = " + next);
 		}
 	}
 

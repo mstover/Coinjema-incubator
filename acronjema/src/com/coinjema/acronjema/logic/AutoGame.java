@@ -31,9 +31,12 @@ public class AutoGame {
 			BaseEvaluatorConfig config1 = pool.getBestConfig();
 			MoveTree tree = new MoveTree(b, new BaseEvaluator(config1));
 			Player goldPlayer = new ComputerPlayer(tree, true,
-					Long.parseLong(args[2]), new BaseEvaluator(config1));
+					Long.parseLong(args[2]),
+					args[3] == null ? new BaseEvaluator(config1)
+							: new SuperEvaluator());
 			Player silverPlayer = new ComputerPlayer(tree, false,
-					Long.parseLong(args[2]), new SuperEvaluator());
+					Long.parseLong(args[3] != null ? args[3] : args[2]),
+					new SuperEvaluator());
 			goldPlayer.setup();
 			silverPlayer.setup();
 			b.print(System.out);

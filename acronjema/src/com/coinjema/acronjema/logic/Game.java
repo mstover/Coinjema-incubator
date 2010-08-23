@@ -15,9 +15,10 @@ package com.coinjema.acronjema.logic;
  */
 public class Game {
 
-	private Board board;
-	private Player goldPlayer;
-	private Player silverPlayer;
+	private final Board board;
+	private final Player goldPlayer;
+	private final Player silverPlayer;
+	private final Move moveService = new Move();
 
 	public Game(Board board, Player gold, Player silver) {
 		this.board = board;
@@ -32,7 +33,7 @@ public class Game {
 		board.print(System.out);
 		silverPlayer.setup();
 		board.print(System.out);
-		while ((board.getWinner() == null) && (count < 200)) {
+		while ((board.getWinner() == null) && (count < 500)) {
 			try {
 				int move = turn ? goldPlayer.findMoves() : silverPlayer
 						.findMoves();
@@ -40,6 +41,7 @@ public class Game {
 				silverPlayer.executeMove(move);
 				board.executeMove(move);
 				System.out.println((turn ? "gold" : "silver") + " moved");
+				System.out.println(moveService.toString(move));
 				turn = !turn;
 				count++;
 				board.print(System.out);

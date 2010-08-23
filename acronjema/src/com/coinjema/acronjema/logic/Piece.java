@@ -37,7 +37,7 @@ public class Piece {
 	public final static int ELEPHANT = 6;
 
 	protected static final int[] NO_STEPS = new int[0];
-	private Move moveService = new Move();
+	private final Move moveService = new Move();
 
 	private final int[] potentialSteps = new int[24];
 
@@ -127,6 +127,20 @@ public class Piece {
 			recalcSteps = false;
 		}
 		copyToBuffer(stepBuffer);
+	}
+
+	public int getStepCount() {
+		if (recalcSteps) {
+			if (!isFrozen()) {
+				validStepCount = 0;
+				validStepCount += addSimpleSteps(validStepCount, potentialSteps);
+				validStepCount += addPushSteps(validStepCount, potentialSteps);
+			} else {
+				validStepCount = 0;
+			}
+			recalcSteps = false;
+		}
+		return validStepCount;
 	}
 
 	private void copyToBuffer(StepBuffer stepBuffer) {
