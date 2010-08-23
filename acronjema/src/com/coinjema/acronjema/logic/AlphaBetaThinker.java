@@ -33,6 +33,7 @@ public class AlphaBetaThinker {
 	class PlyThinker implements Callable<MoveTrail> {
 		MoveTrail trail;
 		ChildMoveTree tree;
+		boolean readyToSend = false;
 
 		public PlyThinker(ChildMoveTree myMoveTree) {
 			this.tree = myMoveTree;
@@ -49,19 +50,28 @@ public class AlphaBetaThinker {
 		 */
 		@Override
 		public MoveTrail call() {
-			tree.rewind();
 			if (trail != null) {
-				try {
-					tree.searchForMoves(trail.nextTurn, trail.indexes);
-					tree.sizeOfFirstPly = tree.getFirstNumber();
-					if (tree.sizeOfFirstPly > 1) {
-						tree.sortPly(0, tree.sizeOfFirstPly,
-								(trail.nextTurn ? IntTimSort.DESC_SORTER
-										: IntTimSort.ASC_SORTER));
+				if (!readyToSend) {
+					tree.rewind();
+					try {
+						tree.searchForMoves(trail.nextTurn, trail.indexes);
+						tree.sizeOfFirstPly = tree.getFirstNumber();
+						if (tree.sizeOfFirstPly > 1) {
+							tree.sortPly(0, tree.sizeOfFirstPly,
+									(trail.nextTurn ? IntTimSort.DESC_SORTER
+											: IntTimSort.ASC_SORTER));
+						}
+						readyToSend = true;
+						Future<MoveTrail> fut = singleThinkService.submit(this);
+						trail = fut.get();
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out
+								.println("Thread = " + Thread.currentThread());
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println("Thread = " + Thread.currentThread());
+				} else {
+					sortAndSend();
+					readyToSend = false;
 				}
 			}
 			return trail;
@@ -76,15 +86,15 @@ public class AlphaBetaThinker {
 	}
 
 	public AlphaBetaThinker(MoveTree tree, Evaluator evaluator) {
-		thinkers = new PlyThinker[numThreads];
-		for (int i = 0; i < numThreads; i++) {
+		thinkers = new PlyThinker[numThreads * 6];
+		for (int i = 0; i < thinkers.length; i++) {
 			thinkers[i] = new PlyThinker(tree.spawn());
 		}
 		System.out.println("Num threads = " + numThreads);
 		multiThinkService = Executors.newFixedThreadPool(numThreads);
 		singleThinkService = Executors.newFixedThreadPool(1);
-		futures = new Future<?>[numThreads];
-		trails = new MoveTrail[numThreads];
+		futures = new Future<?>[thinkers.length];
+		trails = new MoveTrail[thinkers.length];
 		this.evaluator = evaluator;
 	}
 
@@ -115,7 +125,7 @@ public class AlphaBetaThinker {
 		}
 		tree.sortPly(0, tree.sizeOfFirstPly, (turn ? IntTimSort.DESC_SORTER
 				: IntTimSort.ASC_SORTER));
-		trails = new MoveTrail[numThreads];
+		trails = new MoveTrail[thinkers.length];
 		int best = tree.evaluations.get(0);
 		int depth = 0;
 		int count = 0;
@@ -132,16 +142,13 @@ public class AlphaBetaThinker {
 					&& (since < maxTime)
 					&& ((since < normalTime) || (depth < 3) || (tree.board.currentTurn ? best < 0
 							: best > 0))) {
-				for (int i = 0; i < thinkers.length; i++) {
-					thinkers[i].sortAndSend();
-				}
 				tree.sortDirtyPlys();
 				count++;
 				if (count % 100 == 0) {
 					int bestCalced = tree.getBestCalculatedIndex();
 					System.out.println("number of moves found = " + tree.next
-							+ " best move = " + tree.moves.get(0) + ","
-							+ tree.evaluations.get(bestCalced));
+							+ " best move = " + tree.moves.get(bestCalced)
+							+ "," + tree.evaluations.get(bestCalced));
 				}
 				setupThinkers(tree);
 				waitForThinkers();
@@ -157,7 +164,7 @@ public class AlphaBetaThinker {
 				+ " ms and "
 				+ tree.next
 				+ " positions.  Score = "
-				+ tree.evaluations.get(0)
+				+ tree.evaluations.get(tree.getBestCalculatedIndex())
 				+ " best response = "
 				+ moveService.toString(tree.moves.get(tree.addressNextPly
 						.get(0))));

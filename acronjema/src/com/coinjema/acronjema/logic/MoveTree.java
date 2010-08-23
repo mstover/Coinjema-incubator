@@ -39,7 +39,7 @@ public class MoveTree {
 	final Board board;
 
 	public MoveTree(Board b, Evaluator evaluator) {
-		this(b, evaluator, 50000000);
+		this(b, evaluator, 10000000);
 		System.out.println("Making really big move tree");
 	}
 
@@ -79,7 +79,7 @@ public class MoveTree {
 	 */
 	public ChildMoveTree spawn() {
 		ChildMoveTree tree = new ChildMoveTree(this, board.copy(),
-				evaluator.copy(), 1000000);
+				evaluator.copy(), 300000);
 		return tree;
 	}
 

@@ -48,6 +48,9 @@ public class Piece {
 	private int validStepCount;
 	public final int bit;
 
+	private boolean frozen = false;
+	private boolean dominated = false;
+
 	public Piece(int str, boolean g) {
 		this.strength = str;
 		this.gold = g;
@@ -176,15 +179,21 @@ public class Piece {
 	}
 
 	public boolean isDominated() {
-		for (Square s : square.adjacent) {
-			if (!s.isEmpty()) {
-				int str = s.getOccupant().strength;
-				if (s.getOccupant().gold != gold) {
-					return s.occupant.strength > strength;
+		if (recalcSteps) {
+			dominated = false;
+			for (Square s : square.adjacent) {
+				if (!s.isEmpty()) {
+					int str = s.getOccupant().strength;
+					if (s.getOccupant().gold != gold) {
+						if (s.occupant.strength > strength) {
+							dominated = true;
+							break;
+						}
+					}
 				}
 			}
 		}
-		return false;
+		return dominated;
 	}
 
 	/**
@@ -239,13 +248,16 @@ public class Piece {
 	}
 
 	protected boolean isFrozen() {
-		boolean frozen = false;
-		for (Square s : square.adjacent) {
-			if (!s.isEmpty()) {
-				if (s.getOccupant().gold == gold) {
-					return false;
-				} else if (s.getOccupant().strength > strength) {
-					frozen = true;
+		if (recalcSteps) {
+			frozen = false;
+			for (Square s : square.adjacent) {
+				if (!s.isEmpty()) {
+					if (s.getOccupant().gold == gold) {
+						frozen = false;
+						break;
+					} else if (s.getOccupant().strength > strength) {
+						frozen = true;
+					}
 				}
 			}
 		}
