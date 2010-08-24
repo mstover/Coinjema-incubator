@@ -28,7 +28,7 @@ public class AlphaBetaThinker {
 	private final Future<?>[] futures;
 	private MoveTrail[] trails;
 	private final Move moveService = new Move();
-	private Evaluator evaluator;
+	private final Evaluator evaluator;
 
 	class PlyThinker implements Callable<MoveTrail> {
 		MoveTrail trail;
@@ -54,6 +54,7 @@ public class AlphaBetaThinker {
 				if (!readyToSend) {
 					tree.rewind();
 					try {
+						// System.out.println("Searching trail " + trail);
 						tree.searchForMoves(trail.nextTurn, trail.indexes);
 						tree.sizeOfFirstPly = tree.getFirstNumber();
 						if (tree.sizeOfFirstPly > 1) {
@@ -144,12 +145,14 @@ public class AlphaBetaThinker {
 							: best > 0))) {
 				tree.sortDirtyPlys();
 				count++;
-				if (count % 100 == 0) {
-					int bestCalced = tree.getBestCalculatedIndex();
-					System.out.println("number of moves found = " + tree.next
-							+ " best move = " + tree.moves.get(bestCalced)
-							+ "," + tree.evaluations.get(bestCalced));
-				}
+				int bestCalced = tree.getBestCalculatedIndex();
+				// System.out.println("number of moves found = " + tree.next
+				// + " best move = "
+				// + moveService.toString(tree.moves.get(bestCalced))
+				// + "," + tree.evaluations.get(bestCalced));
+				// System.out.println("Best Response = "
+				// + moveService.toString(tree.moves
+				// .get(tree.addressNextPly.get(bestCalced))));
 				setupThinkers(tree);
 				waitForThinkers();
 				depth = trails[0] != null ? trails[0].indexes.size() : 0;
@@ -158,17 +161,20 @@ public class AlphaBetaThinker {
 
 			}
 		}
+		int bestIndex = tree.getBestCalculatedIndex();
 		System.out.println("Trails[0] = " + trails[0]);
-		System.out.println("Seaching 2 ply took "
+		System.out.println("Seaching took "
 				+ (System.currentTimeMillis() - time)
 				+ " ms and "
 				+ tree.next
-				+ " positions.  Score = "
-				+ tree.evaluations.get(tree.getBestCalculatedIndex())
+				+ " positions.  Best Index = "
+				+ bestIndex
+				+ " Score = "
+				+ tree.evaluations.get(bestIndex)
 				+ " best response = "
 				+ moveService.toString(tree.moves.get(tree.addressNextPly
-						.get(0))));
-		return tree.moves.get(tree.getBestCalculatedIndex());
+						.get(bestIndex))));
+		return tree.moves.get(bestIndex);
 	}
 
 	private void waitForThinkers() {
