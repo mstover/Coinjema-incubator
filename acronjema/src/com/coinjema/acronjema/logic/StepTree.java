@@ -123,9 +123,9 @@ public class StepTree implements StepBuffer {
 		if (acceptDoubleMove || (moveService.getStepCount(step) == 1)) {
 			board.executeStep(step, false);
 			long hash = board.getBoardHash();
-			long altHash = board.getBoardHash2();
+
 			board.rewindSteps(step, false);
-			if (duplicates.add(hash, altHash)) {
+			if (duplicates.add(hash)) {
 				steps.put(step);
 				steps.put(0);
 			}
@@ -144,8 +144,7 @@ public class StepTree implements StepBuffer {
 		if (remainingStepCount <= 0) {
 			return;
 		} else if (remainingStepCount == 4) {
-			duplicates.clear();
-			duplicates.add(board.getBoardHash(), board.stepCount);
+			duplicates.add(board.getBoardHash());
 		}
 		int sizeCountPosition = steps.position();
 		steps.put(0);
@@ -180,8 +179,7 @@ public class StepTree implements StepBuffer {
 		if (remainingStepCount == 0) {
 			return;
 		} else if (remainingStepCount == 4) {
-			duplicates.clear();
-			duplicates.add(board.getBoardHash(), board.stepCount);
+			duplicates.add(board.getBoardHash());
 		} else {
 			if (remainingStepCount == 1) {
 				acceptDoubleMove = false;

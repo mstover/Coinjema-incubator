@@ -136,6 +136,7 @@ public class AutoGame {
 				goldPlayer.executeMove(move);
 				silverPlayer.executeMove(move);
 				b.executeMove(move);
+				b.toggleTurn();
 				System.out.println((turn ? "gold" : "silver") + " moved");
 				turn = !turn;
 				count++;

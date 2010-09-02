@@ -40,6 +40,7 @@ public class Game {
 				goldPlayer.executeMove(move);
 				silverPlayer.executeMove(move);
 				board.executeMove(move);
+				board.toggleTurn();
 				System.out.println((turn ? "gold" : "silver") + " moved");
 				System.out.println(moveService.toString(move));
 				turn = !turn;
