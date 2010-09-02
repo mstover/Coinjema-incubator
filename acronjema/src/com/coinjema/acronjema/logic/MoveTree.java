@@ -252,12 +252,16 @@ public class MoveTree {
 				|| (!board.currentTurn && (evaluations.get(0) == Integer.MAX_VALUE))) {
 			return null;
 		}
-		int moveCount = 0;
+		int moveCount = i;
 		List<Integer> trail = new LinkedList<Integer>();
 		while (i > -1) {
 			if ((moveCount >= addressNextPly.capacity())
 					|| (addressNextPly.get(moveCount) == 0)) {
 				if (i > 0) {
+					if (moveCount == i) {
+						trail.add(moveCount);
+						break;
+					}
 					i--;
 					moveCount++;
 					// if we have thousands of processors, this might break;
@@ -282,7 +286,7 @@ public class MoveTree {
 		int depth = dirtyPlys.first().depth;
 		int topDepth = depth;
 		for (Ply plySet : dirtyPlys) {
-			if ((depth != plySet.depth)
+			if ((plySet.depth != topDepth)
 					&& ((topDepth > 0) || (plySet.depth > 0))) {
 				sortPly(addressNextPly.get(plySet.index),
 						addressNextPly.get(plySet.index)
@@ -291,7 +295,6 @@ public class MoveTree {
 								: IntTimSort.ASC_SORTER)
 								: ((plySet.depth % 2 == 1) ? IntTimSort.ASC_SORTER
 										: IntTimSort.DESC_SORTER));
-				depth = plySet.depth;
 			}
 			evaluations.put(plySet.index,
 					evaluations.get(addressNextPly.get(plySet.index)));
@@ -392,6 +395,6 @@ public class MoveTree {
 				return i;
 			}
 		}
-		return sizeOfFirstPly - 1;
+		return 0;
 	}
 }
