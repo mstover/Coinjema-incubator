@@ -1,0 +1,6 @@
+public enum Quality {
+
+	GREEN, BLACK, WHITE, BLUE, RED, PRODUCES_IMMEDIATELY, SINGLE_USE, LAND, CREATURE, ARTIFACT, INSTANT, SORCERY, ENCHANTMENT, PLANESWALKER, COLORLESS, MANA_SOURCE,
+	/** Intrinsic means the card is useful, not just a mana source */
+	INTRINSIC
+}
