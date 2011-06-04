@@ -206,6 +206,7 @@ public class AlphaBetaThinker {
 	public void executeMove(int move) {
 		for (PlyThinker thinker : thinkers) {
 			thinker.tree.board.executeMove(move);
+			thinker.tree.board.toggleTurn();
 		}
 	}
 }

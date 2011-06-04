@@ -43,9 +43,26 @@ public class Board {
 	private Boolean winner;
 
 	public boolean currentTurn = true;
+	private final static Zobrist zobrist = new Zobrist();
+	private static final long currentTurnZobrist = zobrist.getZobristNumber();
+	private static long[][] zobristArr = new long[64][12];
+	static {
+		initZobristNumbers();
+	}
 
 	public Board() {
 		createSquares();
+	}
+
+	/**
+	 * 
+	 */
+	private static void initZobristNumbers() {
+		for (int i = 0; i < 64; i++) {
+			for (int j = 0; j < 12; j++) {
+				zobristArr[i][j] = zobrist.getZobristNumber();
+			}
+		}
 	}
 
 	/**
@@ -143,6 +160,9 @@ public class Board {
 	public void executeMove(int move) {
 		executeStep(moveService.getFirstHalf(move), true);
 		executeStep(moveService.getSecondHalf(move), true);
+	}
+
+	public void toggleTurn() {
 		currentTurn = !currentTurn;
 	}
 
@@ -221,6 +241,7 @@ public class Board {
 			int newEval = eval.evaluate(this);
 			hashStack = 10;
 			rewindMove(move);
+			toggleTurn();
 			hashStack = stack;
 			makeNewHash = true;
 			makeNewHash2 = true;
@@ -322,8 +343,12 @@ public class Board {
 			for (Piece p : pieces) {
 				Square s = p.square;
 				if (s != null) {
-					hash = hash | (1l << (s.index));
+					hash = hash
+							^ zobristArr[s.index][(p.strength * (p.gold ? 1 : 2)) - 1];
 				}
+			}
+			if (!currentTurn) {
+				hash = hash ^ currentTurnZobrist;
 			}
 			boardHashes[hashStack] = hash;
 			makeNewHash = false;
@@ -424,7 +449,6 @@ public class Board {
 		try {
 			rewindSteps(moveService.getSecondHalf(move), true);
 			rewindSteps(moveService.getFirstHalf(move), true);
-			currentTurn = !currentTurn;
 		} catch (Exception e) {
 
 			moveService.printStepsForMove(move);

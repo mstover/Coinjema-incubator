@@ -51,19 +51,21 @@ class ChildMoveTree extends MoveTree {
 		if (doMovesFirst != null) {
 			for (int i : doMovesFirst) {
 				board.executeMove(parent.moves.get(i));
+				board.toggleTurn();
 			}
 		}
 		super.searchForMoves(gold);
 		if (doMovesFirst != null) {
 			for (int i = doMovesFirst.size() - 1; i > -1; i--) {
 				board.rewindMove(parent.moves.get(doMovesFirst.get(i)));
+				board.toggleTurn();
 			}
 		}
 	}
 
 	@Override
 	protected void preservePosition() {
-		duplicates.add(board.getBoardHash(), board.getBoardHash2());
+		duplicates.add(board.getBoardHash());
 	}
 
 }

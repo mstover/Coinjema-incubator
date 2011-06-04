@@ -45,7 +45,7 @@ public class MoveTree {
 
 	protected MoveTree(Board b, Evaluator evaluator, int size) {
 		this.board = b;
-		duplicates.add(board.getBoardHash(), board.getBoardHash2());
+		duplicates.add(board.getBoardHash());
 		this.evaluator = evaluator;
 		moves = IntBuffer.allocate(size);
 		evaluations = IntBuffer.allocate(size);
@@ -61,7 +61,7 @@ public class MoveTree {
 	 * @param move
 	 */
 	public void addMove(int move) {
-		if (duplicates.add(board.getBoardHash(), board.getBoardHash2())) {
+		if (duplicates.add(board.getBoardHash())) {
 			moves.put(move);
 			evaluations.put(evaluator.evaluate(board));
 			next = moves.position();
@@ -171,14 +171,17 @@ public class MoveTree {
 					board.executeMove(moves.get(trail.indexes.get(j)));
 				}
 				board.executeMove(moves.get(i));
+				board.toggleTurn();
 				evaluations.put(
 						i,
 						board.executeMoveIfLegal(move, evaluator,
 								evaluations.get(i), trail.nextTurn));
 
 				board.rewindMove(moves.get(i));
+				board.toggleTurn();
 				for (int j = trail.indexes.size() - 2; j > -1; j--) {
 					board.rewindMove(moves.get(trail.indexes.get(j)));
+					board.toggleTurn();
 				}
 			} else if (count > Runtime.getRuntime().availableProcessors()) {
 				break;
@@ -224,8 +227,10 @@ public class MoveTree {
 			int diff = moveService.getStepCountOfMove(move);
 			if (diff > 1) {
 				board.executeMove(move);
+				// no toggle turn
 				stepTree.searchForSteps(gold, 4 - diff, move);
 				board.rewindMove(move);
+				// no toggle turn
 			}
 		}
 	}
@@ -234,7 +239,7 @@ public class MoveTree {
 		permanentDups.add(new long[] { board.getBoardHash(),
 				board.getBoardHash2() });
 		for (long[] pos : permanentDups) {
-			duplicates.add(pos[0], pos[1]);
+			duplicates.add(pos[0]);
 		}
 	}
 

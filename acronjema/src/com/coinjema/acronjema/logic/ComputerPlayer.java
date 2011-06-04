@@ -144,6 +144,7 @@ public class ComputerPlayer implements Player {
 				try {
 					int move = findMoves();
 					b.executeMove(move);
+					b.toggleTurn();
 					System.out.println("Move " + (count++) + (turn ? "g" : "s")
 							+ ": " + moveService.toString(move));
 					b.print(System.out);
