@@ -57,6 +57,7 @@ public class DeckBuilder {
 				previousFile = files[i - 1];
 				previous = card;
 			}
+			System.out.println("Looking for " + card + " found " + files[i - 1]);
 			System.out.println("Found " + files[i - 1].getName());
 		}
 		return files;
